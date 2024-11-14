@@ -77,7 +77,7 @@ To run this project, you will need to add the following environment variables to
 Clone the project
 
 ```bash
-  git clone https://github.com/OneEntry/nextjs-shop-demo.git
+  git clone git@github.com:OneEntry/nextjs-shop-demo.git
 ```
 
 Go to the project directory
