@@ -43,6 +43,7 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
 
   const fields = useAppSelector((state) => state.formFieldsReducer.fields);
 
+  // set otp code to formFields reducer
   useEffect(() => {
     if (otp) {
       dispatch(
@@ -57,7 +58,13 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otp]);
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  /**
+   * Submit form handle for checkCode/activateUser
+   * @async
+   * @param e FormEvent
+   * @returns
+   */
+  const onSubmitHandle = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (otp.length < 6) {
       return;
@@ -66,6 +73,7 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
     try {
       setLoading(true);
       setError('');
+      // check OTP code with API AuthProvider
       if (action !== 'activateUser') {
         // checkCode
         const result = await api.AuthProvider.checkCode(
@@ -73,11 +81,14 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
           fields.email_reg.value,
           otp,
         );
+        // if checkCode is ok show reset password form
         if (result) {
           setComponent('ResetPasswordForm');
         }
         setLoading(false);
-      } else {
+      }
+      // activateUser with API AuthProvider
+      else {
         // activateUser
         const result = await api.AuthProvider.activateUser(
           'email',
@@ -109,7 +120,11 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
     }
   };
 
-  const onResend = async () => {
+  /**
+   * Generate and resend verification code
+   * @async
+   */
+  const onResendHandle = async () => {
     try {
       setLoading(true);
       setError('');
@@ -133,7 +148,7 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
     <FormAnimations isLoading={isLoading}>
       <form
         className="mx-auto flex min-h-full w-full max-w-[430px] flex-col gap-4 text-xl leading-5"
-        onSubmit={(e) => onSubmit(e)}
+        onSubmit={(e) => onSubmitHandle(e)}
       >
         <div className="relative mb-5 box-border flex shrink-0 flex-col gap-2.5">
           <h2 className="text-xl font-bold text-neutral-600 max-md:max-w-full">
@@ -162,7 +177,7 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
             <button
               className="font-bold text-orange-500"
               type="button"
-              onClick={onResend}
+              onClick={onResendHandle}
             >
               {resend_text.value}
             </button>

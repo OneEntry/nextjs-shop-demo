@@ -8,7 +8,7 @@ import { UsePrice } from '@/components/utils';
 
 /**
  * Order product card
- * @param product
+ * @param product product entity object
  * @param lang current language shortcode
  * @param settings
  *

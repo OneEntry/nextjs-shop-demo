@@ -6,10 +6,10 @@ import { useContext } from 'react';
 import { OpenDrawerContext } from '@/app/store/providers/OpenDrawerContext';
 
 /**
- * ResetPasswordButton
- * @param title
+ * Reset password button
+ * @param title button title
  *
- * @returns ResetPasswordButton
+ * @returns Reset password button
  */
 const ResetPasswordButton: FC<{
   title: string;

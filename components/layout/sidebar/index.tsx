@@ -9,7 +9,8 @@ import SidebarMenuLoader from './components/SidebarMenuLoader';
 
 /**
  * SidebarMenu
- * @param lang current language shortcode
+ *
+ * @param lang Current language shortcode
  *
  * @returns SidebarMenu
  */

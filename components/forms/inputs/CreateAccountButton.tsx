@@ -10,10 +10,10 @@ interface CreateAccountButtonProps {
 }
 
 /**
- * CreateAccountButton
- * @param lang Current language shortcode
+ * Create account button
+ * @param title
  *
- * @returns title
+ * @returns Create account button
  */
 const CreateAccountButton: FC<CreateAccountButtonProps> = ({ title }) => {
   const { setOpen, setComponent } = useContext(OpenDrawerContext);

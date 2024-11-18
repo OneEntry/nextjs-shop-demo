@@ -7,11 +7,11 @@ import type { FC } from 'react';
 import CatalogIcon from '@/components/icons/catalog';
 
 /**
- * Catalog navItem menu element
- * @param item Represents a menu element object.
+ * Catalog navigation menu item
+ * @param item menu element object
  * @param lang current language shortcode
  *
- * @returns NavItem
+ * @returns menu item
  */
 const NavItemCatalog: FC<{ item: IMenusPages; lang: string }> = ({
   item: { pageUrl, localizeInfos },

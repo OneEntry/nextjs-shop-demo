@@ -12,7 +12,7 @@ import EyeOpenIcon from '@/components/icons/eye-o';
 
 /**
  * FormInput
- * @param value
+ * @param value field value
  * @param index Index of element for animations stagger
  *
  * @returns FormInput

@@ -22,8 +22,9 @@ interface ProductCardProps {
 
 /**
  * Product card
- * @param product
- * @param lang current language shortcode
+ *
+ * @param product product entity object
+ * @param lang Current language shortcode
  * @param dict dictionary from server api
  * @param index Index of element for animations stagger
  * @param pagesLimit used for animations

@@ -8,7 +8,13 @@ import { getChildPagesByParentUrl } from '@/app/api';
 import type { PageProps } from '@/app/types/global';
 import CategoriesGrid from '@/components/layout/categories';
 
-// Generate page metadata
+/**
+ * Generate page metadata
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
+ * @param params page params
+ * @returns metadata
+ */
 export async function generateMetadata({
   params,
 }: {
@@ -60,10 +66,11 @@ export async function generateMetadata({
 }
 
 /**
- * Category page layout
- * @param params
- *
- * @returns Category page layout
+ * Category page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
+ * @returns Category page layout JSX.Element
  */
 const CategoryPage: FC<PageProps> = async ({ params: { lang } }) => {
   // Get child pages by parent url

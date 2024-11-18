@@ -8,7 +8,13 @@ import type { PageProps } from '@/app/types/global';
 import ProductSingle from '@/components/layout/product';
 import type { Locale } from '@/i18n-config';
 
-// Product page metadata
+/**
+ * Generate page metadata
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
+ * @param params page params
+ * @returns metadata
+ */
 export async function generateMetadata({
   params,
 }: {
@@ -54,15 +60,16 @@ export async function generateMetadata({
 }
 
 /**
- * Product page layout
- * @param params
- *
- * @returns Product page layout
+ * Product page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
+ * @returns Product page layout JSX.Element
  */
 const ProductPageLayout: FC<PageProps> = async ({
   params: { handle, lang },
 }) => {
-  // Get dictionary
+  // Get the dictionary from the API and set the server provider.
   const dict = await getDictionary(lang as Locale);
 
   // Get product by current Id
@@ -72,10 +79,14 @@ const ProductPageLayout: FC<PageProps> = async ({
     return notFound();
   }
 
+  // extract data from product
   const { attributeValues, localizeInfos, additional, statusIdentifier } =
     product;
 
-  // product JsonLd
+  /**
+   * product Json liked data
+   * https://json-ld.org/
+   */
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',

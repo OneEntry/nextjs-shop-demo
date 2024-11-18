@@ -6,8 +6,7 @@ import { useState } from 'react';
 import { api } from '@/app/api';
 
 /**
- * Post forms data
- *
+ * Post forms data with FormData API
  * @returns object
  */
 export const useSetForm = () => {

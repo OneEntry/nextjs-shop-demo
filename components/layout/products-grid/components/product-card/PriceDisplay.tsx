@@ -11,8 +11,9 @@ interface PriceDisplayProps {
 
 /**
  * Price display
+ *
  * @param attributes
- * @param lang current language shortcode
+ * @param lang Current language shortcode
  *
  * @returns Price display with current/old prices
  */

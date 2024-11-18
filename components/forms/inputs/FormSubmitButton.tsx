@@ -10,12 +10,12 @@ interface FormSubmitButtonProps {
 }
 
 /**
- * FormSubmitButton
- * @param title
- * @param isLoading
+ * Form submit button
+ * @param title button title
+ * @param isLoading loading state
  * @param index Index of element for animations stagger
  *
- * @returns FormSubmitButton
+ * @returns Form submit button
  */
 const FormSubmitButton: FC<FormSubmitButtonProps> = ({
   title,

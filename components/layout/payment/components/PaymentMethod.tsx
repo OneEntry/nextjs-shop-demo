@@ -83,7 +83,7 @@ const PaymentMethod: FC<PaymentMethodProps> = ({
               <OrderProductsTable account={account} lang={lang} />
             </div>
             <div className="flex w-1/3 flex-col border border-solid px-6 py-2 max-md:w-full max-md:max-w-full max-md:border-t-0 max-md:px-2">
-              <OrderDataTable account={account} />
+              <OrderDataTable dict={dict} account={account} />
             </div>
             <div className="mt-2 flex">
               <TotalAmount
@@ -97,11 +97,12 @@ const PaymentMethod: FC<PaymentMethodProps> = ({
           </div>
           <div className="flex gap-4 max-md:mb-8 max-sm:flex-col-reverse max-sm:flex-wrap max-sm:gap-0">
             <ConfirmOrderButton
+              dict={dict}
               account={account}
               isLoading={isLoading}
               onConfirmOrder={onConfirmOrder}
             />
-            <EditOrderButton isLoading={isLoading} />
+            <EditOrderButton dict={dict} isLoading={isLoading} />
           </div>
         </div>
       </div>

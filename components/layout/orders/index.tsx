@@ -40,6 +40,7 @@ const OrdersPage: FC<{
   const currentPage = Number(searchParams.get('page')) || 0;
   const pageLimit = settings?.orders_limit.value || 10;
 
+  // get all orders by Marker
   useEffect(() => {
     if (!isAuth) {
       return;

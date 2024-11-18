@@ -12,8 +12,9 @@ interface StickersProps {
 
 /**
  * Stickers
- * @param product Represents a product entity object.
- * @param lang current language shortcode
+ *
+ * @param product product entity object.
+ * @param lang Current language shortcode
  *
  * @returns Stickers array
  */

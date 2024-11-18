@@ -42,7 +42,7 @@ export const RTKApi = createApi({
   endpoints: (build) => ({
     /**
      * Get all blocks by page url.
-     * @interface
+     *
      * @property {string} pageUrl - Marker of Block.
      * @property {string} activeLang - Language code. Default "en_US".
      */
@@ -57,7 +57,7 @@ export const RTKApi = createApi({
     }),
     /**
      * Get Product By Id.
-     * @interface
+     *
      * @property {string} item - IProductsEntity.
      */
     getProductById: build.query<IProductsEntity, { id: number }>({
@@ -74,7 +74,7 @@ export const RTKApi = createApi({
     }),
     /**
      * Get Products By Ids.
-     * @interface
+     *
      * @property {string} items - Array of IProductsEntity.
      */
     getProductsByIds: build.query<IProductsEntity[], { items: number[] }>({
@@ -107,8 +107,8 @@ export const RTKApi = createApi({
       },
     }),
     /**
-     * Get all auth providers objects.
-     * @interface
+     * Get block by Marker.
+     *
      * @property {string} marker - Marker of Block.
      * @property {string} activeLang - Language code. Default "en_US".
      */
@@ -123,7 +123,7 @@ export const RTKApi = createApi({
     }),
     /**
      * Get all auth providers objects.
-     * @interface
+     *
      * @property {string} langCode - Language code. Default "en_US".
      */
     getAuthProviders: build.query<IAuthProvidersEntity[], string>({
@@ -136,8 +136,8 @@ export const RTKApi = createApi({
       },
     }),
     /**
-     * Get form by form marker.
-     * @interface
+     * Get form by marker.
+     *
      * @property {string} marker - Marker of form.
      * @property {string} lang - Language code. Default "en_US"
      */
@@ -154,7 +154,7 @@ export const RTKApi = createApi({
     }),
     /**
      * Getting the data of an authorized user.
-     * @interface
+     *
      * @property {string} langCode - Required parameter lang code.
      */
     getMe: build.query<IUserEntity, { langCode: string }>({
@@ -168,7 +168,6 @@ export const RTKApi = createApi({
     }),
     /**
      * Get all payment accounts as an array.
-     * @interface
      */
     getAccounts: build.query<IAccountsEntity[], object>({
       queryFn: async () => {
@@ -181,7 +180,7 @@ export const RTKApi = createApi({
     }),
     /**
      * Retrieve one order storage object by marker.
-     * @interface
+     *
      * @property {string} marker - Marker of the order object.
      */
     getOrderStorageByMarker: build.query<IOrdersEntity, { marker: string }>({
@@ -195,7 +194,7 @@ export const RTKApi = createApi({
     }),
     /**
      * Get a single payment session object by its identifier.
-     * @interface
+     *
      * @property {number} id - Identifier of the retrieved payment session object.
      */
     getPaymentSessionById: build.query<ISessionEntity, { id: number }>({
@@ -209,7 +208,7 @@ export const RTKApi = createApi({
     }),
     /**
      * Getting a single order from the order storage object created by the user
-     * @interface
+     *
      * @property {number} id - ID of the order object.
      * @property {string} marker - The text identifier of the order storage object.
      * @property {string} activeLang - Optional language field.

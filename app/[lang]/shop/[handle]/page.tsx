@@ -12,7 +12,14 @@ import type { Locale } from '@/i18n-config';
 
 import { getDictionary } from '../../dictionaries';
 
-// Generate page metadata
+/**
+ * Generate page metadata
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
+ * @param params page params
+ *
+ * @returns metadata
+ */
 export async function generateMetadata({
   params: { handle, lang },
 }: MetadataParams): Promise<Metadata> {
@@ -21,6 +28,8 @@ export async function generateMetadata({
   if (isError || !page) {
     return notFound();
   }
+
+  // extract data from page
   const { localizeInfos, isVisible, attributeValues } = page;
 
   const {
@@ -62,23 +71,27 @@ export async function generateMetadata({
 }
 
 /**
- * Shop catalog page layout
- * @param params
+ * Shop catalog page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
  * @param searchParams
- *
- * @returns page layout
+ * @returns Shop page layout JSX.Element
  */
 const ShopCatalogPage: FC<PageProps> = async ({
   params: { handle, lang },
   searchParams,
 }) => {
+  // Get the dictionary from the API and set the server provider.
   const [dict] = useServerProvider('dict', await getDictionary(lang as Locale));
 
-  const { page } = await getPageByUrl(handle, lang);
-  // !!!
+  // get page by url from the API
+  const { page, isError } = await getPageByUrl(handle, lang);
+
+  // !!!extract products per page limit from global settings
   const pagesLimit = 10;
 
-  if (!page) {
+  if (!page || isError) {
     return notFound();
   }
 

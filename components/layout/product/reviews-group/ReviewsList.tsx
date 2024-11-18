@@ -7,13 +7,12 @@ import ReviewCard from './ReviewCard';
 import ViewAllButton from './ViewAllButton';
 
 /**
- * ReviewsList
- * @param state
+ * Reviews list section
+ * @param state open/closed list state
  *
  * @returns ReviewsList
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ReviewsList: FC<{ state: any }> = ({ state }) => {
+const ReviewsList: FC<{ state: boolean }> = ({ state }) => {
   return (
     <>
       <section

@@ -23,8 +23,7 @@ import HeartOpenIcon from '../icons/heart-o';
 
 /**
  * Favorites button
- * @param product Represents a product entity object.
- *
+ * @param product product entity object.
  * @returns Favorites button
  */
 const FavoritesButton: FC<IProductsEntity> = (product) => {
@@ -34,7 +33,9 @@ const FavoritesButton: FC<IProductsEntity> = (product) => {
   const { id } = product;
   const isFavorites = useAppSelector((state) => selectIsFavorites(state, id));
 
-  // Update favorites
+  /**
+   * Update favorites
+   */
   const onUpdateFavoritesHandle = () => {
     if (isFav) {
       dispatch(removeFavorites(product.id));
@@ -47,7 +48,10 @@ const FavoritesButton: FC<IProductsEntity> = (product) => {
     }
   };
 
-  // Update user data favorites
+  /**
+   * Update user data favorites
+   * @async
+   */
   const onUpdateUserFavoritesHandle = async () => {
     try {
       if (!isFav) {
@@ -69,7 +73,7 @@ const FavoritesButton: FC<IProductsEntity> = (product) => {
     }
   };
 
-  // set Favorites
+  // set Favorites on data change
   useEffect(() => {
     setIsFav(isFavorites);
   }, [isFavorites]);
@@ -90,7 +94,7 @@ const FavoritesButton: FC<IProductsEntity> = (product) => {
         }
       }}
     >
-      {!isFav ? <HeartIcon /> : <HeartOpenIcon />}
+      {isFav ? <HeartIcon /> : <HeartOpenIcon />}
     </button>
   );
 };

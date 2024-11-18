@@ -6,8 +6,8 @@ import { LanguageEnum } from '@/app/types/enum';
 
 /**
  * Contact Info
- *
- * @returns
+ * @async
+ * @returns JSX.Element
  */
 const ContactInfo: FC = async () => {
   const [lang] = useServerProvider('lang');

@@ -15,7 +15,8 @@ interface ProductDetailsProps {
 
 /**
  * Product details
- * @param product
+ *
+ * @param product product entity object
  * @param lang current language shortcode
  * @param dict dictionary from server api
  *

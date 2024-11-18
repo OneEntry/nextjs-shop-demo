@@ -7,7 +7,6 @@ import { useRef } from 'react';
 /**
  * Intro animations
  *
- * @componentType client component
  * @returns JSX.Element with animated ref
  */
 const IntroAnimations = () => {

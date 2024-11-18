@@ -6,7 +6,7 @@ import type { FC } from 'react';
 /**
  * History back button
  *
- * @returns JSX
+ * @returns JSX.Element
  */
 const BackButton: FC = () => {
   const router = useRouter();

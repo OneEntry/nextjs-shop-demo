@@ -18,10 +18,10 @@ import CalendarAnimations from './animations/CalendarAnimations';
 import TimeSlots from './calendar/TimeSlots';
 
 /**
- * CalendarForm
+ * Calendar form
  * @param lang Current language shortcode
  *
- * @returns CalendarForm
+ * @returns Calendar form
  */
 const CalendarForm: FC<{ lang: string }> = ({ lang }) => {
   const dispatch = useAppDispatch();
@@ -31,7 +31,7 @@ const CalendarForm: FC<{ lang: string }> = ({ lang }) => {
   const [date, setDate] = useState<Date>(new Date(deliveryData.date));
   const [time, setTime] = useState<string>(deliveryData.time);
 
-  // Apply date
+  // Apply date to CartSlice
   const onApplyHandle = () => {
     dispatch(
       setDeliveryData({
@@ -64,8 +64,8 @@ const CalendarForm: FC<{ lang: string }> = ({ lang }) => {
           type="button"
           className="btn btn-xl btn-primary mx-auto mt-auto w-[270px] max-md:mt-10"
         >
-          Apply
           {/* !!! */}
+          Apply
         </button>
       </div>
     </CalendarAnimations>

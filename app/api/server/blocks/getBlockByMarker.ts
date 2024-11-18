@@ -7,9 +7,11 @@ import { typeError } from '@/components/utils';
 
 /**
  * Get block by marker.
- * @interface
- * @property {string} marker - Marker of Block.
- * @property {string} lang - Language code. Default "en".
+ *
+ * @property {string} marker Marker of Block.
+ * @param {string} lang Current language shortcode
+ * @see {@link https://oneentry.cloud/instructions/npm OneEntry docs}
+ *
  * @returns Return array of BlocksEntity object Promise.
  */
 export const getBlockByMarker = async (

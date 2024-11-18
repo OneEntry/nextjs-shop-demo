@@ -7,7 +7,9 @@ import { typeError } from '@/components/utils';
 /**
  * Get all active language localization objects.
  *
- * @returns an array of LocaleEntity objects
+ * @see {@link https://oneentry.cloud/instructions/npm OneEntry docs}
+ *
+ * @returns an array of LocaleEntity objects Promise
  */
 export const getLocales = async (): Promise<{
   isError: boolean;

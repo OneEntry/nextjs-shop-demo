@@ -1,7 +1,8 @@
 import { api } from '@/app/api';
 
 /**
- * Subscribe Events
+ * Subscribe events with Events API
+ *
  * @param id product id
  *
  * @returns void
@@ -17,7 +18,8 @@ export const onSubscribeEvents = async (id: number) => {
 };
 
 /**
- * Unsubscribe Events
+ * Unsubscribe events with Events API
+ *
  * @param id product id
  *
  * @returns void

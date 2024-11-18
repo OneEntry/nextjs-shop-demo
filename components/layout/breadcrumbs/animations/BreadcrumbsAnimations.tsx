@@ -16,7 +16,7 @@ interface BreadcrumbsAnimationsProps {
  * @param children children ReactNode
  * @param className CSS className of ref element
  *
- * @returns breadcrumbs ref with animations
+ * @returns JSX.Element with gsap animations
  */
 const BreadcrumbsAnimations: FC<BreadcrumbsAnimationsProps> = ({
   children,

@@ -10,9 +10,9 @@ import { i18n, type Locale } from '../../i18n-config.ts';
 
 /**
  * Get dictionary from block by marker
- * @param lang
+ * @param lang Current language shortcode
  *
- * @returns current lang dictionary
+ * @returns Current lang dictionary
  */
 const dict = async (lang: string): Promise<any> => {
   try {
@@ -35,7 +35,7 @@ const dict = async (lang: string): Promise<any> => {
  * Get dictionary
  * @param locale
  *
- * @returns current lang dictionary
+ * @returns Current lang dictionary
  */
 export const getDictionary = async (locale: Locale) => {
   const dictionaries = i18n.locales?.reduce(

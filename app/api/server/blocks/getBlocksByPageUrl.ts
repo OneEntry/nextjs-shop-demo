@@ -5,18 +5,20 @@ import { api } from '@/app/api';
 import { LanguageEnum } from '@/app/types/enum';
 import { typeError } from '@/components/utils';
 
-/**
- * Get all blocks by page url.
- *
- * @param {string} [lang] Required parameter lang
- * @param {string} [pageUrl] - Page URL
- *
- * @returns all blocks as an array of PositionBlock objects or an empty array [] (if there is no data) for the selected parent
- */
 interface HandleProps {
   lang: string;
   pageUrl: string;
 }
+
+/**
+ * Get all blocks by page url.
+ *
+ * @param lang Current language shortcode
+ * @param pageUrl Page URL
+ * @see {@link https://oneentry.cloud/instructions/npm OneEntry docs}
+ *
+ * @returns all blocks as an array of PositionBlock objects or an empty array [] (if there is no data) for the selected parent
+ */
 export const getBlocksByPageUrl = async ({
   lang,
   pageUrl,

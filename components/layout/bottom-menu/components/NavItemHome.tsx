@@ -8,7 +8,7 @@ import HomeIcon from '@/components/icons/home';
 
 /**
  * Home navItem menu element
- * @param item Represents a menu element object.
+ * @param item menu element object.
  * @param lang current language shortcode
  * @returns
  */

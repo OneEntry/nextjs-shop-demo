@@ -23,7 +23,8 @@ interface FiltersFormProps {
 }
 
 /**
- * Filters form
+ * Products filters form
+ *
  * @param prices prices fromTo extracted from one product
  * @param lang Current language shortcode
  * @param dict dictionary from server api

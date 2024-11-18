@@ -11,12 +11,12 @@ interface TimeSlotProps {
 }
 
 /**
- * TimeSlot
- * @param slot
+ * Time slot button
+ * @param slot time slot object
  * @param currentTime
  * @param setTime
  *
- * @returns TimeSlot
+ * @returns Time slot button
  */
 const TimeSlot: React.FC<TimeSlotProps> = ({ slot, currentTime, setTime }) => {
   let className = 'px-2 py-1.5 rounded-3xl border-2 text-center text-sm ';

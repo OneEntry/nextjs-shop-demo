@@ -7,7 +7,8 @@ import Loader from '@/components/shared/Loader';
 
 /**
  * Profile page
- * @param lang current language shortcode
+ *
+ * @param lang Current language shortcode
  * @param dict dictionary from server api
  *
  * @returns Profile page

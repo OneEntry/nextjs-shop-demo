@@ -10,6 +10,14 @@ interface CarouselItemImageProps {
   item: IProductsEntity;
 }
 
+/**
+ * CarouselItem image
+ *
+ * @param item product object
+ * @param lang current language shortcode
+ *
+ * @returns
+ */
 const CarouselItemImage: FC<CarouselItemImageProps> = ({ item, lang }) => {
   const title = item.localizeInfos.title;
   const picVal = item.attributeValues.pic?.value || '';

@@ -3,6 +3,7 @@ import type { FC } from 'react';
 
 /**
  * Empty image placeholder
+ *
  * @param className wrapper className
  *
  * @returns Placeholder

@@ -18,7 +18,7 @@ interface CancelOrderButtonProps {
 /**
  * Cancel order button
  * @param data
- * @param isLoading
+ * @param isLoading loading state
  * @param refetch
  * @param title
  *

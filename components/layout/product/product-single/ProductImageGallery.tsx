@@ -18,17 +18,19 @@ interface ProductImageProps {
 
 /**
  * Product images gallery/placeholder
- * @param product Represents a product entity object.
- * @param alt
+ * @param product product entity object.
+ * @param alt alt text for image
  *
  * @returns Product images gallery/placeholder
  */
-const ProductImageGallery: FC<ProductImageProps> = ({ alt, product }) => {
-  const { attributeValues } = product;
+const ProductImageGallery: FC<ProductImageProps> = ({ product, alt }) => {
   const ref = useRef(null);
   const [state, setState] = useState(false);
 
-  // get images from attributeValues
+  // extract attributeValues from product
+  const { attributeValues } = product;
+
+  // extract images from attributeValues
   const imageSrc = attributeValues.pic.value;
   const morePic = attributeValues.more_pic.value;
   const isGallery = morePic.length > 0;

@@ -8,8 +8,9 @@ interface BreadcrumbItemProps {
 }
 
 /**
- * BreadcrumbProductItem
- * @param link param0
+ * Breadcrumb ProductItem
+ *
+ * @param link Product link
  *
  * @returns JSX.Element
  */

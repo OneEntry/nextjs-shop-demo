@@ -5,24 +5,25 @@ import { api } from '@/app/api';
 import { LanguageEnum } from '@/app/types/enum';
 import { typeError } from '@/components/utils';
 
-/**
- * Getting all orders from the orders storage object created by the user
- *
- * @description This method requires user authorization. For more information about configuring the authorization module, see the documentation in the configuration settings section of the SDK.
- * @param {string} marker - The text identifier of the order storage object
- * @param {string} lang Optional language field
- * @param {number} limit Limit parameter. Default 30
- * @param {number} offset Offset parameter. Default 0
- *
- * @returns Promise
- */
 interface HandleProps {
   marker: string;
   limit: number;
   offset: number;
   lang: string;
 }
-
+/**
+ * Getting all orders from the orders storage object created by the user
+ *
+ * @description This method requires user authorization. For more information about configuring the authorization module, see the documentation in the configuration settings section of the SDK.
+ *
+ * @param marker The text identifier of the order storage object
+ * @param lang Current language shortcode
+ * @param limit Limit parameter. Default 30
+ * @param offset Offset parameter. Default 0
+ * @see {@link https://oneentry.cloud/instructions/npm OneEntry docs}
+ *
+ * @returns All user orders
+ */
 export const getAllOrdersByMarker = async ({
   marker,
   limit,

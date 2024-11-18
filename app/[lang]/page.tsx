@@ -7,19 +7,17 @@ import BlocksGridLoader from '@/components/layout/blocks-grid/components/BlocksG
 
 // export const revalidate = 10;
 // export const dynamicParams = true;
-interface IndexPageLayoutProps {
-  params: { lang: string };
-}
 
 /**
- * Home(index) page layout
- * @param params
- *
- * @returns page layout
+ * Home(index) page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
+ * @returns page layout JSX.Element
  */
-const IndexPageLayout: FC<IndexPageLayoutProps> = async ({
-  params: { lang },
-}) => {
+const IndexPageLayout: FC<{
+  params: { lang: string };
+}> = async ({ params: { lang } }) => {
   // Get home page by Url from api
   const { page, isError } = await getPageByUrl('home_web', lang);
 

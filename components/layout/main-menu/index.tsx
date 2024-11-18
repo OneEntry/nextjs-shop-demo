@@ -10,8 +10,7 @@ import NavigationMenu from './components/NavigationMenu';
 
 /**
  * Main menu
- *
- * @componentType Server component
+ * @async server component
  * @returns JSX.Element
  */
 const MainMenu: FC = async () => {

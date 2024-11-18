@@ -2,11 +2,11 @@
 import type { Dispatch, FC } from 'react';
 import { useEffect, useState } from 'react';
 
-import { useAppSelector } from '@/app/store/hooks';
-
 import StarRating from './StarRating';
 
 interface ReviewSectionProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  dict: any;
   rating: number;
   reviewCount: number;
   state: boolean;
@@ -23,15 +23,14 @@ interface ReviewSectionProps {
  * @returns RatingButton
  */
 const RatingButton: FC<ReviewSectionProps> = ({
+  dict,
   state,
   setState,
   rating,
   reviewCount,
 }) => {
   const [reviewsTitle, setReviewsTitle] = useState('');
-  const { reviews_title } = useAppSelector(
-    (state) => state.systemContentReducer.content,
-  );
+  const { reviews_title } = dict;
 
   useEffect(() => {
     if (reviews_title) {

@@ -10,6 +10,7 @@ import type { AnimationsProps } from '../types/global';
 
 /**
  * Fade transition animations
+ *
  * @param children children ReactNode
  * @param className CSS className of ref element
  * @param index Index of element for animations stagger

@@ -28,7 +28,9 @@ const DecreaseButton: FC<ButtonProps> = ({ id, qty, title }) => {
     return;
   }
 
-  // Remove product from cart and unsubscribe from events
+  /**
+   * Remove product from cart and unsubscribe from events
+   */
   const onRemoveFromCart = async () => {
     dispatch(removeProduct(id));
     toast('Product ' + title + ' removed from cart!');
@@ -38,7 +40,9 @@ const DecreaseButton: FC<ButtonProps> = ({ id, qty, title }) => {
     }
   };
 
-  // Decrease product quantity
+  /**
+   * Decrease product quantity
+   */
   const onDecreaseHandle = () => {
     dispatch(decreaseProductQty({ id: id, quantity: 1 }));
   };

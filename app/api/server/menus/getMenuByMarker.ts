@@ -8,8 +8,9 @@ import { typeError } from '@/components/utils';
 /**
  * Get pages includes in menu by marker.
  *
- * @param {string} marker - Menu marker
- * @param {string} [lang] - Language code
+ * @param marker Menu marker
+ * @param lang Language code
+ * @see {@link https://oneentry.cloud/instructions/npm OneEntry docs}
  *
  * @returns a single menu object as a ContentMenu object with included pages
  */

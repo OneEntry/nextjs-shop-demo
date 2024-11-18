@@ -12,7 +12,7 @@ import { VerticalMenuLoader } from './VerticalMenuLoader';
 
 /**
  * Footer menu section
- *
+ * @async
  * @returns Footer menu section
  */
 const FooterMenuSection: FC = async () => {

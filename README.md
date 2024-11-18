@@ -50,7 +50,7 @@ This project is designed for developers using OneEntry Headless CMS who need a q
 -   **Event Notifications:** Leverage events to notify users of updates, offers, or important news in real-time.
 -   **TypeScript Integration:** The project is beginner-friendly and uses lightweight TypeScript for development.
 -   **Tailwind:** User-friendly layout comprehensible to everyone.
--   **JsDoc:** API documentation generator for JavaScript.
+-   **JsDoc:** BuiltIn VsCode jsDoc documentation.
 
 ## Documentation
 
@@ -120,6 +120,11 @@ Install oneentry-next-shop with npm
 
   next dev
 ````
+
+## i18n config
+
+  Open i18n-config.ts
+  Set your languages codes ​​accordingly with example
 
 ## Deployment
 

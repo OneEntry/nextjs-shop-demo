@@ -14,12 +14,12 @@ interface TimeSlotsProps {
 }
 
 /**
- * TimeSlots
- * @param timeSlots
+ * Time slots grid
+ * @param timeSlots array of time slots
  * @param currentTime
  * @param setTime
  *
- * @returns TimeSlots
+ * @returns Time slots grid
  */
 const TimeSlots: FC<TimeSlotsProps> = ({ timeSlots, currentTime, setTime }) => {
   return (

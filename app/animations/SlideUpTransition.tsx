@@ -9,7 +9,10 @@ import { useRef, useState } from 'react';
 /**
  * SlideUp transition
  *
- * @componentType Client component
+ * @param children children ReactNode
+ * @param className CSS className of ref element
+ * @param index Index of element for animations stagger
+ *
  * @returns JSX.Element with animated ref
  */
 const SlideUpTransition = ({

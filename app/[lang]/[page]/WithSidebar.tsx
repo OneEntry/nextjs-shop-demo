@@ -3,7 +3,13 @@ import type { FC } from 'react';
 import FadeTransition from '@/app/animations/FadeTransition';
 import SidebarMenu from '@/components/layout/sidebar';
 
-// Sidebar template
+/**
+ * Sidebar layout
+ * @async server component
+ * @param lang Current language shortcode
+ * @param children children ReactNode
+ * @returns Sidebar layout JSX.Element
+ */
 const WithSidebar: FC<{
   lang: string;
   children: React.ReactNode;

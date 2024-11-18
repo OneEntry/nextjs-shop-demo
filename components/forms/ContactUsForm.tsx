@@ -2,7 +2,6 @@
 'use client';
 
 import type { IAttributes } from 'oneentry/dist/base/utils';
-import type { IFormsPost } from 'oneentry/dist/formsData/formsDataInterfaces';
 import type { FC, FormEvent, Key } from 'react';
 import { useState } from 'react';
 
@@ -17,28 +16,31 @@ import FormReCaptcha from './inputs/FormReCaptcha';
 import FormSubmitButton from './inputs/FormSubmitButton';
 
 /**
- * ContactUsForm
+ * ContactUs form
  * @param className CSS className of ref element
  * @param lang Current language shortcode
  *
- * @returns ContactUsForm
+ * @returns ContactUs form
  */
 const ContactUsForm: FC<{ className: string; lang: string }> = ({
   className,
   lang,
 }) => {
-  const { data, isLoading } = useGetFormByMarkerQuery({
-    marker: 'contact_us',
-    lang,
-  });
-
   const [token, setToken] = useState<string | null>();
   const [isCaptcha, setIsCaptcha] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
+  // Get form by marker with RTK
+  const { data, isLoading } = useGetFormByMarkerQuery({
+    marker: 'contact_us',
+    lang,
+  });
+
+  // get fields from formFieldsReducer
   const fieldsData = useAppSelector((state) => state.formFieldsReducer.fields);
 
+  // sort fields by position
   const formFields = data?.attributes
     .slice()
     .sort((a: IAttributes, b: IAttributes) => a.position - b.position);
@@ -53,7 +55,9 @@ const ContactUsForm: FC<{ className: string; lang: string }> = ({
       value: string | object;
     }[] = [];
 
+    // transform and send form data
     if (formFields && token) {
+      // transform form data
       const propertiesArray = Object.keys(formFields);
       const transformedFormData = propertiesArray?.reduce((formData, i) => {
         const type = formFields[i].type;
@@ -114,14 +118,13 @@ const ContactUsForm: FC<{ className: string; lang: string }> = ({
         return formData;
       }, emptyFormData);
 
-      const formData: IFormsPost = {
-        formIdentifier: 'contact_us',
-        formData: transformedFormData,
-      };
-
+      // send form data to API
       try {
         setLoading(true);
-        await api.FormData.postFormsData(formData);
+        await api.FormData.postFormsData({
+          formIdentifier: 'contact_us',
+          formData: transformedFormData,
+        });
         setLoading(false);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {

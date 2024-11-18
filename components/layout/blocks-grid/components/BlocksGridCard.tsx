@@ -6,7 +6,6 @@ import type { FC } from 'react';
 import { getBlockByMarker } from '@/app/api';
 import { LanguageEnum } from '@/app/types/enum';
 import BlockCardAnimations from '@/components/layout/blocks-grid/animations/BlockCardAnimations';
-import Loader from '@/components/shared/Loader';
 import Placeholder from '@/components/shared/Placeholder';
 
 interface BlocksGridCardProps {
@@ -38,15 +37,11 @@ const BlocksGridCard: FC<BlocksGridCardProps> = async ({
   index,
 }) => {
   const langCode = LanguageEnum[lang as keyof typeof LanguageEnum];
-  // Get block by marker from api
+  // Get block by marker from the API.
   const { block, isError } = await getBlockByMarker(marker, lang);
 
-  if (isError) {
-    return 'Blocks error';
-  }
-
-  if (!block) {
-    return <Loader />;
+  if (!block || isError) {
+    return 'Block error';
   }
 
   // extract attributeValues from block
@@ -94,7 +89,7 @@ const BlocksGridCard: FC<BlocksGridCardProps> = async ({
             </p>
           )}
 
-          {/* Image */}
+          {/* Image/Placeholder */}
           {imageSrc ? (
             <Image
               fill

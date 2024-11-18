@@ -8,7 +8,6 @@ import { useLayoutEffect } from 'react';
 /**
  * Register GSAP plugins
  *
- * @componentType Client component
  * @returns void
  */
 const RegisterGSAP = () => {

@@ -17,18 +17,26 @@ import type { Locale } from '@/i18n-config';
 import { getDictionary } from '../dictionaries';
 import WithSidebar from './WithSidebar';
 
-// Generate page metadata
+/**
+ * Generate page metadata
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
+ * @returns metadata
+ */
 export async function generateMetadata({
   params,
 }: {
   params: { page: string; lang: string };
 }): Promise<Metadata> {
+  // get page by Url
   const { page, isError } = await getPageByUrl(params.page, params.lang);
 
   if (isError || !page) {
     return notFound();
   }
 
+  // extract data from page
   const { localizeInfos } = page;
 
   return {
@@ -41,10 +49,11 @@ export async function generateMetadata({
 }
 
 /**
- * Simple page layout
- * @param params
- *
- * @returns page layout
+ * Simple page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
+ * @returns page layout JSX.Element
  */
 const PageLayout: FC<PageProps> = async ({ params }) => {
   const lang = params.lang;
@@ -54,10 +63,12 @@ const PageLayout: FC<PageProps> = async ({ params }) => {
   // Get page by current url
   const { page, isError } = await getPageByUrl(params.page, lang);
 
+  // if error return notFound
   if (isError || !page) {
     return notFound();
   }
 
+  // extract data from page
   const { pageUrl, templateIdentifier } = page;
 
   // array of pages components with additional settings for next router

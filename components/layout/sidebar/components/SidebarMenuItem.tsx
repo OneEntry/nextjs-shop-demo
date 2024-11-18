@@ -14,9 +14,10 @@ interface SidebarMenuItemProps {
 }
 
 /**
- * SidebarMenu Item
+ * SidebarMenu item
+ *
  * @param menuItem
- * @param lang current language shortcode
+ * @param lang Current language shortcode
  *
  * @returns SidebarMenu Item
  */

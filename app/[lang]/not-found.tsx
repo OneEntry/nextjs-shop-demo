@@ -4,13 +4,16 @@ import { getPageByUrl } from '@/app/api';
 
 /**
  * 404 page layout
- *
- * @returns page layout
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/not-found Next.js docs}
+ * @returns page layout JSX.Element
  */
 const NotFound = async () => {
   const lang = 'en';
+  // get page by url from the API.
   const { page, isError } = await getPageByUrl('404', lang);
 
+  // if no page data return fallback
   if (isError || !page) {
     return (
       <div className="mx-auto flex min-h-80 w-full max-w-screen-xl flex-col items-center justify-center py-8">
@@ -20,6 +23,7 @@ const NotFound = async () => {
     );
   }
 
+  // extract data from page
   const { localizeInfos, attributeValues } = page;
 
   return (

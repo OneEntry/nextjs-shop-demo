@@ -5,21 +5,21 @@ import { api } from '@/app/api';
 import { LanguageEnum } from '@/app/types/enum';
 import { typeError } from '@/components/utils';
 
-/**
- * Get a single attribute with data from the attribute sets.
- *
- * @param {string} attributeMarker  - Text identifier (marker) of the attribute in the set.
- * @param {string} setMarker  - Text identifier (marker) of the attribute set.
- * @param {string} lang - Language code.
- *
- * @returns a AttributeInSet object Promise.
- */
 interface HandleProps {
   attributeMarker: string;
   setMarker: string;
   lang: string;
 }
-
+/**
+ * Get a single attribute with data from the attribute sets.
+ *
+ * @param attributeMarker Text identifier (marker) of the attribute in the set.
+ * @param setMarker Text identifier (marker) of the attribute set.
+ * @param lang Current language shortcode
+ * @see {@link https://oneentry.cloud/instructions/npm OneEntry docs}
+ *
+ * @returns SingleAttribute|Error object.
+ */
 export const getSingleAttributeByMarkerSet = async ({
   attributeMarker,
   setMarker,

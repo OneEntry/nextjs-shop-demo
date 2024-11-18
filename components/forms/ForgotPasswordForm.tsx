@@ -35,7 +35,7 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
 
   const { reset_descr, send_text } = dict;
 
-  // get form data with RTK from api
+  // get form data with RTK from API
   const { data, isLoading } = useGetFormByMarkerQuery({
     marker: 'reg',
     lang,
@@ -47,13 +47,13 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
   const onSubmitFormHandle = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      // generate code with api
+      // generate verification code with API
       await api.AuthProvider.generateCode(
         'email',
         fields.email_reg.value,
         'generate_code',
       );
-      // open VerificationForm
+      // open Verification form
       setComponent('VerificationForm');
       setAction('checkCode');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

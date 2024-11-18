@@ -11,10 +11,11 @@ import type { Locale } from '@/i18n-config';
 import { getDictionary } from '../dictionaries';
 
 /**
- * Cart page layout
+ * Cart page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
  * @param params
- *
- * @returns page layout
+ * @returns Cart page layout JSX.Element
  */
 const CartPageLayout: FC<PageProps> = async ({ params: { lang } }) => {
   // Get dictionary and set to server provider

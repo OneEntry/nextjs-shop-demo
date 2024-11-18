@@ -12,6 +12,13 @@ import type { Locale } from '@/i18n-config';
 
 import { getDictionary } from '../dictionaries';
 
+/**
+ * Generate page metadata
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
+ * @param params page params
+ * @returns metadata
+ */
 export async function generateMetadata({
   params: { lang },
 }: MetadataParams): Promise<Metadata> {
@@ -62,23 +69,24 @@ export async function generateMetadata({
 }
 
 /**
- * Shop page layout
- * @param params
- * @param searchParams
- *
- * @returns Shop page layout
+ * Shop page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
+ * @param searchParams page search params
+ * @returns Shop page layout JSX.Element
  */
 const ShopPageLayout: FC<PageProps> = async ({ params, searchParams }) => {
-  // Get dictionary and set to server provider
+  // Get the dictionary from the API and set the server provider.
   const [dict] = useServerProvider(
     'dict',
     await getDictionary(params.lang as Locale),
   );
 
-  // Get current Page ByUrl
+  // Get current Page ByUrl from api
   const { page } = await getPageByUrl('shop', params.lang);
 
-  // !!! Set pages limit
+  // !!! Get pages limit
   const pagesLimit = 10;
 
   if (!page) {

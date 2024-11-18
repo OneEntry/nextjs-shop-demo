@@ -21,7 +21,7 @@ interface RepeatOrderButtonProps {
  * RepeatOrder button
  * @param data
  * @param title
- * @param isLoading
+ * @param isLoading loading state
  * @param lang current language shortcode
  *
  * @returns JSX.Element

@@ -11,7 +11,8 @@ interface GridLayoutProps {
 
 /**
  * ProductsNotFound
- * @param lang current language shortcode
+ *
+ * @param lang Current language shortcode
  * @param dict dictionary from server api
  *
  * @returns ProductsNotFound

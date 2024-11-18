@@ -23,9 +23,10 @@ interface ProductAnimationsProps {
 
 /**
  * Product animations
+ *
  * @param children children ReactNode
  * @param className CSS className of ref element
- * @param product
+ * @param product product entity object
  * @param index index of element in array for stagger
  *
  * @returns

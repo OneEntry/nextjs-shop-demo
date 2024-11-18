@@ -27,28 +27,33 @@ export type InputValue = {
 };
 
 /**
- * UserForm
+ * User form
  * @param lang Current language shortcode
  * @param dict dictionary from server api
  *
- * @returns UserForm
+ * @returns User form
  */
 const UserForm: FC<FormProps> = ({ lang, dict }) => {
   const { isAuth, refreshUser, user } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const [isError, setError] = useState('');
+
+  // Get form by marker with RTK
   const { data, isLoading, error } = useGetFormByMarkerQuery({
     marker: 'reg',
     lang,
   });
 
-  const [loading, setLoading] = useState(false);
-  const [isError, setError] = useState('');
-
+  // get fields from formFieldsReducer
   const fields = useAppSelector((state) => state.formFieldsReducer.fields);
 
+  // Update user data
   const onUpdateUserData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
+
+      // prepare form data
       const formData: IAuthFormData[] = data?.attributes
         .map((field: IAttributes, index: Key) => {
           if (field.marker !== 'email_notifications') {
@@ -63,6 +68,8 @@ const UserForm: FC<FormProps> = ({ lang, dict }) => {
         .filter(function (el: null) {
           return el !== null;
         });
+
+      // updateUser with Users API
       if (user?.formIdentifier) {
         await api.Users.updateUser({
           formIdentifier: user.formIdentifier,

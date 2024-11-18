@@ -13,6 +13,17 @@ interface VariationProps {
   setCurrentIndex: Dispatch<SetStateAction<number>>;
 }
 
+/**
+ * CarouselItem
+ *
+ * @param item product object
+ * @param lang current language shortcode
+ * @param index index of slide
+ * @param currentIndex index of current slide
+ * @param setCurrentIndex Set state action
+ *
+ * @returns Carousel card
+ */
 const CarouselItem: FC<VariationProps> = ({
   item,
   lang,

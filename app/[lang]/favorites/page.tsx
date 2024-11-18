@@ -9,10 +9,11 @@ import type { Locale } from '@/i18n-config';
 import { getDictionary } from '../dictionaries';
 
 /**
- * Favorites page layout
- * @param params
- *
- * @returns page layout
+ * Favorites page
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
+ * @param params page params
+ * @returns Favorites page layout JSX.Element
  */
 const FavoritesPageLayout: FC<PageProps> = async ({ params: { lang } }) => {
   // Get dictionary and set to server provider

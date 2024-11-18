@@ -21,7 +21,7 @@ interface ProductCardProps {
 
 /**
  * Product card in cart
- * @param product Represents a product entity object.
+ * @param product product entity object.
  * @param selected product selected?
  * @param lang Current language shortcode
  * @param index index of element in array for stagger

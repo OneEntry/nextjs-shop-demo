@@ -7,7 +7,6 @@ import type { ReactNode } from 'react';
 import { ToastContainer } from 'react-toastify';
 
 import { AuthProvider } from '@/app/store/providers/AuthContext';
-import { ContentContextProvider } from '@/app/store/providers/ContentContext';
 import { OpenDrawerProvider } from '@/app/store/providers/OpenDrawerContext';
 import { useServerProvider } from '@/app/store/providers/ServerProvider';
 import StoreProvider from '@/app/store/providers/StoreProvider';
@@ -31,7 +30,11 @@ const lato = Lato({
   weight: ['300', '400', '700', '900'],
 });
 
-// Homepage metadata
+/**
+ * Homepage static metadata
+ * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata Next.js docs}
+ * @param params page params
+ */
 export const metadata: Metadata = {
   title: 'OneEntry Shop',
   description: 'OneEntry next-js shop',
@@ -42,9 +45,10 @@ export const metadata: Metadata = {
 
 /**
  * Root layout
- * @param params
- *
- * @returns Root layout
+ * @async server component
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/layout Next.js docs}
+ * @param params page params
+ * @returns Root layout JSX.Element
  */
 export default async function RootLayout({
   children,
@@ -67,19 +71,17 @@ export default async function RootLayout({
       <body className={lato.className + ' flex flex-col min-h-screen'}>
         <StoreProvider>
           <AuthProvider langCode={langCode}>
-            <ContentContextProvider dict={dict}>
-              <OpenDrawerProvider>
-                <Header />
-                <NavigationMenu />
-                <Breadcrumbs />
-                <div className="grow p-5 pb-8 transition-transform duration-500">
-                  <TransitionProvider>{children}</TransitionProvider>
-                </div>
-                <Footer />
-                <BottomMenu />
-                <Modal lang={lang} dict={dict} />
-              </OpenDrawerProvider>
-            </ContentContextProvider>
+            <OpenDrawerProvider>
+              <Header />
+              <NavigationMenu />
+              <Breadcrumbs />
+              <div className="grow p-5 pb-8 transition-transform duration-500">
+                <TransitionProvider>{children}</TransitionProvider>
+              </div>
+              <Footer />
+              <BottomMenu />
+              <Modal lang={lang} dict={dict} />
+            </OpenDrawerProvider>
           </AuthProvider>
         </StoreProvider>
         <RegisterGSAP />
