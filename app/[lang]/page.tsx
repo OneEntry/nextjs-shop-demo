@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import type { FC } from 'react';
 import { Suspense } from 'react';
 
@@ -11,8 +12,9 @@ import BlocksGridLoader from '@/components/layout/blocks-grid/components/BlocksG
 /**
  * Home(index) page
  * @async server component
- * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
  * @param params page params
+ * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
+ * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
  * @returns page layout JSX.Element
  */
 const IndexPageLayout: FC<{
@@ -22,7 +24,7 @@ const IndexPageLayout: FC<{
   const { page, isError } = await getPageByUrl('home_web', lang);
 
   if (isError) {
-    return;
+    return notFound();
   }
 
   if (!page || !page.blocks) {
