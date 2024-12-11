@@ -35,7 +35,7 @@ export async function generateMetadata({
 
   return {
     title: product?.localizeInfos.title,
-    description: product.attributeValues.description?.value?.plainValue,
+    description: product?.attributeValues.description?.value[0]?.plainValue,
     robots: {
       index: indexable,
       follow: indexable,
@@ -91,7 +91,7 @@ const ProductPageLayout: FC<PageProps> = async ({
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: localizeInfos.title,
-    description: attributeValues.description?.value,
+    description: attributeValues.description?.value[0]?.plainValue,
     image: attributeValues.pic?.value?.downloadLink,
     offers: {
       '@type': 'AggregateOffer',
