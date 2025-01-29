@@ -17,8 +17,8 @@ import { typeError } from '@/components/utils';
  */
 export const getProductsByPageUrl = async (props: {
   lang: string;
-  limit: number;
   offset: number;
+  limit: number;
   params: {
     handle: string;
     searchParams?: {

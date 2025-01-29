@@ -67,7 +67,7 @@ export default async function RootLayout({
   const [dict] = useServerProvider('dict', await getDictionary(lang as Locale));
 
   return (
-    <html lang={langCode}>
+    <html lang={lang}>
       <body className={lato.className + ' flex flex-col min-h-screen'}>
         <StoreProvider>
           <AuthProvider langCode={langCode}>

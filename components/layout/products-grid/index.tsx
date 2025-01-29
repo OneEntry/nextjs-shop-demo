@@ -50,14 +50,14 @@ const ProductsGridLayout: FC<GridLayoutProps> = async ({
   const { isError, products, total } = !isCategory
     ? await getProducts({
         lang: lang,
-        limit: limit,
         offset: 0,
+        limit: limit,
         params: combinedParams,
       })
     : await getProductsByPageUrl({
         lang: lang,
-        limit: limit,
         offset: 0,
+        limit: limit,
         params: combinedParams,
       });
 
