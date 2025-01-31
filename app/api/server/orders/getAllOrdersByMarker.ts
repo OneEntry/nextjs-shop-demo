@@ -17,8 +17,8 @@ interface HandleProps {
  * @description This method requires user authorization. For more information about configuring the authorization module, see the documentation in the configuration settings section of the SDK.
  * @param marker The text identifier of the order storage object
  * @param lang Current language shortcode
- * @param limit Limit parameter. Default 30
  * @param offset Offset parameter. Default 0
+ * @param limit Limit parameter. Default 30
  * @see {@link https://doc.oneentry.cloud/docs/orders OneEntry CMS docs}
  * @see {@link https://oneentry.cloud/instructions/npm OneEntry SDK docs}
  *
