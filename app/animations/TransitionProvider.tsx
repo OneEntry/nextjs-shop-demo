@@ -36,7 +36,6 @@ export default function TransitionProvider({
           .to(ref.current, {
             height: (ref.current as HTMLDivElement).clientHeight,
             duration: 0.85,
-            autoAlpha: 0,
             delay: -0.5,
           })
           .call(next, undefined, 0.75);
@@ -56,7 +55,6 @@ export default function TransitionProvider({
           })
           .to(ref.current, {
             height: 'auto',
-            autoAlpha: 1,
             duration: 0.5,
           })
           .call(next, undefined, 0.5);
