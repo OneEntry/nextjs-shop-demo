@@ -1,208 +1,178 @@
-<p align="center">
-    <img alt="React Native Template OneEntry" src="https://doc.oneentry.cloud/img/logo.svg" width="180" />
-</p>
+<img src="https://oneentry.cloud/img/git/oneenrty_light.png" alt="OneEntry Headless CMS" width="200">
 
-<h1 align="center">
-  OneEntry: Shopping online on React native
-</h1>
+# OneEntry next.js shop example
 
-![expo](https://img.shields.io/badge/%20expo-%20~52.0.35-blue) ![OneEntry](https://img.shields.io/badge/%20oneentry-%201.0.114-blue)
+[App Promo Page](https://oneentry-free-template-e-commerce-nextjs.vercel.app 'DEMO')
 
-## Table of Contents
+# OneEntry Headless CMS E-commerce Template
 
-1. [Project Overview](#project-overview)
-2. [Features](#features)
-3. [Architecture](#architecture)
-4. [Configuration](#configuration)
-5. [Error handling](#error-handling)
-6. [Detailed docs](#detailed-docs)
----
-## Project overview
+This project is a demo version of an e-commerce store, fully integrated with OneEntry Headless CMS. The primary goal of this project is to provide developers with a free, ready-to-use front-end template that demonstrates the capabilities of working with OneEntry.
 
-This mobile application📱 showcases the capabilities of the [OneEntry CMS][oneentry] with [React Native][rn]. 
-All app data is sourced from OneEntry. You can customize it to meet your requirements by modifying in the CMS. 
-In this application, you will find the use of all the functional features of OneEntry, fully available on both Android and iOS.
+## Project Goals
 
-This app provides a fully immersive shopping experience with all essential e-commerce features. Start by registering for an account, and dive into a comprehensive, flexible catalog of products complete with powerful search options, extensive filtering, and organizational tools. Users can add products to their favorites and cart, with state managed on the server to support consistency across sessions.
+1. **Showcase OneEntry’s Capabilities**: This e-commerce template gives users a clear example of how OneEntry Headless CMS can be used to manage content and products on an online store.
 
-| Home                                        | Catalog                                           | Order                                       | Profile                                    | Menu                                 |
-|---------------------------------------------|---------------------------------------------------|---------------------------------------------|--------------------------------------------|--------------------------------------|
-| ![Home screen](assets/screenshots/home.png) | ![Catalog screen](assets/screenshots/catalog.png) | ![Order page](assets/screenshots/order.png) | ![Profile](assets/screenshots/profile.png) | ![Menu](assets/screenshots/menu.png) |
+2. **Simplify Development for Front-End Developers**: This project serves as a foundation that developers can use to quickly set up an e-commerce store. They can use the code as-is or customize it, adapting the design and adding their own features, which significantly reduces development time.
+
+3. **Ready-to-Use Solution for Quick Start**: This e-commerce template isn’t just an example—it’s a fully functional codebase that’s already integrated with OneEntry Headless CMS, ready to be tailored to fit specific project needs.
+
+## Key Features
+
+-   **Full Control via Admin Panel**: Every element of the store—from product cards to category pages—is customizable and manageable through an intuitive admin panel. This setup allows for quick content updates and store adjustments without needing code changes.
+
+-   **Flexible Content Management**: All content, including product descriptions, images, pricing, and promotions, is managed entirely through the OneEntry admin panel. This makes it easy to keep the store up-to-date, working exclusively through the admin interface.
+
+-   **Quick Start & Easy Adaptation**: Developers can hit the ground running with this ready-made template and customize it as needed to meet specific business or branding requirements.
+
+-   **Scalability Support**: With OneEntry Headless CMS, this store can easily scale, handling high traffic and growing data volumes, making it suitable for both small projects and larger stores.
+
+## Usage
+
+This project is designed for developers using OneEntry Headless CMS who need a quick and flexible way to launch an e-commerce store. It serves as a starting point for creating a custom online store with minimal time and effort on front-end development.
+
+## Demo
+
+[https://oneentry-nextjs-shop-demo.vercel.app](https://oneentry-nextjs-shop-demo.vercel.app 'DEMO')
 
 ## Features
 
-All interactions with the OneEntry CMS in this application are powered by the [OneEntry SDK for JavaScript][oneentry-sdk], ensuring seamless integration and efficient data handling. Additionally, most of the app's content is editable directly through the CMS.
+-   **User creation:** Register users via different providers (email, phone) and customize which data to store.
+-   **User Activation:** Activate users via code, such as through email verification.
+-   **State Management:** Utilize Redux Toolkit and Server state for effective state management.
+-   **Efficient Store Catalog:** Easily manage an unlimited number of products in the catalog.
+-   **Dynamic Catalog Updates:** Reload the catalog, with direct editing capabilities in the CMS.
+-   **Advanced Filtering:** Apply a variety of filters to the product catalog for better organization and search.
+-   **Editable Block Content:** Support for user-editable block content.
+-   **Product Recommendations:** Display various selections of products.
+-   **Feedback Forms:** Include customizable feedback forms with captcha protection to prevent spam.
+-   **Order Creation and Purchases:** Complete transactions using [Stripe] for secure, seamless payments.
+-   **Order History:** View past purchases and maintain a record of all transactions.
+-   **Event Notifications:** Leverage events to notify users of updates, offers, or important news in real-time.
+-   **TypeScript Integration:** The project is beginner-friendly and uses lightweight TypeScript for development.
+-   **Tailwind:** User-friendly layout comprehensible to everyone.
+-   **JsDoc:** BuiltIn VsCode jsDoc documentation.
 
-This application is built using the [Expo framework][expo], allowing for streamlined development across both iOS and Android platforms. For optimal functionality, the app is configured to work with **Expo Prebuild**. The layout leverages Tailwind CSS (via [NativeWind][nativewind]). Push notifications built in for both platform and can be sent and customized directly from the OneEntry CMS and FCM.
+## Documentation
 
-- 📝 **User creation:** Register users via different providers (email, phone) and customize which data to store.
-- ✅ **User Activation:** Activate users via code, such as through email verification code.
-- 🔄 **State Management:** Utilize Redux Toolkit for effective state management.
-- 🛒 **Efficient Shop Catalog:** Easily manage an unlimited number of products in the catalog.
-- 🔍 **Advanced Filtering:** Apply a variety of filters to the product catalog for better organization and search.
-- 💡 **Product Recommendations:** Display various selections of products.
-- 🖼️ **Block Content:** Using entities of the "Block" type from CMS.
-- 📋 **Feedback Forms:** Include customizable feedback forms with captcha protection to prevent spam.
-- 💳 **Order Creation and Purchases:** Complete transactions using [Stripe][stripe] for secure, seamless payments.
-- 📜 **Order History:** View past purchases and maintain a record of all transactions.
-- 📬 **Event Notifications:** Allow users to subscribe to events via email, push notifications, and WebSocket.
-- 🚀 **TypeScript Integration:** The project is beginner-friendly and uses lightweight TypeScript for development.
-- 🎨 **Tailwind:** User-friendly layout comprehensible to everyone.
+This is a [Next.js](https://nextjs.org/) project.
 
-## Architecture
+[Ready-to-use backend and Admin panel](https://doc.oneentry.cloud/ 'Documentations OneEntry Headless CMS')
 
-| File(s)                                              | Description                                           |
-|------------------------------------------------------|-------------------------------------------------------|
-| `.env`                                               | OneEntry CMS project configuration                    |
-| `/src/defineApi`                                           | API methods and hooks definition                      |
-| `/src/components`                                    | Components used **directly on pages**                 |
-| &nbsp;&nbsp;├─ `/auth`                               | Components for **auth pages** (login, registration)   |
-| &nbsp;&nbsp;├─ `/content`                            | Components for **content pages** (order creation, etc.) |
-| &nbsp;&nbsp;│&nbsp;&nbsp;└─ `PrepareOrderScreen`     | Components for the order preparation screen           |
-| &nbsp;&nbsp;├─ `/shared`                             | Reusable components used across **multiple pages**    |
-| &nbsp;&nbsp;└─ `/ui`                                 | Generic UI elements (buttons, modals, inputs, etc.)   |
-| `/src/hooks`                                         | Custom hooks                                          |
-| &nbsp;&nbsp;├─ `/auth`                               | Hooks for authentication logic                        |
-| &nbsp;&nbsp;├─ `/content`                            | Hooks for content manipulation                        |
-| &nbsp;&nbsp;│&nbsp;&nbsp;└─ `PrepareOrderScreen`     | Hooks for order preparation logic                     |
-| &nbsp;&nbsp;└─ `/shared`                             | Universal hooks used across the app                   |
-| `/src/pages`                                         | Application screens                                   |
-| &nbsp;&nbsp;├─ `/auth`                               | Authentication screens (login, registration, etc.)    |
-| &nbsp;&nbsp;├─ `/content`                            | Content display/editing screens                       |
-| &nbsp;&nbsp;│&nbsp;&nbsp;└─ `PrepareOrderScreen.tsx` | Example page                                          |
-| &nbsp;&nbsp;└─ `/shared`                             | Shared page components (headers, footers, layouts)    |
-| `/src/navigation`                                    | React Navigation configuration                        |
-| `/src/state`                                         | Redux Toolkit slices and core reducers                |
-| `/src/types`                                         | TypeScript types                                      |
-| `/src/utils`                                         | Helper functions/constants                            |
+[NPM SDK](https://oneentry.cloud/instructions/npm 'NPM SDK OneEntry Headless CMS')
 
-### Key Principles
+## Environment Variables
 
-#### **Separation of Concerns**
-- **Auth-related** and **content-related** logic/components are strictly separated to avoid ambiguity.
-- **Pages** (`/src/pages`) act as layout containers with minimal logic, delegating functionality to components.
+To run this project, you will need to add the following environment variables to your .env file.
 
-#### **Component-Driven Design**
-- Components are nested under domain-specific folders (e.g., `components/content/PrepareOrderScreen`).
-- **Example**:
-- PrepareOrderScreen → components/content/PrepareOrderScreen/ItemsInOrderList
+`1. Rename .env_example to .env`
 
-#### **Hook Organization**
-- **Feature-specific hooks** (e.g., `usePrepareOrderData`) are colocated with their components:
-- hooks/content/PrepareOrderScreen/usePrepareOrderData
-- **Shared hooks** (universal logic) live in `hooks/shared/`.
+`2. Add the following environment variables`
 
-#### **Shared Resources**
-- Reusable components/hooks are isolated in `/shared` folders (e.g., `components/shared/Rating`).
+    `NEXT_PUBLIC_PROJECT_URL: https://xxx-xxx-xxx.oneentry.cloud`
 
-## Configuration
+    `NEXT_PUBLIC_APP_TOKEN: xxxxxGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....`
 
-### Step 1. Set up the project
+## Run Locally
 
-Open the `.env` file and fill the variables with your project data
-
-Configure push notifications. Add `google-services.json` and `GoogleService-Info.plist` files to project root. Detailed instruction for Push Notifications setup you can see in our [Documentation][doc-push].
-
-Configure `app.json`.
-
-### Step 2. Install dependencies
-
-Install project dependencies using **yarn**.
+Clone the project
 
 ```bash
-yarn install
+  git clone git@github.com:OneEntry/nextjs-shop-demo.git
 ```
 
-To verify your project is set up correctly, use the following Expo command:
+Go to the project directory
 
 ```bash
-npx expo-doctor
+  cd nextjs-shop-demo
 ```
 
-This will identify any configuration issues and ensure your environment is properly configured for development.
-
-To run the app with Expo Prebuild, use the following commands:
-
-> **Note**: This app requires native dependencies and will not work with Expo Go.
-
-**Android:**
+Install dependencies
 
 ```bash
-npx expo run:android
+  npm install
 ```
 
-**iOS:**
+Start the dev server
 
 ```bash
-npx expo run:ios
+  next dev
 ```
 
-Running the app with Expo Prebuild will create dedicated android and ios folders in your project for native code.
-
-If you prefer to avoid managing native code, consider using [Expo Application Services (EAS)][eas], which allows for custom builds without needing direct access to these native folders.
-
-After completing all these steps, your app should run correctly. If you encounter any issues, we've created a guide to help you troubleshoot common errors.
-
-## Error handling
-
-First, try running doctor with the following command to check for any issues:
+Build app
 
 ```bash
-npx expo-doctor
+  next build
 ```
 
-If you encounter **errors with Firebase** during an Android build, try updating the `<meta-data>` tags in your [AndroidManifest.xml](./android/app/src/main/AndroidManifest.xml) as follows:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-Replace:
+````
+
+## Installation
+
+Install oneentry-next-shop with npm
 
 ```bash
-<meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="default"/>
-<meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/notification_icon_color"/>
-<meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/notification_icon"/>
-```
 
-with:
+  cd nextjs-shop-demo
+
+  npm install
+
+  next dev
+````
+
+## i18n config
+
+  Open i18n-config.ts
+  Set your languages codes ​​accordingly with example
+
+## Deployment
+
+To deploy this project run
 
 ```bash
-<meta-data tools:replace="android:value" android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="default"/>
-<meta-data tools:replace="android:resource" android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/notification_icon_color"/>
-<meta-data tools:replace="android:resource" android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/notification_icon"/>
+  npm run deploy
 ```
 
-For iOS, ensure you are using the latest version of Xcode and iOS.
+## Project Structure:
+`app`: Contains the main components of the application, organized by functionality (e.g., cart, favorites, orders, shop).
+`api`: Houses API endpoints and related files, ensuring a clean separation of concerns.
+`store`: Manages the Redux store, including hooks, providers, and reducers.
+`styles`: Contains CSS files, organized by functionality.
+`types`: Includes TypeScript type definitions.
+`components`: Features reusable components like forms, icons, and layout elements.
 
-## Detailed docs!
 
-This is the central hub for all documentation. Below are links to specific sections.
+## Development Tools:
+Scripts: Use npm run dev to start development, npm run build to compile the project, and npm run start to run the production build. The npm run lint script helps maintain code quality.
+Environment Variables: Make sure to set up your .env file with the necessary environment variables to run the project smoothly.
+Internationalization: The project supports multiple languages, configured in i18n-config.ts.
 
-#### Authorization
-- [Authorization Documentation](./documentations/Authorization.md)
-- Covers login, sign-up, token management, and account activation.
+### Important files and folders
 
-#### Orders
-- [Orders Documentation](./documentations/OrderFlow.md)
-- Details order creation, tracking, and transaction handling.
+| File(s) / Folder(s)             | Description                                |
+| ------------------------------- | ------------------------------------------ |
+| `.env`                          | OneEntry CMS project configuration         |
+| `i18n-config.ts`                | i18n config                                |
+|                                 |                                            |
+| `@/app`                         | Next.js app entry points                   |
+| `@/app/[lang]/layout.tsx`       | Main layout                                |
+| `@/app/[lang]/dictionaries.tsx` | Dictionaries for translations              |
+| `@/app/animations`              | Gsap animations transition providers       |
+| `@/app/api`                     | API, methods and hooks definition          |
+| `@/app/store`                   | Redux-Toolkit management and core reducers |
+| `@/app/store/providers`         | React contexts and providers               |
+| `@/app/types`                   | Types for TypeScript                       |
+|                                 |                                            |
+| `@/components`                  | All app components                         |
+| `@/components/forms`            | All app forms                              |
+| `@/components/icons`            | Svg icons with additional props            |
+| `@/components/layout`           | All app layouts                            |
+| `@/components/pages`            | Simple app pages                           |
+| `@/components/shared`           | Shared between layouts components          |
+|                                 |                                            |
+| `/public`                       | Public content folder                      |
 
-#### Events
-- [Events Documentation](./documentations/Events.md)
-- Explains real-time updates and event triggers.
+## License
 
-#### State
-- [State Documentation](./documentations/UserState.md)
-- Describes user state management and synchronization.
-
----
-
-In case of any issues or questions, you can post:
-[GitHub discussion for React Native][discussion]
-
-[oneentry]: https://oneentry.cloud/
-[rn]: https://reactnative.dev
-[oneentry-sdk]: https://www.npmjs.com/package/oneentry
-[discussion]: https://oneentry.cloud/
-[expo]: https://expo.dev/
-[nativewind]: https://www.nativewind.dev/
-[stripe]: https://stripe.com/
-[eas]: https://expo.dev/eas
-[doc]: https://doc.oneentry.cloud/
-[doc-push]: https://doc.oneentry.cloud/docs/events/introduction
+[MIT](https://choosealicense.com/licenses/mit/)
