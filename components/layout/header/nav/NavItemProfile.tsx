@@ -10,7 +10,7 @@ import { useContext } from 'react';
 
 import { AuthContext } from '@/app/store/providers/AuthContext';
 import { OpenDrawerContext } from '@/app/store/providers/OpenDrawerContext';
-import ProfileIcon from '@/components/icons/profile';
+import ProfileAltIcon from '@/components/icons/profile';
 
 import UserProfileMenu from './user-menu/UserProfileMenu';
 
@@ -38,18 +38,18 @@ const NavItemProfile: FC<NavItemProfileProps> = ({ item, lang, userMenu }) => {
         setComponent('SignInForm');
       }}
       title={item.localizeInfos.menuTitle}
-      className="group relative box-border flex size-6 shrink-0"
+      className="group relative box-border flex size-8 shrink-0 max-sm:size-6"
     >
-      <ProfileIcon />
+      <ProfileAltIcon />
     </button>
   ) : !userMenu ? (
     <Link
       prefetch={true}
       href={'/' + lang + '/profile'}
       title={item.localizeInfos.menuTitle}
-      className="group relative box-border flex size-6 shrink-0"
+      className="group relative box-border flex size-8 shrink-0 max-sm:size-6"
     >
-      <ProfileIcon />
+      <ProfileAltIcon />
     </Link>
   ) : (
     <UserProfileMenu

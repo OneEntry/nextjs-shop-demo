@@ -32,11 +32,11 @@ const NavGroup: FC<{
   }
 
   return (
-    <div className="fade-in my-auto flex items-center gap-10 max-md:max-w-full max-md:gap-4 max-sm:gap-2">
+    <div className="fade-in my-auto flex items-center gap-5 max-md:max-w-full max-md:gap-4 max-sm:gap-2">
       {menu && Array.isArray(menu.pages) ? (
         menu.pages.map((item: IMenusPages, i: Key) => {
           return (
-            <div className="flex size-6 max-xs:hidden" key={i}>
+            <div className="flex size-8 max-sm:size-6 max-xs:hidden" key={i}>
               {item.pageUrl === 'profile' && (
                 <NavItemProfile
                   item={item}

@@ -90,6 +90,7 @@ const ColorFilter: FC<ColorFilterProps> = ({ title, attributes }) => {
               key={index}
               code={color.code}
               name={color.name}
+              activeColor={activeColor}
               setActiveColor={setActiveColor}
             />
           );
