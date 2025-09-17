@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@reference "./styles/main.css";
 
 /* @import'./styles/components.scss'; */
 
@@ -88,7 +87,18 @@ input:focus-visible {
   @apply: bg-orange-500;
   background-color: #f97316;
 }
-
+.text-2xl {
+  font-size: 1.5rem /* 24px */;
+  line-height: 2rem /* 32px */;
+}
+.text-xl {
+  font-size: 1.25rem /* 20px */;
+  line-height: 1.75rem /* 28px */;
+}
+.text-lg {
+  font-size: 1.125rem /* 18px */;
+  line-height: 1.75rem /* 28px */;
+}
 /* components */
 @layer components {
   h1, .h1 {
@@ -118,6 +128,7 @@ input:focus-visible {
       max-w-full
       text-center
       whitespace-nowrap
+      cursor-pointer
       rounded-[30px];
   }
 
@@ -227,7 +238,7 @@ input:focus-visible {
 
   .animate-loader {
     @apply 
-      animate-gradient 
+      /* animate-gradient  */
       bg-gradient-to-r 
       from-slate-50 
       via-slate-100 
@@ -243,7 +254,7 @@ input:focus-visible {
       flex-col 
       items-center 
       rounded-[20px] 
-      bg-[#F6F7F9] 
+      bg-slate-50 
       p-4 
       transition-shadow 
       duration-500

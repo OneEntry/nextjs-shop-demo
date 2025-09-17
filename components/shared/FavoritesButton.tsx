@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
@@ -17,9 +18,8 @@ import {
   removeFavorites,
   selectIsFavorites,
 } from '@/app/store/reducers/FavoritesSlice';
-
-import HeartIcon from '../icons/heart';
-import HeartOpenIcon from '../icons/heart-o';
+import HeartIcon from '@/components/icons/heart';
+import HeartOpenIcon from '@/components/icons/heart-o';
 
 /**
  * Favorites button
@@ -31,7 +31,9 @@ const FavoritesButton: FC<IProductsEntity> = (product) => {
   const dispatch = useAppDispatch();
   const { user, isAuth } = useContext(AuthContext);
   const { id } = product;
-  const isFavorites = useAppSelector((state) => selectIsFavorites(state, id));
+  const isFavorites = useAppSelector((state) =>
+    selectIsFavorites(state as any, id),
+  );
 
   /**
    * Update favorites
@@ -67,7 +69,6 @@ const FavoritesButton: FC<IProductsEntity> = (product) => {
           'Product ' + product.localizeInfos.title + ' removed from Favorites!',
         );
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       toast('Auth error! ' + e?.message);
     }
@@ -85,7 +86,7 @@ const FavoritesButton: FC<IProductsEntity> = (product) => {
   return (
     <button
       type="button"
-      className="group relative ml-auto box-border flex size-[26px] shrink-0 flex-col items-center justify-center"
+      className="group cursor-pointer relative ml-auto box-border flex size-[26px] shrink-0 flex-col items-center justify-center"
       onClick={() => {
         if (user && isAuth && (user as IUserEntity).id) {
           onUpdateUserFavoritesHandle();
