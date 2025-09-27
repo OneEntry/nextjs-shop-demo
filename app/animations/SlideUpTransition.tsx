@@ -47,9 +47,13 @@ const SlideUpTransition = ({
       delay: index / 10,
     });
 
+    if (stage === 'none' && prevStage === '') {
+      tl.play();
+    }
     if (stage === 'none' && prevStage === 'entering') {
       tl.play();
-    } else if (stage === 'leaving' && prevStage === 'none') {
+    }
+    if (stage === 'leaving' && prevStage === 'none') {
       tl.reverse(1);
     }
 

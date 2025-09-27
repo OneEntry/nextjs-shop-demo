@@ -5,70 +5,15 @@ import type { FC } from 'react';
 
 import { getPageByUrl } from '@/app/api';
 import { getChildPagesByParentUrl } from '@/app/api';
+import { getImageUrl } from '@/app/api/hooks/useAttributesData';
 import type { PageProps } from '@/app/types/global';
+import { generatePageMetadata } from '@/app/utils/generatePageMetadata';
 import CategoriesGrid from '@/components/layout/categories';
-
-/**
- * Generate page metadata
- * @async server component
- * @param params page params
- * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
- * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
- * @returns metadata
- */
-export async function generateMetadata({
-  params,
-}: {
-  params: { handle: string; lang: string };
-}): Promise<Metadata> {
-  const { lang } = await params;
-  const { isError, page } = await getPageByUrl('category', lang);
-
-  if (isError || !page) {
-    return notFound();
-  }
-  const { localizeInfos, isVisible, attributeValues } = page;
-
-  const {
-    url,
-    width,
-    height,
-    altText: alt,
-  } = {
-    url: attributeValues.icon?.downloadLink,
-    width: 300,
-    height: 300,
-    altText: localizeInfos.title,
-  };
-
-  return {
-    title: localizeInfos.title,
-    description: localizeInfos.plainContent,
-    robots: {
-      index: isVisible,
-      follow: isVisible,
-      googleBot: {
-        index: isVisible,
-        follow: isVisible,
-      },
-    },
-    openGraph: url
-      ? {
-          images: [
-            {
-              url,
-              width,
-              height,
-              alt,
-            },
-          ],
-        }
-      : null,
-  };
-}
+import { i18n } from '@/i18n-config';
 
 /**
  * Category page
+ *
  * @async server component
  * @param params page params
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
@@ -85,21 +30,101 @@ const CategoryPage: FC<PageProps> = async ({ params }) => {
   }
 
   // extract categories data from pages
-  const categories = pages.map((page: IPagesEntity) => {
+  const categories = pages?.map((page: IPagesEntity) => {
     return {
       title: page.localizeInfos.title,
       link: '/' + lang + '/shop/category/' + page.pageUrl,
-      imgSrc: page.attributeValues.opengraph_image?.value[0]?.downloadLink,
+      imgSrc: getImageUrl('opengraph_image', page.attributeValues),
     };
   });
 
+  // Breadcrumb structured data
+  const breadcrumbStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/${lang}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Categories',
+        item: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/${lang}/shop/category`,
+      },
+    ],
+  };
+
   return (
-    <section className="relative mx-auto box-border flex w-full max-w-(--breakpoint-xl) shrink-0 grow flex-col self-stretch">
-      <div className="flex w-full flex-col items-center gap-5 bg-white">
-        <CategoriesGrid categories={categories} />
-      </div>
-    </section>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbStructuredData),
+        }}
+      />
+      <main className="relative mx-auto box-border flex w-full max-w-(--breakpoint-xl) shrink-0 grow flex-col self-stretch">
+        <div className="flex w-full flex-col items-center gap-5 bg-white">
+          <CategoriesGrid categories={categories} />
+        </div>
+      </main>
+    </>
   );
 };
 
 export default CategoryPage;
+
+/**
+ * Pre-generation of category pages for each locale
+ */
+export async function generateStaticParams() {
+  const params: Array<{ lang: string; handle: string }> = [];
+  for (const lang of i18n.locales) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { page }: any = await getPageByUrl('category', lang);
+    if (page) {
+      const handle =
+        'pageUrl' in page ? (page as { pageUrl: string }).pageUrl : '';
+
+      params.push({ lang, handle });
+    }
+  }
+  return params;
+}
+
+/**
+ * Generate page metadata
+ * @async server component
+ * @param params page params
+ * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
+ * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
+ * @returns metadata
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ handle: string; lang: string }>;
+}): Promise<Metadata> {
+  const { handle, lang } = await params;
+  const { isError, page } = await getPageByUrl('category', lang);
+
+  if (isError || !page) {
+    return notFound();
+  }
+  const { localizeInfos, isVisible, attributeValues } = page;
+
+  // Return metadata object
+  return generatePageMetadata({
+    handle: handle,
+    title: localizeInfos.title,
+    description: localizeInfos.plainContent,
+    isVisible: isVisible,
+    imageUrl: getImageUrl('opengraph_image', attributeValues),
+    imageAlt: localizeInfos.title,
+    lang: lang,
+    baseUrl: '',
+  });
+}

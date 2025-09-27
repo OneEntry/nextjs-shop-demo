@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { UsePrice } from '@/components/utils';
+import { UsePrice } from '@/components/utils/utils';
 
 interface PriceDisplayProps {
-  attributes: {
+  attributeValues: {
     sale?: { value: number };
     price?: { value: number };
   };
@@ -14,13 +14,12 @@ interface PriceDisplayProps {
 /**
  * Price display
  *
- * @param attributes
+ * @param attributeValues Product attributes
  * @param lang Current language shortcode
- *
  * @returns Price display with current/old prices
  */
 const PriceDisplay: FC<PriceDisplayProps> = ({
-  attributes: { sale, price },
+  attributeValues: { sale, price },
   lang,
 }) => {
   const currentPrice = sale?.value || 0;

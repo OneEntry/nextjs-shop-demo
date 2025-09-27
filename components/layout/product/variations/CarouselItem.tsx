@@ -31,26 +31,20 @@ const CarouselItem: FC<VariationProps> = ({
   currentIndex,
   setCurrentIndex,
 }) => {
-  const isActive = index === currentIndex;
-
-  const onSelectHandle = () => {
-    setCurrentIndex(index);
-  };
-
   return (
     <button
-      onClick={onSelectHandle}
+      onClick={() => setCurrentIndex(index)}
       className={
-        'relative rounded-lg box-border flex w-[100px] min-h-[130px] shrink-0 flex-col ' +
+        'relative border border-solid rounded-lg box-border flex w-[100px] min-h-[130px] shrink-0 flex-col duration-500 ease-in-out ' +
         clsx(
-          isActive
-            ? 'border border-solid border-slate-50 text-slate-700'
-            : 'border border-solid border-transparent text-slate-300',
+          index === currentIndex
+            ? 'border-slate-50 text-slate-700'
+            : 'border-transparent text-slate-300',
         )
       }
     >
       <div className="flex w-full flex-col gap-1 overflow-hidden pb-1 text-center text-sm">
-        <div className="flex h-[80px] w-full items-center">
+        <div className="flex h-[80px] w-full justify-center cursor-pointer">
           <CarouselItemImage lang={lang} item={item} />
         </div>
         <h3 className="w-full text-center text-xs leading-4">
