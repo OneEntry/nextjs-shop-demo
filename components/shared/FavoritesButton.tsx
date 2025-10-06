@@ -3,7 +3,7 @@
 
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
 import type { IUserEntity } from 'oneentry/dist/users/usersInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { memo, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -22,62 +22,73 @@ import HeartIcon from '@/components/icons/heart';
 import HeartOpenIcon from '@/components/icons/heart-o';
 
 /**
- * Favorites button
- * @param product product entity object.
- * @returns Favorites button
+ * Favorites button.
+ * @param props         - Favorites button properties.
+ * @param props.product - product entity object.
+ * @returns             Favorites button.
  */
-const FavoritesButton: FC<IProductsEntity> = memo((product) => {
+const FavoritesButton = memo((product: IProductsEntity): JSX.Element => {
   const [isFav, setIsFav] = useState(false);
   const dispatch = useAppDispatch();
   const { user, isAuth } = useContext(AuthContext);
-  const { id } = product;
+  const { id, localizeInfos } = product;
   const isFavorites = useAppSelector((state) =>
     selectIsFavorites(state as any, id),
   );
 
   /**
-   * Update favorites
+   * Update favorites state and display notification.
+   *
+   * This function toggles the favorite status of a product:
+   * - If the product is currently marked as favorite, it removes it from favorites
+   * - If the product is not currently marked as favorite, it adds it to favorites
+   *
+   * It also displays a toast notification confirming the action performed.
+   *
+   * Dependencies:
+   * - isFav: Current favorite status of the product
+   * - dispatch: Redux dispatch function to trigger add/remove favorite actions
+   * - id: Product identifier
+   * - localizeInfos?.title: Product title for the notification message
    */
   const onUpdateFavoritesHandle = useCallback(() => {
     if (isFav) {
-      dispatch(removeFavorites(product.id));
-      toast(
-        'Product ' + product.localizeInfos.title + ' removed from Favorites!',
-      );
+      dispatch(removeFavorites(id));
+      toast('Product ' + localizeInfos?.title + ' removed from Favorites!');
     } else {
-      dispatch(addFavorites(product.id));
-      toast('Product ' + product.localizeInfos.title + ' added to Favorites!');
+      dispatch(addFavorites(id));
+      toast('Product ' + localizeInfos?.title + ' added to Favorites!');
     }
-  }, [isFav, dispatch, product.id, product.localizeInfos.title]);
+  }, [isFav, dispatch, id, localizeInfos?.title]);
 
   /**
-   * Update user data favorites
-   * @async
+   * Update user data favorites.
    */
   const onUpdateUserFavoritesHandle = useCallback(async () => {
     try {
       if (!isFav) {
-        dispatch(addFavorites(product.id));
+        dispatch(addFavorites(id));
         if (user && isAuth) {
-          await onSubscribeEvents(product.id);
+          await onSubscribeEvents(id);
         }
 
-        toast('Product ' + product.localizeInfos.title + ' add to Favorites!');
+        toast('Product ' + localizeInfos?.title + ' add to Favorites!');
       } else {
-        dispatch(removeFavorites(product.id));
+        dispatch(removeFavorites(id));
         if (user && isAuth) {
-          await onUnsubscribeEvents(product.id);
+          await onUnsubscribeEvents(id);
         }
 
-        toast(
-          'Product ' + product.localizeInfos.title + ' removed from Favorites!',
-        );
+        toast('Product ' + localizeInfos?.title + ' removed from Favorites!');
       }
     } catch (e: any) {
       toast('Auth error! ' + e?.message);
     }
-  }, [isFav, user, isAuth, dispatch, product.id, product.localizeInfos.title]);
+  }, [isFav, user, isAuth, dispatch, id, localizeInfos?.title]);
 
+  /**
+   * Handle click.
+   */
   const handleClick = useCallback(() => {
     if (user && isAuth && (user as IUserEntity).id) {
       onUpdateUserFavoritesHandle();
@@ -86,13 +97,15 @@ const FavoritesButton: FC<IProductsEntity> = memo((product) => {
     }
   }, [user, isAuth, onUpdateUserFavoritesHandle, onUpdateFavoritesHandle]);
 
-  // set Favorites on data change
+  /**
+   * Set favorites on data change.
+   */
   useEffect(() => {
     setIsFav(isFavorites);
   }, [isFavorites]);
 
   if (!product) {
-    return;
+    return <></>;
   }
 
   return (

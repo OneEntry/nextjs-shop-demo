@@ -2,7 +2,7 @@
 
 import type { ISignUpData } from 'oneentry/dist/auth-provider/authProvidersInterfaces';
 import type { IAttributes } from 'oneentry/dist/base/utils';
-import type { FC, FormEvent, Key } from 'react';
+import type { FormEvent, JSX, Key } from 'react';
 import { useContext, useState } from 'react';
 
 import { useGetFormByMarkerQuery } from '@/app/api';
@@ -21,13 +21,13 @@ import FormInput from './inputs/FormInput';
 import SubmitButton from './inputs/FormSubmitButton';
 
 /**
- * SignUp form
- * @param lang Current language shortcode
- * @param dict dictionary from server api
- *
- * @returns SignUp form
+ * SignUp form.
+ * @param   {FormProps}        props      - Form properties.
+ * @param   {string}           props.lang - Current language shortcode.
+ * @param   {IAttributeValues} props.dict - dictionary from server api.
+ * @returns {JSX.Element}                 SignUp form component.
  */
-const SignUpForm: FC<FormProps> = ({ lang, dict }) => {
+const SignUpForm = ({ lang, dict }: FormProps): JSX.Element => {
   const [loading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
@@ -45,8 +45,12 @@ const SignUpForm: FC<FormProps> = ({ lang, dict }) => {
   // Get fields from formFieldsReducer
   const fields = useAppSelector((state) => state.formFieldsReducer.fields);
 
-  // signUp with API AuthProvider
-  const onSignUp = async (e: FormEvent<HTMLFormElement>) => {
+  /**
+   * SignUp form submit handler.
+   * @param   {FormEvent<HTMLFormElement>} e - Form event object.
+   * @returns {Promise<void>}                Promise that resolves when the form is submitted.
+   */
+  const onSignUp = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     // required form fields array
     const formFields = [
@@ -60,7 +64,7 @@ const SignUpForm: FC<FormProps> = ({ lang, dict }) => {
 
     // check if user can submit form
     const canSubmit = Object.keys(fields).reduce((isValid, field) => {
-      if (!isValid || !field) {
+      if (!isValid) {
         return false;
       }
       const fieldData = fields[field as keyof typeof fields];
@@ -170,7 +174,12 @@ const SignUpForm: FC<FormProps> = ({ lang, dict }) => {
           {data?.attributes.map((field: IAttributes, index: Key | number) => {
             if (field.marker !== 'email_notifications') {
               return (
-                <FormInput index={index as number} key={index} {...field} />
+                <FormInput
+                  index={index as number}
+                  key={index}
+                  {...field}
+                  value={field.value}
+                />
               );
             }
             return;

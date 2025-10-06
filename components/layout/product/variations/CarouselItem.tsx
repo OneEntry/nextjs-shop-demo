@@ -1,36 +1,33 @@
 import clsx from 'clsx';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { Dispatch, FC, SetStateAction } from 'react';
+import type { Dispatch, JSX, SetStateAction } from 'react';
 
 import CarouselItemImage from './CarouselItemImage';
 import CarouselItemTitle from './CarouselItemTitle';
 
-interface VariationProps {
-  index: number;
-  lang: string;
-  item: IProductsEntity;
-  currentIndex: number;
-  setCurrentIndex: Dispatch<SetStateAction<number>>;
-}
-
 /**
- * CarouselItem
- *
- * @param item product object
- * @param lang current language shortcode
- * @param index index of slide
- * @param currentIndex index of current slide
- * @param setCurrentIndex Set state action
- *
- * @returns Carousel card
+ * CarouselItem.
+ * @param   {object}                           props                 - Carousel item props.
+ * @param   {IProductsEntity}                  props.item            - product object.
+ * @param   {string}                           props.lang            - current language shortcode.
+ * @param   {number}                           props.index           - index of slide.
+ * @param   {number}                           props.currentIndex    - index of current slide.
+ * @param   {Dispatch<SetStateAction<number>>} props.setCurrentIndex - Set state action.
+ * @returns {JSX.Element}                                            CarouselItem component.
  */
-const CarouselItem: FC<VariationProps> = ({
+const CarouselItem = ({
   item,
   lang,
   index,
   currentIndex,
   setCurrentIndex,
-}) => {
+}: {
+  item: IProductsEntity;
+  lang: string;
+  index: number;
+  currentIndex: number;
+  setCurrentIndex: Dispatch<SetStateAction<number>>;
+}): JSX.Element => {
   return (
     <button
       onClick={() => setCurrentIndex(index)}

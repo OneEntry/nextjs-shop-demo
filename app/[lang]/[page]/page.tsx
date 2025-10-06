@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { getPageByUrl } from '@/app/api';
 import { ServerProvider } from '@/app/store/providers/ServerProvider';
@@ -13,29 +13,32 @@ import DeliveryPage from '@/components/pages/DeliveryPage';
 import PaymentCanceled from '@/components/pages/PaymentCanceled';
 import PaymentSuccess from '@/components/pages/PaymentSuccess';
 import ServicesPage from '@/components/pages/ServicesPage';
-import { i18n, type Locale } from '@/i18n-config';
+import type { Locale } from '@/i18n-config';
 
 import { getDictionary } from '../dictionaries';
 import WithSidebar from './WithSidebar';
 
 /**
- * Simple page
- *
- * @async server component
- * @param params page params
+ * Simple page layout
+ * @async
+ * @param   {object}                                  params        - Page parameters
+ * @param   {Promise<{ page: string; lang: string }>} params.params - The page and language parameters
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns page layout JSX.Element
+ * @returns {Promise<JSX.Element>}                                  page layout JSX.Element
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const PageLayout: FC<{ params: Promise<{ page: any; lang: any }> }> = async ({
+const PageLayout = async ({
   params,
-}) => {
+}: {
+  params: Promise<{ page: string; lang: string }>;
+}): Promise<JSX.Element> => {
+  // Extract page name and language from params
   const { page: p, lang } = await params;
-  // Get dictionary and set to server provider
+
+  // Get dictionary and set to server provider for internationalization
   const [dict] = ServerProvider('dict', await getDictionary(lang as Locale));
 
-  // Get page by current url
+  // Get page data by current url
   const { page, isError } = await getPageByUrl(p, lang);
 
   // if error return notFound
@@ -95,6 +98,7 @@ const PageLayout: FC<{ params: Promise<{ page: any; lang: any }> }> = async ({
     },
   ];
 
+  // Render the page component based on the page URL and template type
   return (
     <div className="mx-auto flex min-h-80 w-full max-w-(--breakpoint-xl) flex-col overflow-hidden">
       {Array.isArray(pages) ? (
@@ -119,40 +123,40 @@ const PageLayout: FC<{ params: Promise<{ page: any; lang: any }> }> = async ({
 
 export default PageLayout;
 
-/**
- * Pre-generation of pages for static export
- */
-export async function generateStaticParams() {
-  // array of pages components with additional settings for next router
-  const pages = [
-    'profile',
-    'payment',
-    'about_us',
-    'services',
-    'contact_us',
-    'payment_success',
-    'payment_canceled',
-    'book_online',
-    'delivery',
-  ];
+// /**
+//  * Pre-generation of pages for static export
+//  */
+// export async function generateStaticParams() {
+//   // array of pages components with additional settings for next router
+//   const pages = [
+//     'profile',
+//     'payment',
+//     'about_us',
+//     'services',
+//     'contact_us',
+//     'payment_success',
+//     'payment_canceled',
+//     'book_online',
+//     'delivery',
+//   ];
 
-  const params: Array<{ lang: string; page: string }> = [];
-  for (const page of pages) {
-    for (const lang of i18n.locales) {
-      params.push({ lang, page });
-    }
-  }
-  return params;
-}
+//   const params: Array<{ lang: string; page: string }> = [];
+//   for (const page of pages) {
+//     for (const lang of i18n.locales) {
+//       params.push({ lang, page });
+//     }
+//   }
+//   return params;
+// }
 
 /**
  * Generate page metadata
- *
- * @async server component
- * @param params page params
+ * @async
+ * @param   {object}                                  params        - Page params
+ * @param   {Promise<{ page: string; lang: string }>} params.params - The page and language parameters
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns metadata
+ * @returns {Promise<Metadata>}                                     page metadata
  */
 export async function generateMetadata({
   params,

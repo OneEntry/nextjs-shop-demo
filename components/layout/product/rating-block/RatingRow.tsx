@@ -1,29 +1,30 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import ReviewAnimations from '../animations/ReviewAnimations';
 import RatingBar from './RatingBar';
 import StarRating from './StarRating';
 
-interface RatingRowProps {
+/**
+ * Rating row.
+ * @param   {object}      props                  - Rating row props.
+ * @param   {object}      props.rating           - Rating object with rating value, bar value and star count.
+ * @param   {number}      props.rating.value     - Rating value.
+ * @param   {number}      props.rating.barValue  - Rating bar value.
+ * @param   {number}      props.rating.starCount - Rating star count.
+ * @param   {boolean}     props.state            - State of the rating.
+ * @returns {JSX.Element}                        Rating row component.
+ */
+const RatingRow = ({
+  rating: { value, barValue, starCount },
+  state,
+}: {
   rating: {
     value: number;
     barValue: number;
     starCount: number;
   };
   state: boolean;
-}
-
-/**
- * Rating row
- * @param rating
- * @param state
- *
- * @returns Rating row
- */
-const RatingRow: FC<RatingRowProps> = ({
-  rating: { value, barValue, starCount },
-  state,
-}) => (
+}): JSX.Element => (
   <ReviewAnimations
     className="flex h-0 w-full justify-start gap-2.5"
     index={4}

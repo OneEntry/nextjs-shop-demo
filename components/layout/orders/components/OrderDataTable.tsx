@@ -2,7 +2,7 @@
 'use client';
 
 import type { IOrderByMarkerEntity } from 'oneentry/dist/orders/ordersInterfaces';
-import type { FC, Key } from 'react';
+import type { JSX, Key } from 'react';
 
 import Loader from '@/components/shared/Loader';
 import { UseDate, UsePrice } from '@/components/utils/utils';
@@ -21,22 +21,23 @@ interface ISettings {
   delivery_time_title: { value: string };
 }
 
-interface IOrderDataTable {
-  settings: ISettings | undefined;
-  data: IOrderByMarkerEntity | undefined;
-  lang: string;
-}
-
 /**
  * OrderData table
- *
- * @param settings
- * @param data
- * @param lang current language shortcode
- *
- * @returns JSX.Element
+ * @param   {object}               props          - Component props
+ * @param   {ISettings}            props.settings - Settings object
+ * @param   {IOrderByMarkerEntity} props.data     - Order data
+ * @param   {string}               props.lang     - Current language
+ * @returns {JSX.Element}                         JSX.Element
  */
-const OrderDataTable: FC<IOrderDataTable> = ({ settings, data, lang }) => {
+const OrderDataTable = ({
+  settings,
+  data,
+  lang,
+}: {
+  settings: ISettings;
+  data: IOrderByMarkerEntity;
+  lang: string;
+}): JSX.Element => {
   if (!data || !settings) {
     return <Loader />;
   }

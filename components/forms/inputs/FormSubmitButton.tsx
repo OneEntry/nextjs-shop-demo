@@ -1,27 +1,25 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import FormFieldAnimations from '@/components/forms/animations/FormFieldAnimations';
 import Spinner from '@/components/shared/Spinner';
 
-interface FormSubmitButtonProps {
-  title: string;
-  isLoading: boolean;
-  index: number;
-}
-
 /**
- * Form submit button
- * @param title button title
- * @param isLoading loading state
- * @param index Index of element for animations stagger
- *
- * @returns Form submit button
+ * Form submit button.
+ * @param   {object}      props           - Form submit button props.
+ * @param   {string}      props.title     - button title.
+ * @param   {boolean}     props.isLoading - loading state.
+ * @param   {number}      props.index     - Index of element for animations stagger.
+ * @returns {JSX.Element}                 Form submit button.
  */
-const FormSubmitButton: FC<FormSubmitButtonProps> = ({
+const FormSubmitButton = ({
   title,
   isLoading,
   index,
-}) => {
+}: {
+  title: string;
+  isLoading: boolean;
+  index: number;
+}): JSX.Element => {
   return (
     <FormFieldAnimations index={index} className="">
       <button

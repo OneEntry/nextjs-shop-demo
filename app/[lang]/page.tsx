@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { Suspense } from 'react';
 
 // Import custom API function and components
@@ -25,14 +25,15 @@ interface IndexPageLayoutProps {
 
 /**
  * Home(index) page component
- * @async server component
- *
- * @param params - Page parameters including language
+ * @param   {object}                   props        - Page parameters including language
+ * @param   {Promise<{lang: string;}>} props.params - Language parameter
+ * @returns {Promise<JSX.Element>}                  JSX.Element representing the page layout
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns JSX.Element representing the page layout
  */
-const IndexPageLayout: FC<IndexPageLayoutProps> = async ({ params }) => {
+const IndexPageLayout = async ({
+  params,
+}: IndexPageLayoutProps): Promise<JSX.Element> => {
   // Destructure language parameter from params
   const { lang } = await params;
 
@@ -47,7 +48,7 @@ const IndexPageLayout: FC<IndexPageLayoutProps> = async ({ params }) => {
   // If there's an error, render a "not found" page
   if (isError || !page) {
     // eslint-disable-next-line no-console
-    console.error('Failed to load home page:', isError);
+    console.log('Failed to load home page:', isError);
     return notFound();
   }
 
@@ -109,8 +110,9 @@ export default IndexPageLayout;
 
 /**
  * Pre-generation of shop page
+ * @returns {Promise<{ lang: string }[]>} Promise resolving to an array of language objects
  */
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ lang: string }[]> {
   const params: Array<{ lang: string }> = [];
   for (const lang of i18n.locales) {
     params.push({ lang });
@@ -120,9 +122,9 @@ export async function generateStaticParams() {
 
 /**
  * Generate metadata for the page
- *
- * @param params - Page parameters including language
- * @returns Promise resolving to metadata object
+ * @param   {object}                   props        - Page parameters including language
+ * @param   {Promise<{lang: string;}>} props.params - Language parameter
+ * @returns {Promise<Metadata>}                     Promise resolving to metadata object
  */
 export async function generateMetadata({
   params,

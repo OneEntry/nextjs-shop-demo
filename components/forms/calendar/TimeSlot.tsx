@@ -1,24 +1,28 @@
-import type { Dispatch } from 'react';
+import type { Dispatch, JSX } from 'react';
 import React from 'react';
 
-interface TimeSlotProps {
+/**
+ * Time slot button.
+ * @param   {object}                                 props                 - Time slot props.
+ * @param   {object}                                 props.slot            - Time slot object. It contains time and isDisabled properties.
+ * @param   {string}                                 props.slot.time       - Time value
+ * @param   {boolean}                                props.slot.isDisabled - Disabled state
+ * @param   {string}                                 props.currentTime     - Current time. It is used to determine which time slot is currently selected.
+ * @param   {Dispatch<React.SetStateAction<string>>} props.setTime         - Set time. It is used to update the selected time.
+ * @returns {JSX.Element}                                                  Time slot button.
+ */
+const TimeSlot = ({
+  slot,
+  currentTime,
+  setTime,
+}: {
   slot: {
     time: string;
     isDisabled?: boolean;
   };
   currentTime: string;
   setTime: Dispatch<React.SetStateAction<string>>;
-}
-
-/**
- * Time slot button
- * @param slot time slot object
- * @param currentTime
- * @param setTime
- *
- * @returns Time slot button
- */
-const TimeSlot: React.FC<TimeSlotProps> = ({ slot, currentTime, setTime }) => {
+}): JSX.Element => {
   let className = 'px-2 py-1.5 rounded-3xl border-2 text-center text-sm ';
   const { isDisabled, time } = slot;
   if (currentTime === time) {

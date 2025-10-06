@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { memo, Suspense } from 'react';
 
 import { getChildPagesByParentUrl, getPageByUrl } from '@/app/api';
@@ -17,17 +17,17 @@ import { getDictionary } from '../../dictionaries';
 
 /**
  * Shop catalog page
- *
- * @async server component
+ * @async
+ * @param   {object}                                                    props              - page props
+ * @param   {Promise<{ handle: string; lang: string }>}                 props.params       - page params
+ * @param   {Promise<{ [key: string]: string | string[] | undefined }>} props.searchParams - search params
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @param params page params
- * @param searchParams
- * @returns Shop page layout JSX.Element
+ * @returns {Promise<JSX.Element>}                                                         Shop page layout JSX.Element
  */
-const ShopCatalogPage: FC<any> = async (props: {
-  params: Promise<{ handle: any; lang: any }>;
-  searchParams: Promise<any>;
-}) => {
+const ShopCatalogPage = async (props: {
+  params: Promise<{ handle: string; lang: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}): Promise<JSX.Element> => {
   const searchParams = await props.searchParams;
   const params = await props.params;
 
@@ -37,10 +37,11 @@ const ShopCatalogPage: FC<any> = async (props: {
     await getDictionary(params.lang as Locale),
   );
 
-  // !!!extract products per page limit from global settings
+  // Set the number of products to display per page
+  // TODO: Extract products per page limit from global settings
   const pagesLimit = 10;
 
-  // Memoize the loader component
+  // Memoize the loader component to prevent unnecessary re-renders
   const MemoizedProductsGridLoader = memo(ProductsGridLoader);
 
   return (
@@ -63,6 +64,7 @@ export default ShopCatalogPage;
 
 /**
  * Pre-generation of shop page
+ * @returns {Promise<Array<{ lang: string; handle: string }>>} - static paths
  */
 export async function generateStaticParams() {
   const params: Array<{ lang: string; handle: string }> = [];
@@ -83,10 +85,10 @@ export async function generateStaticParams() {
 
 /**
  * Generate page metadata
- * @async server component
- * @param params page params
+ * @async
+ * @param   {MetadataParams}    params - page params
+ * @returns {Promise<Metadata>}        metadata
  * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
- * @returns metadata
  */
 export async function generateMetadata({
   params,
@@ -94,14 +96,15 @@ export async function generateMetadata({
   const { handle, lang } = await params;
   const { isError, page } = await getPageByUrl(handle, lang);
 
+  // Handle case when page is not found or an error occurred
   if (isError || !page) {
     return notFound();
   }
 
-  // extract data from page
+  // Extract data from page object
   const { localizeInfos, isVisible, attributeValues } = page;
 
-  // Return metadata object
+  // Return metadata object with page information
   return generatePageMetadata({
     handle: handle,
     title: localizeInfos.title,

@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
-import type { FC, FormEvent } from 'react';
+import type { FormEvent, JSX } from 'react';
 import React, { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
@@ -10,19 +10,20 @@ import SearchIcon from '@/components/icons/search';
 
 import SearchResults from './SearchResults';
 
-interface SearchBarProps {
+/**
+ * SearchBar component.
+ * @param   {object}           props      - Component properties.
+ * @param   {string}           props.lang - current language shortcode.
+ * @param   {IAttributeValues} props.dict - dictionary from server api.
+ * @returns {JSX.Element}                 JSX.Element.
+ */
+const SearchBar = ({
+  lang,
+  dict,
+}: {
   lang: string;
   dict: IAttributeValues;
-}
-
-/**
- * SearchBar component
- * @param lang current language shortcode
- * @param dict dictionary from server api
- *
- * @returns JSX.Element
- */
-const SearchBar: FC<SearchBarProps> = ({ lang, dict }) => {
+}): JSX.Element => {
   // Handle useSearchParams in a try/catch to prevent build errors
   let params: URLSearchParams;
   let searchParamsValue: string | null = null;

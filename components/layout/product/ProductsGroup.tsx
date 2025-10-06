@@ -1,11 +1,27 @@
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import ProductAnimations from './animations/ProductAnimations';
 import GroupCard from './group-card/GroupCard';
 
-interface ProductsGroupProps {
+/**
+ * ProductsGroup
+ * @param   {object}            props                       - The component props
+ * @param   {object}            props.block                 - The block data containing products and attributes
+ * @param   {object}            props.block.attributeValues - The attribute values for the block
+ * @param   {IProductsEntity[]} props.block.products        - The products for the block
+ * @param   {string}            props.lang                  - current language shortcode
+ * @param   {IAttributeValues}  props.dict                  - dictionary from server api
+ * @param   {string}            props.langCode              - The language code for attribute values
+ * @returns {JSX.Element}                                   ProductsGroup
+ */
+const ProductsGroup = ({
+  block,
+  lang,
+  dict,
+  langCode,
+}: {
   block: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attributeValues: any;
@@ -14,23 +30,7 @@ interface ProductsGroupProps {
   lang: string;
   dict: IAttributeValues;
   langCode: string;
-}
-
-/**
- * ProductsGroup
- * @param block - The block data containing products and attributes
- * @param lang current language shortcode
- * @param dict dictionary from server api
- * @param langCode - The language code for attribute values
- *
- * @returns ProductsGroup
- */
-const ProductsGroup: FC<ProductsGroupProps> = ({
-  block,
-  lang,
-  dict,
-  langCode,
-}) => {
+}): JSX.Element => {
   return (
     <ProductAnimations
       className="mb-8 flex flex-col max-md:max-w-full"

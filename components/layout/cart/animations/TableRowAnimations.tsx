@@ -2,24 +2,25 @@
 
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useRef } from 'react';
 
 import type { AnimationsProps } from '@/app/types/global';
 
 /**
- * Table row animations
- * @param children children ReactNode
- * @param className CSS className of ref element
- * @param index index of element in array for stagger
+ * Table row animations.
+ * @param   {AnimationsProps} props           - props.
+ * @param   {ReactNode}       props.children  - children ReactNode.
+ * @param   {string}          props.className - CSS className of ref element.
+ * @param   {number}          props.index     - index of element in array for stagger.
+ * @returns {JSX.Element}                     Table row animations component.
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns
  */
-const TableRowAnimations: FC<AnimationsProps> = ({
+const TableRowAnimations = ({
   children,
   className,
   index,
-}) => {
+}: AnimationsProps): JSX.Element => {
   const ref = useRef(null);
 
   // first load animations
@@ -44,7 +45,7 @@ const TableRowAnimations: FC<AnimationsProps> = ({
     return () => {
       tl.kill();
     };
-  }, [ref]);
+  }, []);
 
   return (
     <div ref={ref} className={className}>

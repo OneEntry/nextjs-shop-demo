@@ -1,16 +1,16 @@
 'use client';
 
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import type { LoaderProps } from '@/app/types/global';
 
 /**
- * MainMenu Loader
- * @param limit
- *
- * @returns MainMenu Loader
+ * MainMenu Loader.
+ * @param   {LoaderProps} props       - Props limit.
+ * @param   {number}      props.limit - Limit.
+ * @returns {JSX.Element}             MainMenu Loader.
  */
-const MainMenuLoader: FC<LoaderProps> = ({ limit = 4 }) => {
+const MainMenuLoader = ({ limit = 4 }: LoaderProps): JSX.Element => {
   return (
     <div className="relative z-20 items-center justify-center bg-white px-5 text-lg font-bold uppercase text-neutral-600 max-lg:text-sm max-md:hidden max-md:px-5 max-md:text-sm md:flex">
       <div className="flex w-full max-w-(--breakpoint-xl) items-center justify-center py-5 max-md:px-5">

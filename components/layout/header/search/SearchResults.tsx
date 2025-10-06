@@ -2,34 +2,32 @@
 
 import Link from 'next/link';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { Dispatch, FC, Key } from 'react';
+import type { Dispatch, JSX, Key, SetStateAction } from 'react';
 import React from 'react';
 
 import { useSearchProducts } from '@/app/api/hooks/useSearchProducts';
 import Spinner from '@/components/shared/Spinner';
 
-interface SearchResultsProps {
-  searchValue: string | undefined;
-  state: boolean;
-  setState: Dispatch<React.SetStateAction<boolean>>;
-  lang: string;
-}
-
 /**
- * Search results
- * @param searchValue
- * @param state
- * @param setState
- * @param lang current language shortcode
- *
- * @returns JSX.Element
+ * Search results.
+ * @param   {object}             props             - SearchResultsProps.
+ * @param   {string | undefined} props.searchValue - search value.
+ * @param   {unknown}            props.state       - state.
+ * @param   {Dispatch<unknown>}  props.setState    - set state.
+ * @param   {string}             props.lang        - current language shortcode.
+ * @returns {JSX.Element}                          JSX.Element.
  */
-const SearchResults: FC<SearchResultsProps> = ({
+const SearchResults = ({
   searchValue,
   state,
   setState,
   lang,
-}) => {
+}: {
+  searchValue: string | undefined;
+  state: boolean;
+  setState: Dispatch<SetStateAction<boolean>>;
+  lang: string;
+}): JSX.Element => {
   const { loading, products } = useSearchProducts({
     name: searchValue || '',
     lang: lang,
@@ -69,7 +67,9 @@ const SearchResults: FC<SearchResultsProps> = ({
           })
         : 'Not found'}
     </div>
-  ) : null;
+  ) : (
+    <></>
+  );
 };
 
 export default SearchResults;

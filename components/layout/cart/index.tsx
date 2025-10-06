@@ -1,23 +1,18 @@
 'use client';
-// Indicates that this file is a client-side component in Next.js
 
-// Import necessary types and React functions
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useContext, useEffect, useState } from 'react';
 
-// Import API hooks and Redux hooks
 import { api, useGetProductsByIdsQuery } from '@/app/api';
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
 import { AuthContext } from '@/app/store/providers/AuthContext';
-// Import Redux actions and selectors
 import {
   addDeliveryToCart,
   addProductsToCart,
   selectCartData,
 } from '@/app/store/reducers/CartSlice';
-// Import custom types and components
 import type { IProducts } from '@/app/types/global';
 import CartAnimations from '@/components/layout/cart/animations/CartAnimations';
 import EmptyCart from '@/components/layout/cart/components/EmptyCart';
@@ -26,26 +21,29 @@ import Loader from '@/components/shared/Loader';
 
 import DeliveryForm from './delivery-table/DeliveryForm';
 
-// Define the props interface for the CartPage component
-interface CartPageProps {
-  lang: string; // Current language shortcode
-  dict: IAttributeValues; // Dictionary from server API
-  deliveryData: IProductsEntity; // Represents a product entity object
-}
-
 /**
- * Cart page component
- *
- * @param lang - Current language shortcode
- * @param dict - Dictionary from server API
- * @param deliveryData - Represents a product entity object
- *
- * @returns JSX.Element representing the cart page
+ * Cart page component.
+ * @param   {object}           props              - Cart page props.
+ * @param   {string}           props.lang         - Current language shortcode.
+ * @param   {IAttributeValues} props.dict         - Dictionary from server API.
+ * @param   {IProductsEntity}  props.deliveryData - Represents a product entity object.
+ * @returns {JSX.Element}                         Cart page component.
  */
-const CartPage: FC<CartPageProps> = ({ lang, dict, deliveryData }) => {
-  const dispatch = useAppDispatch(); // Initialize Redux dispatch function
-  const { isAuth } = useContext(AuthContext); // Get authentication status from context
-  const [products, setProducts] = useState<IProductsEntity[]>([]); // State to store products
+const CartPage = ({
+  lang,
+  dict,
+  deliveryData,
+}: {
+  lang: string;
+  dict: IAttributeValues;
+  deliveryData: IProductsEntity;
+}): JSX.Element => {
+  // Initialize Redux dispatch function
+  const dispatch = useAppDispatch();
+  // Get authentication status from context
+  const { isAuth } = useContext(AuthContext);
+  // State to store products
+  const [products, setProducts] = useState<IProductsEntity[]>([]);
 
   // Get products data from Redux cart slice
   const productsCartData = useAppSelector(selectCartData) as IProducts[];

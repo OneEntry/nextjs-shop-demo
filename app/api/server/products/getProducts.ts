@@ -2,20 +2,28 @@ import type { IError } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
 
 import { api } from '@/app/api';
-import { getCachedData, setCachedData } from '@/app/api/utils/cache';
 import getSearchParams from '@/app/api/utils/getSearchParams';
 import { LanguageEnum } from '@/app/types/enum';
 import { handleApiError, isIError } from '@/app/utils/errorHandler';
 
 /**
  * Get all products with pagination and filter.
- *
  * @async
- * @param props
+ * @param   {object}          props                                - Product parameters
+ * @param   {number}          props.offset                         - Offset for pagination.
+ * @param   {number}          props.limit                          - Limit for pagination.
+ * @param   {string}          props.lang                           - Language shortcode.
+ * @param   {object}          [props.params]                       - Search parameters.
+ * @param   {string}          [props.params.handle]                - Product handle.
+ * @param   {object}          [props.params.searchParams]          - Search parameters.
+ * @param   {string}          [props.params.searchParams.search]   - Search query.
+ * @param   {string}          [props.params.searchParams.in_stock] - Filter by in stock status.
+ * @param   {string}          [props.params.searchParams.color]    - Filter by color.
+ * @param   {string}          [props.params.searchParams.minPrice] - Filter by minimum price.
+ * @param   {string}          [props.params.searchParams.maxPrice] - Filter by maximum price.
+ * @returns {Promise<object>}                                      Array with ProductEntity objects
  * @see {@link https://doc.oneentry.cloud/docs/catalog OneEntry CMS docs}
  * @see {@link https://oneentry.cloud/instructions/npm OneEntry SDK docs}
- *
- * @returns Array with ProductEntity objects
  */
 export const getProducts = async (props: {
   offset: number;
@@ -41,23 +49,8 @@ export const getProducts = async (props: {
   const langCode = LanguageEnum[lang as keyof typeof LanguageEnum];
   const body = getSearchParams(params?.searchParams, params?.handle);
 
-  // Create cache key from parameters
-  const cacheKey = `products-${JSON.stringify({ offset, limit, langCode, body })}`;
-
-  // Check cache first
-  const cached = getCachedData<{ products: IProductsEntity[]; total: number }>(
-    cacheKey,
-  );
-  if (cached) {
-    return {
-      isError: false,
-      products: cached.products,
-      total: cached.total,
-    };
-  }
-
   try {
-    const data = await api.Products.getProducts(body || undefined, langCode, {
+    const data = await api.Products.getProducts(body || [], langCode, {
       limit,
       offset,
       sortOrder: 'ASC',
@@ -70,11 +63,6 @@ export const getProducts = async (props: {
         total: 0,
       };
     } else {
-      // Cache the result
-      setCachedData<{ products: IProductsEntity[]; total: number }>(cacheKey, {
-        products: data.items,
-        total: data.total,
-      });
       return {
         isError: false,
         products: data.items,
@@ -82,7 +70,7 @@ export const getProducts = async (props: {
       };
     }
   } catch (error) {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('getProducts', error);
     return {
       isError: true,
       error: {

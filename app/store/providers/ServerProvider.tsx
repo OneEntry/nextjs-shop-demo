@@ -6,13 +6,12 @@ const serverContext = cache(() => new Map());
 
 /**
  * Simple server provider
- * @param key key
- * @param defaultValue defaultValue
- *
- * @componentType Server component
- * @returns Provider getter/setter
+ * @param   {string}  key          - key
+ * @param   {unknown} defaultValue - defaultValue
+ * @returns {unknown}              Provider getter/setter
  */
-export const ServerProvider = <T,>(key: string, defaultValue?: T) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const ServerProvider = <T,>(key: string, defaultValue?: T): any => {
   const global = serverContext();
 
   if (defaultValue !== undefined) {

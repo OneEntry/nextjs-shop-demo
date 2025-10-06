@@ -2,22 +2,25 @@
 
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
-import type { FC, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useContext, useRef } from 'react';
 
 import { OpenDrawerContext } from '@/app/store/providers/OpenDrawerContext';
 
 /**
- * Modal open/close animations
- * @param children children ReactNode
- * @param component
- *
- * @returns Modal wrapper with open/close animations
+ * Modal open/close animations.
+ * @param   {object}      props           - Component props.
+ * @param   {ReactNode}   props.children  - Children ReactNode.
+ * @param   {string}      props.component - Component name.
+ * @returns {JSX.Element}                 Modal wrapper with open/close animations.
  */
-const ModalAnimations: FC<{ children: ReactNode; component: string }> = ({
+const ModalAnimations = ({
   children,
   component,
-}) => {
+}: {
+  children: ReactNode;
+  component: string;
+}): JSX.Element => {
   const { open, transition, setOpen, setTransition } =
     useContext(OpenDrawerContext);
   const ref = useRef(null);
@@ -71,7 +74,7 @@ const ModalAnimations: FC<{ children: ReactNode; component: string }> = ({
   }, [open, transition]);
 
   if (!open) {
-    return;
+    return <></>;
   }
 
   return (

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { memo, Suspense } from 'react';
 
 import { getPageByUrl } from '@/app/api';
@@ -18,14 +18,11 @@ export const dynamic = 'force-dynamic';
 
 /**
  * Shop page
- *
- * @async server component
- * @param params page params
- * @param searchParams dynamic search params
+ * @param   {PageProps}            props - Page props containing params and searchParams
+ * @returns {Promise<JSX.Element>}       Shop page layout JSX.Element
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns Shop page layout JSX.Element
  */
-const ShopPageLayout: FC<PageProps> = async (props) => {
+const ShopPageLayout = async (props: PageProps): Promise<JSX.Element> => {
   const searchParams = await props.searchParams;
   const params = await props.params;
   const { lang } = params;
@@ -36,17 +33,19 @@ const ShopPageLayout: FC<PageProps> = async (props) => {
   // Get current Page ByUrl from api
   const { page } = await getPageByUrl('shop', lang);
 
-  // !!! Get pages limit
+  // Set the number of products to display per page
+  // TODO: Extract products per page limit from global settings
   const pagesLimit = 10;
 
-  // Memoize the loader component
+  // Memoize the loader component to prevent unnecessary re-renders
   const MemoizedProductsGridLoader = memo(ProductsGridLoader);
 
+  // Return 404 page if shop page not found
   if (!page) {
     return notFound();
   }
 
-  // Breadcrumb structured data
+  // Generate structured data for breadcrumbs to improve SEO
   const breadcrumbStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -94,8 +93,9 @@ export default ShopPageLayout;
 
 /**
  * Pre-generation of shop page
+ * @returns {Promise<Array<{ lang: string }>>} Array of parameters for static generation
  */
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<Array<{ lang: string }>> {
   const params: Array<{ lang: string }> = [];
   for (const lang of i18n.locales) {
     params.push({ lang });
@@ -105,11 +105,11 @@ export async function generateStaticParams() {
 
 /**
  * Generate page metadata
- * @async server component
- * @param params page params
+ * @param   {MetadataParams}                           props        - Metadata params
+ * @param   {Promise<{handle: string; lang: string;}>} props.params - Page params
+ * @returns {Promise<Metadata>}                                     Metadata object
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
  * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
- * @returns metadata
  */
 export async function generateMetadata({
   params,
@@ -117,6 +117,7 @@ export async function generateMetadata({
   const { handle, lang } = await params;
   const { isError, page } = await getPageByUrl('shop', lang);
 
+  // Return 404 page if page not found or an error occurred
   if (isError || !page) {
     return notFound();
   }

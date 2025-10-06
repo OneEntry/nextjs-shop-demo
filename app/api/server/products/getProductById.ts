@@ -2,19 +2,16 @@ import type { IError } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
 
 import { api } from '@/app/api';
-import { getCachedData, setCachedData } from '@/app/api/utils/cache';
 import { LanguageEnum } from '@/app/types/enum';
 import { handleApiError, isIError } from '@/app/utils/errorHandler';
 
 /**
  * Get product by id.
- * @async
- * @param id Product id.
- * @param lang Current language shortcode
+ * @param   {number}          id   - Product id.
+ * @param   {string}          lang - Current language shortcode.
+ * @returns {Promise<object>}      ProductEntity object
  * @see {@link https://doc.oneentry.cloud/docs/catalog OneEntry CMS docs}
  * @see {@link https://oneentry.cloud/instructions/npm OneEntry SDK docs}
- *
- * @returns ProductEntity object
  */
 export const getProductById = async (
   id: number,
@@ -58,26 +55,16 @@ export const getProductById = async (
     };
   }
 
-  const cacheKey = `product-${id}-${langCode}`;
-
-  // Check cache first
-  const cached = getCachedData<IProductsEntity>(cacheKey);
-  if (cached) {
-    return { isError: false, product: cached };
-  }
-
   try {
     const data = await api.Products.getProductById(id, langCode);
 
     if (isIError(data)) {
       return { isError: true, error: data };
     } else {
-      // Cache the result
-      setCachedData<IProductsEntity>(cacheKey, data);
       return { isError: false, product: data };
     }
   } catch (error) {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('getProductById', error);
     return {
       isError: true,
       error: {

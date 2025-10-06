@@ -1,15 +1,14 @@
 import Image from 'next/image';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { memo } from 'react';
 
 /**
- * Empty image placeholder
- *
- * @param className wrapper className
- *
- * @returns Placeholder
+ * Empty image placeholder.
+ * @param   {object}      props             - Placeholder props.
+ * @param   {string}      [props.className] - wrapper className.
+ * @returns {JSX.Element}                   JSX.Element - Placeholder.
  */
-const Placeholder: FC<{ className?: string }> = ({ className }) => {
+const Placeholder = ({ className }: { className?: string }): JSX.Element => {
   return (
     <div
       className={

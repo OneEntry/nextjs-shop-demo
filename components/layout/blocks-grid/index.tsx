@@ -1,26 +1,26 @@
-import { type FC } from 'react';
+import type { JSX } from 'react';
 
 import { blocksColors, blocksData } from '@/components/data';
 
 import BlocksGridAnimations from './animations/BlocksGridAnimations';
 import BlocksGridCard from './components/BlocksGridCard';
 
-interface BlocksGridProps {
+/**
+ * Blocks grid.
+ * @param   {object}               props        - component props.
+ * @param   {Array<string>}        props.blocks - array of blocks names.
+ * @param   {string}               props.lang   - current language shortcode.
+ * @returns {Promise<JSX.Element>}              blocks grid with animations.
+ */
+const BlocksGrid = async ({
+  blocks,
+  lang,
+}: {
   blocks: Array<string>;
   lang: string;
-}
-
-/**
- * Blocks grid
- *
- * @param blocks array of blocks names
- * @param lang current language shortcode
- *
- * @returns blocks grid with animations
- */
-const BlocksGrid: FC<BlocksGridProps> = async ({ blocks, lang }) => {
+}): Promise<JSX.Element> => {
   if (!blocks || blocks?.length < 1) {
-    return 'Blocks not found';
+    return <>Blocks not found</>;
   }
 
   return (

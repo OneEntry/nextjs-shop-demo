@@ -1,21 +1,19 @@
-import type { FC, Key } from 'react';
+import type { AttributeType } from 'oneentry/dist/base/utils';
+import type { JSX, Key } from 'react';
 
 import Sticker from './Sticker';
 
-interface StickersProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  attributeValues: any;
-}
-
 /**
- * Stickers
- *
- * @param product product entity object.
- * @param lang Current language shortcode
- *
- * @returns Stickers array
+ * Stickers.
+ * @param   {object}        props                 - Component props.
+ * @param   {AttributeType} props.attributeValues - Product attributes containing stickers.
+ * @returns {JSX.Element[]}                       - Stickers array.
  */
-const Stickers: FC<StickersProps> = ({ attributeValues }) => {
+const Stickers = ({
+  attributeValues,
+}: {
+  attributeValues: AttributeType;
+}): JSX.Element[] => {
   return [attributeValues?.stickers || []].map(
     (
       sticker: {

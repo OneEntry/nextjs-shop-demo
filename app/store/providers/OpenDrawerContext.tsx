@@ -1,10 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import type { Dispatch, ReactNode } from 'react';
+import type { Dispatch, JSX, ReactNode } from 'react';
 import React, { createContext, useState } from 'react';
 
-type OpenDrawerContextType = {
+/**
+ * Open drawer context
+ * @property {string}            component     - Component name
+ * @property {boolean}           open          - Open state
+ * @property {string}            action        - Action type
+ * @property {string}            transition    - Transition type
+ * @property {Dispatch<string>}  setComponent  - Component setter
+ * @property {Dispatch<boolean>} setOpen       - Open state setter
+ * @property {Dispatch<string>}  setAction     - Action setter
+ * @property {Dispatch<string>}  setTransition - Transition setter
+ */
+export const OpenDrawerContext = createContext<{
   component: string;
   open: boolean;
   action: string;
@@ -13,9 +24,7 @@ type OpenDrawerContextType = {
   setOpen: Dispatch<boolean>;
   setAction: Dispatch<string>;
   setTransition: Dispatch<string>;
-};
-
-export const OpenDrawerContext = createContext<OpenDrawerContextType>({
+}>({
   open: false,
   component: '',
   action: '',
@@ -28,10 +37,15 @@ export const OpenDrawerContext = createContext<OpenDrawerContextType>({
 
 /**
  * Context provider for modals
- * @param children children ReactNode
- * @returns Drawer context provider
+ * @param   {object}      props          - Provider props
+ * @param   {ReactNode}   props.children - Children ReactNode
+ * @returns {JSX.Element}                Drawer context provider
  */
-export const OpenDrawerProvider = ({ children }: { children: ReactNode }) => {
+export const OpenDrawerProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false);
   const [component, setComponent] = useState<string>('');
   const [action, setAction] = useState<string>('');

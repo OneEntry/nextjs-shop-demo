@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import {
   getProductCategory,
@@ -12,22 +12,23 @@ import AddToCartButton from '../components/AddToCartButton';
 import PriceDisplay from '../components/PriceDisplay';
 import ProductUnits from './ProductUnits';
 
-interface ProductDetailsProps {
+/**
+ * Product details.
+ * @param   {object}           props         - Product details props.
+ * @param   {IProductsEntity}  props.product - product entity object.
+ * @param   {string}           props.lang    - current language shortcode.
+ * @param   {IAttributeValues} props.dict    - dictionary from server api.
+ * @returns {JSX.Element}                    Product details component.
+ */
+const ProductDetails = ({
+  product,
+  lang,
+  dict,
+}: {
   product: IProductsEntity;
   lang: string;
   dict: IAttributeValues;
-}
-
-/**
- * Product details
- *
- * @param product product entity object
- * @param lang current language shortcode
- * @param dict dictionary from server api
- *
- * @returns Product details
- */
-const ProductDetails: FC<ProductDetailsProps> = ({ product, lang, dict }) => {
+}): JSX.Element => {
   // Extract data using safe utility functions
   const title = getProductTitle(product) || '';
   const category = getProductCategory(product);

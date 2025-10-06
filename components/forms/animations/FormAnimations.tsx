@@ -2,27 +2,30 @@
 
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
-import type { FC, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useContext, useRef } from 'react';
 
 import { OpenDrawerContext } from '@/app/store/providers/OpenDrawerContext';
 
-interface FormAnimationsProps {
+/**
+ * Form animations.
+ * @param   {object}      props           - FormAnimations Props.
+ * @param   {ReactNode}   props.children  - children ReactNode.
+ * @param   {boolean}     props.isLoading - loading state.
+ * @returns {JSX.Element}                 A form component wrapper with animations applied.
+ * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
+ */
+const FormAnimations = ({
+  children,
+  isLoading,
+}: {
   children: ReactNode;
   isLoading: boolean;
-}
-
-/**
- * Form animations
- *
- * @param children children ReactNode
- * @param isLoading loading state
- * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns A form component wrapper with animations applied
- */
-const FormAnimations: FC<FormAnimationsProps> = ({ children, isLoading }) => {
-  const { open, transition, setTransition } = useContext(OpenDrawerContext); // Get open, transition states, and setter from context
-  const ref = useRef(null); // Reference to the DOM element for animations
+}): JSX.Element => {
+  // Get open, transition states, and setter from context
+  const { open, transition, setTransition } = useContext(OpenDrawerContext);
+  // Reference to the DOM element for animations
+  const ref = useRef(null);
 
   // Form transition animations
   useGSAP(() => {
@@ -31,13 +34,16 @@ const FormAnimations: FC<FormAnimationsProps> = ({ children, isLoading }) => {
       return;
     }
 
+    // Create a new GSAP timeline and pause it initially
     const tl = gsap.timeline({
-      paused: true, // Create a new GSAP timeline and pause it initially
+      paused: true,
       onComplete: () => {
-        setTransition(''); // Reset transition state when animation completes
+        // Reset transition state when animation completes
+        setTransition('');
       },
       onReverseComplete: () => {
-        setTransition(''); // Reset transition state when reverse animation completes
+        // Reset transition state when reverse animation completes
+        setTransition('');
       },
     });
 

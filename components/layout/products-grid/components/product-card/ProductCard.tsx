@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import AddToCartButton from '@/components/layout/product/components/AddToCartButton';
 import FavoritesButton from '@/components/shared/FavoritesButton';
@@ -11,31 +11,29 @@ import PriceDisplay from './PriceDisplay';
 import ProductImage from './ProductImage';
 import Stickers from './Stickers';
 
-interface ProductCardProps {
-  product: IProductsEntity;
-  lang: string;
-  index: number;
-  dict: IAttributeValues;
-  pagesLimit: number;
-}
-
 /**
  * Product card
- *
- * @param {IProductsEntity} props.product - product entity object
- * @param {string} props.lang - Current language shortcode
- * @param {number} props.dict - dictionary from server api
- * @param {IAttributeValues} props.index - Index of element for animations stagger
- * @param {number} props.pagesLimit - used for animations
- * @returns Product card
+ * @param   {object}           props            - Product card props
+ * @param   {IProductsEntity}  props.product    - product entity object
+ * @param   {string}           props.lang       - Current language shortcode
+ * @param   {number}           props.index      - Index of element for animations stagger
+ * @param   {IAttributeValues} props.dict       - dictionary from server api
+ * @param   {number}           props.pagesLimit - used for animations
+ * @returns {JSX.Element}                       - Product card component
  */
-const ProductCard: FC<ProductCardProps> = ({
+const ProductCard = ({
   product,
   lang,
   dict,
   index,
   pagesLimit,
-}) => {
+}: {
+  product: IProductsEntity;
+  lang: string;
+  index: number;
+  dict: IAttributeValues;
+  pagesLimit: number;
+}): JSX.Element => {
   const { id, statusIdentifier, attributeValues, localizeInfos } = product;
 
   const title = localizeInfos?.title || '';
@@ -65,7 +63,7 @@ const ProductCard: FC<ProductCardProps> = ({
           id={id}
           productTitle={title}
           statusIdentifier={statusIdentifier || ''}
-          units={attributeValues.units_product.value}
+          units={attributeValues?.units_product?.value}
           dict={dict}
           height={42}
           className="btn btn-md btn-primary"

@@ -1,13 +1,12 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import FooterMenuSection from './components/FooterMenu';
 
 /**
  * Footer section
- *
- * @returns React component
+ * @returns {JSX.Element} React component
  */
-const Footer: FC = () => {
+const Footer = (): JSX.Element => {
   return (
     <footer className="fade-in w-full max-xs:mb-[60px]">
       <FooterMenuSection />

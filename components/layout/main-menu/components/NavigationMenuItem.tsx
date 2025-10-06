@@ -3,27 +3,25 @@
 import clsx from 'clsx';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
-
-interface NavigationItemProps {
-  label: string;
-  href: string;
-  hasDropdown?: boolean;
-}
+import type { JSX } from 'react';
 
 /**
- * Main navigation menu item
- * @param label
- * @param href
- * @param hasDropdown
- *
- * @returns Main navigation menu item
+ * Main navigation menu item.
+ * @param   {object}      props             - Menu item props.
+ * @param   {string}      props.label       - Menu item label.
+ * @param   {string}      props.href        - Menu item link.
+ * @param   {boolean}     props.hasDropdown - If true, menu item has dropdown.
+ * @returns {JSX.Element}                   Main navigation menu item.
  */
-const NavigationMenuItem: React.FC<NavigationItemProps> = ({
+const NavigationMenuItem = ({
   label,
   href,
   hasDropdown,
-}) => {
+}: {
+  label: string;
+  href: string;
+  hasDropdown?: boolean;
+}): JSX.Element => {
   const paths = usePathname();
   const isActive = paths === href;
 

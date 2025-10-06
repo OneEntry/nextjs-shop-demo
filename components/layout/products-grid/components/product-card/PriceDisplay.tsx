@@ -1,31 +1,32 @@
-import type { FC } from 'react';
-import React from 'react';
+import type { JSX } from 'react';
 
 import { UsePrice } from '@/components/utils/utils';
 
-interface PriceDisplayProps {
+/**
+ * Price display.
+ * @param   {object}          props                               - Price display props.
+ * @param   {object}          props.attributeValues               - Product attributes.
+ * @param   {{value: number}} props.attributeValues.sale          - Sale price.
+ * @param   {{value: number}} props.attributeValues.price         - Original price.
+ * @param   {number}          [props.attributeValues.sale.value]  - Sale price.
+ * @param   {number}          [props.attributeValues.price.value] - Original price.
+ * @param   {string}          props.lang                          - Current language shortcode.
+ * @returns {JSX.Element}                                         Price display with current/old prices.
+ */
+const PriceDisplay = ({
+  attributeValues,
+  lang,
+}: {
   attributeValues: {
     sale?: { value: number };
     price?: { value: number };
   };
   lang: string;
-}
-
-/**
- * Price display
- *
- * @param attributeValues Product attributes
- * @param lang Current language shortcode
- * @returns Price display with current/old prices
- */
-const PriceDisplay: FC<PriceDisplayProps> = ({
-  attributeValues: { sale, price },
-  lang,
-}) => {
-  const currentPrice = sale?.value || 0;
-  const originalPrice = price?.value || 0;
+}): JSX.Element => {
+  const currentPrice = attributeValues?.sale?.value || 0;
+  const originalPrice = attributeValues?.price?.value || 0;
   if (!currentPrice && !originalPrice) {
-    return null;
+    return <></>;
   }
 
   // Format price with Intl.NumberFormat

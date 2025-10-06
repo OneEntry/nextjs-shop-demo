@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import type { IAttributes, IAttributeValues } from 'oneentry/dist/base/utils';
-import type { FC, FormEvent, Key } from 'react';
+import type { IAttributeValues } from 'oneentry/dist/base/utils';
+import type { FormEvent, JSX, Key } from 'react';
 import { useContext, useState } from 'react';
 
 import { api, useGetFormByMarkerQuery } from '@/app/api';
@@ -14,22 +15,20 @@ import ErrorMessage from './inputs/ErrorMessage';
 import FormInput from './inputs/FormInput';
 import FormSubmitButton from './inputs/FormSubmitButton';
 
-interface ForgotPasswordFormProps {
-  lang: string;
-  dict: IAttributeValues;
-}
-
 /**
- * ForgotPassword form
- * @param lang Current language shortcode
- * @param dict dictionary from server api
- *
- * @returns ForgotPassword form
+ * ForgotPassword form.
+ * @param   {object}           props      - Component props.
+ * @param   {string}           props.lang - Current language shortcode.
+ * @param   {IAttributeValues} props.dict - dictionary from server api.
+ * @returns {JSX.Element}                 ForgotPassword form component.
  */
-export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
+export const ForgotPasswordForm = ({
   lang,
   dict,
-}) => {
+}: {
+  lang: string;
+  dict: IAttributeValues;
+}): JSX.Element => {
   const { setComponent, setAction } = useContext(OpenDrawerContext);
   const [isError, setError] = useState<string>('');
 
@@ -43,8 +42,14 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
 
   const fields = useAppSelector((state) => state.formFieldsReducer.fields);
 
-  // Submit form
-  const onSubmitFormHandle = async (e: FormEvent<HTMLFormElement>) => {
+  /**
+   * Submit form.
+   * @param   {FormEvent<HTMLFormElement>} e - Form event
+   * @returns {Promise<void>}                Promise that resolves when the form is submitted
+   */
+  const onSubmitFormHandle = async (
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
 
     // Check if email field exists
@@ -63,7 +68,6 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
       // open Verification form
       setComponent('VerificationForm');
       setAction('checkCode');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       setError(e.message);
       if (e.statusCode === 400) {
@@ -94,7 +98,7 @@ export const ForgotPasswordForm: FC<ForgotPasswordFormProps> = ({
         </div>
 
         <div className="relative mb-8 box-border flex shrink-0 flex-col gap-4">
-          {data?.attributes.map((field: IAttributes, index: Key | number) => {
+          {data?.attributes.map((field: any, index: Key | number) => {
             if (field.marker === 'email_reg') {
               return (
                 <FormInput key={index} index={index as number} {...field} />

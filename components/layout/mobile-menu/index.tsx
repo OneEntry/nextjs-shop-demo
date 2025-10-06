@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import type { IMenusPages } from 'oneentry/dist/menus/menusInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useContext, useEffect } from 'react';
 
 import { OpenDrawerContext } from '@/app/store/providers/OpenDrawerContext';
@@ -15,16 +15,19 @@ import CloseModal from './components/CloseModal';
 import MobileMenu from './components/MobileMenu';
 
 /**
- * Mobile menu offscreen modal
- * @param menu Represents a menu - array of objects.
- * @param lang Current language shortcode
- *
- * @returns Mobile menu list item
+ * Mobile menu offscreen modal.
+ * @param   {object}                         props      - Component properties
+ * @param   {IMenusPages[]}                  props.menu - Array of menu items
+ * @param   {string}                         props.lang - Current language shortcode
+ * @returns {JSX.Element | null | undefined}            The rendered mobile menu component or nothing if conditions aren't met
  */
-const OffscreenModal: FC<{
+const OffscreenModal = ({
+  menu,
+  lang,
+}: {
   menu: IMenusPages[];
   lang: string;
-}> = ({ menu, lang }) => {
+}): JSX.Element | null | undefined => {
   const pathname = usePathname();
   const { open, setOpen, component } = useContext(OpenDrawerContext);
 

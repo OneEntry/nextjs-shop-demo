@@ -9,9 +9,8 @@ import { i18n, type Locale } from '../../i18n-config.ts';
 
 /**
  * Get dictionary from block by marker
- *
- * @param lang Current language shortcode
- * @returns Current lang dictionary
+ * @param   {string}                    lang - Current language shortcode
+ * @returns {Promise<IAttributeValues>}      Current lang dictionary
  */
 const dict = async (lang: string): Promise<IAttributeValues> => {
   try {
@@ -41,9 +40,8 @@ const dict = async (lang: string): Promise<IAttributeValues> => {
 
 /**
  * Get dictionary
- * @param locale
- *
- * @returns Current lang dictionary
+ * @param   {Locale}                    locale - Current locale
+ * @returns {Promise<IAttributeValues>}        Current lang dictionary
  */
 export const getDictionary = async (
   locale: Locale,
@@ -65,7 +63,7 @@ export const getDictionary = async (
     return dictionary || {};
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error loading dictionary for locale:', locale, error);
+    console.log('Error loading dictionary for locale:', locale, error);
     // Ensure we always return an object, even if empty
     return {};
   }

@@ -1,11 +1,24 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import React from 'react';
 
 import LikeIcon from '@/components/icons/like';
 
 import StarRating from '../rating-block/StarRating';
 
-interface UserCommentProps {
+/**
+ * UserComment component.
+ * @param   {object}      props                     - UserCommentProps.
+ * @param   {object}      props.review              - review object entity.
+ * @param   {string}      props.review.name         - user name.
+ * @param   {string}      props.review.content      - user comment.
+ * @param   {number}      props.review.likeCount    - user likes count.
+ * @param   {number}      props.review.commentCount - user comments count.
+ * @param   {number}      props.review.rating       - user rating.
+ * @returns {JSX.Element}                           UserComment component.
+ */
+const UserComment = ({
+  review,
+}: {
   review: {
     name: string;
     content: string;
@@ -13,15 +26,7 @@ interface UserCommentProps {
     commentCount: number;
     rating: number;
   };
-}
-
-/**
- * UserComment
- * @param review
- *
- * @returns UserComment
- */
-const UserComment: FC<UserCommentProps> = ({ review }) => {
+}): JSX.Element => {
   return (
     <div className="flex flex-col rounded-3xl border border-solid border-slate-300 bg-white px-6 py-4 max-md:px-5">
       <header className="mb-4 flex justify-between gap-5 text-lg font-bold leading-8 text-neutral-600 max-md:max-w-full max-md:flex-wrap">

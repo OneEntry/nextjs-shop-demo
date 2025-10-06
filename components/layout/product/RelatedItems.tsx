@@ -1,12 +1,29 @@
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC, Key } from 'react';
+import type { JSX, Key } from 'react';
 
 import CardsGridAnimations from '../products-grid/animations/CardsGridAnimations';
 import ProductCard from '../products-grid/components/product-card/ProductCard';
 import ProductAnimations from './animations/ProductAnimations';
 
-interface RelatedItemsProps {
+/**
+ * RelatedItems.
+ * @param   {object}            props                             - Related items props.
+ * @param   {object}            props.block                       - The block data containing similar products.
+ * @param   {IAttributeValues}  props.block.attributeValues       - The attribute values for the block.
+ * @param   {object}            props.block.similarProducts       - The similar products data.
+ * @param   {IProductsEntity[]} props.block.similarProducts.items - The array of similar products.
+ * @param   {string}            props.lang                        - current language shortcode.
+ * @param   {IAttributeValues}  props.dict                        - dictionary from server api.
+ * @param   {string}            props.langCode                    - The language code for attribute values.
+ * @returns {JSX.Element}                                         RelatedItems component.
+ */
+const RelatedItems = ({
+  block,
+  lang,
+  dict,
+  langCode,
+}: {
   block: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attributeValues: any;
@@ -17,26 +34,9 @@ interface RelatedItemsProps {
   lang: string;
   dict: IAttributeValues;
   langCode: string;
-}
-
-/**
- * RelatedItems
- *
- * @param block - The block data containing similar products
- * @param lang current language shortcode
- * @param dict dictionary from server api
- * @param langCode - The language code for attribute values
- *
- * @returns RelatedItems
- */
-const RelatedItems: FC<RelatedItemsProps> = ({
-  block,
-  lang,
-  dict,
-  langCode,
-}) => {
+}): JSX.Element => {
   if (!block || !block.similarProducts) {
-    return null;
+    return <></>;
   }
 
   return (

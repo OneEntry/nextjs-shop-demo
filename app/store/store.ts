@@ -9,7 +9,17 @@ import favoritesSlice from './reducers/FavoritesSlice';
 import formFieldsSlice from './reducers/FormFieldsSlice';
 import orderSlice from './reducers/OrderSlice';
 
-const createNoopStorage = () => {
+/**
+ * Creates a no-operation storage object for server-side rendering compatibility
+ * This storage object implements getItem, setItem and removeItem methods but performs no actual operations
+ * It is primarily used to replace browser storage (like localStorage) in server environments
+ * @returns {object} An object containing no-operation storage methods
+ */
+const createNoopStorage = (): {
+  getItem: () => Promise<number | null>;
+  setItem: (key: string, value: number) => Promise<number>;
+  removeItem: () => Promise<void>;
+} => {
   return {
     getItem() {
       return Promise.resolve(null);
@@ -31,6 +41,7 @@ const version = 1;
 
 /**
  * Persist cartReducer
+ * @see {@link https://github.com/rt2zz/redux-persist?tab=readme-ov-file}
  */
 const cartReducer = persistReducer(
   {
@@ -47,8 +58,10 @@ const cartReducer = persistReducer(
   },
   cartSlice,
 );
+
 /**
  * Persist favoritesReducer
+ * @see {@link https://github.com/rt2zz/redux-persist?tab=readme-ov-file}
  */
 const favoritesReducer = persistReducer(
   {
@@ -59,8 +72,10 @@ const favoritesReducer = persistReducer(
   },
   favoritesSlice,
 );
+
 /**
  * Persist formFieldsReducer
+ * @see {@link https://github.com/rt2zz/redux-persist?tab=readme-ov-file}
  */
 const formFieldsReducer = persistReducer(
   {
@@ -71,8 +86,10 @@ const formFieldsReducer = persistReducer(
   },
   formFieldsSlice,
 );
+
 /**
  * Persist orderReducer
+ * @see {@link https://github.com/rt2zz/redux-persist?tab=readme-ov-file}
  */
 const orderReducer = persistReducer(
   {
@@ -86,6 +103,7 @@ const orderReducer = persistReducer(
 
 /**
  * Combine reducers
+ * @see {@link https://github.com/rt2zz/redux-persist?tab=readme-ov-file}
  */
 const rootReducer = combineReducers({
   cartReducer,
@@ -97,7 +115,7 @@ const rootReducer = combineReducers({
 
 /**
  * Setup redux store with persistence - save redux state in storage
- *
+ * @returns {ReturnType<typeof configureStore>} Configured store
  * @see {@link https://github.com/rt2zz/redux-persist?tab=readme-ov-file#nested-persists}
  */
 export const setupStore = () => {
@@ -110,8 +128,19 @@ export const setupStore = () => {
   });
 };
 
+/**
+ * Root state type
+ */
 export type RootState = ReturnType<typeof rootReducer>;
+
+/**
+ * App store type
+ */
 export type AppStore = ReturnType<typeof setupStore>;
+
+/**
+ * App dispatch type
+ */
 export type AppDispatch = AppStore['dispatch'];
 
 export const wrapper = createWrapper<AppStore>(setupStore, { debug: false });

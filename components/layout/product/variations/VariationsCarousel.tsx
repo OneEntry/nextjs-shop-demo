@@ -1,39 +1,37 @@
 'use client';
 
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useState } from 'react';
 import Carousel from 'react-simply-carousel';
 
 import CarouselItem from './CarouselItem';
 import NavigationButton from './NavigationButton';
 
-interface VariationsCarouselProps {
-  items: Array<IProductsEntity> | undefined;
-  total?: number;
-  lang: string;
-}
 /**
  * Variations carousel
- *
- * @param items array of products objects
- * @param total total products count
- * @param lang Current language shortcode
- *
+ * @param   {object}                 props       - Variations carousel props
+ * @param   {Array<IProductsEntity>} props.items - array of products objects
+ * @param   {number}                 props.total - total products count
+ * @param   {string}                 props.lang  - Current language shortcode
+ * @returns {JSX.Element}                        Product variations carousel component
  * @see {@link https://github.com/vadymshymko/react-simply-carousel?tab=readme-ov-file#usage Carousel docs}
- *
- * @returns Product variations carousel
  */
-const VariationsCarousel: FC<VariationsCarouselProps> = ({
+const VariationsCarousel = ({
   items,
   total,
   lang,
-}) => {
+}: {
+  items: Array<IProductsEntity> | undefined;
+  total?: number;
+  lang: string;
+}): JSX.Element => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   if (!items || !total || total < 1) {
-    return null;
+    return <></>;
   }
+
   const isCarousel = total > 2;
   const containerClass = isCarousel ? 'px-16 max-md:px-8' : '';
 

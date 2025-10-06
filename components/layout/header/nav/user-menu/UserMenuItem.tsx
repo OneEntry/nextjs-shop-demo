@@ -1,23 +1,31 @@
+/* eslint-disable jsdoc/reject-any-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import Link from 'next/link';
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 
 /**
- * User menu item
- * @param lang Current language shortcode
- * @param page
- * @param setState
- *
- * @returns User menu item link
+ * User menu item.
+ * @param   {object}      props          - Component properties.
+ * @param   {string}      props.lang     - Current language shortcode.
+ * @param   {any}         props.page     - Current page.
+ * @param   {any}         props.setState - Set state function.
+ * @returns {JSX.Element}                User menu item link.
  */
 const UserMenuItem: FC<{
   lang: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   page: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setState: any;
-}> = ({ lang, page, setState }) => {
+}> = ({
+  lang,
+  page,
+  setState,
+}: {
+  lang: string;
+  page: any;
+  setState: any;
+}): JSX.Element => {
   return (
     <Link
       href={'/' + lang + '/' + page.pageUrl}

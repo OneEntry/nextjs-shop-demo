@@ -1,13 +1,13 @@
 import Link from 'next/link';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 /**
- * Logo
- * @param lang current language shortcode
- *
- * @returns JSX.Element
+ * Logo.
+ * @param   {object}      props      - Logo props.
+ * @param   {string}      props.lang - current language shortcode.
+ * @returns {JSX.Element}            Logo component.
  */
-const Logo: FC<{ lang: string }> = ({ lang }) => {
+const Logo = ({ lang }: { lang: string }): JSX.Element => {
   return (
     <Link
       href={'/' + lang}

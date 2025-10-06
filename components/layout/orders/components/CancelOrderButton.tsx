@@ -3,34 +3,32 @@ import type {
   IOrderByMarkerEntity,
   IOrderData,
 } from 'oneentry/dist/orders/ordersInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { updateOrderByMarkerAndId } from '@/app/api';
 import Loader from '@/components/shared/Loader';
 
-interface CancelOrderButtonProps {
+/**
+ * Cancel order button
+ * @param   {object}               props           - order data
+ * @param   {IOrderByMarkerEntity} props.data      - order data
+ * @param   {boolean}              props.isLoading - loading state
+ * @param   {unknown}              props.refetch   - refetch orders
+ * @param   {string}               props.title     - button title
+ * @returns {JSX.Element}                          JSX.Element
+ */
+const CancelOrderButton = ({
+  data,
+  isLoading,
+  refetch,
+  title,
+}: {
   data: IOrderByMarkerEntity;
   isLoading: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   refetch: any;
   title: string;
-}
-
-/**
- * Cancel order button
- * @param data
- * @param isLoading loading state
- * @param refetch
- * @param title
- *
- * @returns JSX.Element
- */
-const CancelOrderButton: FC<CancelOrderButtonProps> = ({
-  data,
-  isLoading,
-  refetch,
-  title,
-}) => {
+}): JSX.Element => {
   // cancel order handle - updateOrderByMarkerAndId on server
   const cancelOrderHandle = async () => {
     const formData = {
@@ -51,14 +49,14 @@ const CancelOrderButton: FC<CancelOrderButtonProps> = ({
       });
 
       if (order.isError) {
-        console.error('Failed to cancel order:', order.error);
+        console.log('Failed to cancel order:', order.error);
         return null;
       }
 
       refetch();
       return order;
     } catch (error) {
-      console.error('Error cancelling order:', error);
+      console.log('Error cancelling order:', error);
       return null;
     }
   };

@@ -1,17 +1,18 @@
+/* eslint-disable jsdoc/no-undefined-types */
 import parse from 'html-react-parser';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import type { SimplePageProps } from '@/app/types/global';
 
 /**
- * BookOnlinePage page
- * @param page
- * @param lang Current language shortcode
- *
- * @returns BookOnlinePage page
+ * BookOnlinePage page.
+ * @param   {object}               props      - Page props.
+ * @param   {IPagesEntity}         props.page - Page entity.
+ * @returns {Promise<JSX.Element>}            BookOnlinePage component.
  */
-const BookOnlinePage: FC<SimplePageProps> = async ({ page }) => {
-  // Более надежная проверка на наличие страницы
+const BookOnlinePage = async ({
+  page,
+}: SimplePageProps): Promise<JSX.Element> => {
   if (!page || !page.localizeInfos) {
     return (
       <div className="flex flex-col pb-5 max-md:max-w-full">

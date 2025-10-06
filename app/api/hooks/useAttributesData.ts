@@ -3,11 +3,9 @@ import parse from 'html-react-parser';
 
 /**
  * Use String type
- *
- * @param name Attribute name
- * @param attributeValues The attribute values
- *
- * @returns String value or undefined
+ * @param   {string}                  name            - Attribute name.
+ * @param   {Record<string, unknown>} attributeValues - The attribute values.
+ * @returns {string}                                  String value or undefined
  */
 export const getString = (
   name: string,
@@ -25,13 +23,11 @@ export const getString = (
 };
 
 /**
- * Use Text type
- *
- * @param {string} name The name of the attribute
- * @param {any} attributeValues The attribute values object
- * @param {string} type of the content
- *
- * @returns HTML content
+ * Use Text type.
+ * @param   {string}                name            - The name of the attribute.
+ * @param   {object}                attributeValues - The attribute values object.
+ * @param   {string}                type            - Type of the content.
+ * @returns {string | [] | unknown}                 HTML content.
  */
 export const getText = (
   name: string,
@@ -169,15 +165,13 @@ export const getText = (
 
 /**
  * Use image type - extract image URL from attribute values
- *
- * @param name The name of the attribute
- * @param attributeValues The attribute values
- * @param type The type of the image
- *
- * @returns The image URL or undefined
+ * @param   {string}  name            - The name of the attribute
+ * @param   {unknown} attributeValues - The attribute values
+ * @param   {string}  type            - The type of the image
+ * @returns {string}                  The image URL or empty string
  */
 export const getImageUrl = (
-  name: any,
+  name: string,
   attributeValues: any,
   type: 'image' | 'preview' = 'image',
 ): string => {

@@ -1,4 +1,5 @@
-import type { FC } from 'react';
+import type { IAttributeValues } from 'oneentry/dist/base/utils';
+import type { JSX } from 'react';
 
 import { ServerProvider } from '@/app/store/providers/ServerProvider';
 
@@ -9,11 +10,9 @@ import FilterButton from './components/FilterButton';
 
 /**
  * Breadcrumbs
- *
- * @componentType Server component
- * @returns JSX.Element
+ * @returns {JSX.Element} Breadcrumbs component.
  */
-const Breadcrumbs: FC = () => {
+const Breadcrumbs = (): JSX.Element => {
   // get lang, dict from server provider
   const [lang] = ServerProvider('lang');
   const [dict] = ServerProvider('dict');
@@ -23,9 +22,9 @@ const Breadcrumbs: FC = () => {
       <div className="mx-auto flex w-full max-w-(--breakpoint-xl) flex-row justify-between gap-5">
         <div className="mr-auto flex gap-5">
           <BackButton />
-          <BreadcrumbsTrail lang={lang} />
+          <BreadcrumbsTrail lang={lang as string} />
         </div>
-        <FilterButton dict={dict} />
+        <FilterButton dict={dict as IAttributeValues} />
       </div>
     </BreadcrumbsAnimations>
   );

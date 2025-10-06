@@ -1,7 +1,7 @@
 import type { IAttributes } from 'oneentry/dist/base/utils';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC, Key } from 'react';
+import type { JSX, Key } from 'react';
 import React, { useContext, useEffect } from 'react';
 
 import { useGetFormByMarkerQuery } from '@/app/api';
@@ -15,24 +15,27 @@ import AddressRow from './AddressRow';
 import DeliveryRow from './DeliveryRow';
 import DeliveryTableRow from './DeliveryTableRow';
 
-interface DeliveryTableProps {
+/**
+ * Delivery table.
+ * @param   {object}           props          - DeliveryTable props.
+ * @param   {IProductsEntity}  props.delivery - Represents a product entity object.
+ * @param   {string}           props.lang     - Current language shortcode.
+ * @param   {IAttributeValues} props.dict     - dictionary from server api.
+ * @returns {JSX.Element}                     JSX.Element
+ */
+const DeliveryTable = ({
+  delivery,
+  lang,
+  dict,
+}: {
   delivery: IProductsEntity;
   lang: string;
   dict: IAttributeValues;
-}
-
-/**
- * Delivery table
- * @param lang Current language shortcode
- * @param delivery Represents a product entity object.
- * @param dict dictionary from server api
- *
- * @returns
- */
-const DeliveryTable: FC<DeliveryTableProps> = ({ delivery, lang, dict }) => {
+}): JSX.Element => {
   const dispatch = useAppDispatch();
   const { user } = useContext(AuthContext);
-  const deliveryData = useAppSelector(selectDeliveryData);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const deliveryData: any = useAppSelector(selectDeliveryData);
 
   // get form by marker with RTK
   const { data } = useGetFormByMarkerQuery({
@@ -54,6 +57,9 @@ const DeliveryTable: FC<DeliveryTableProps> = ({ delivery, lang, dict }) => {
 
   // set delivery data onChange
   useEffect(() => {
+    if (!deliveryData) {
+      return;
+    }
     const date = deliveryData.date;
     const time = deliveryData.time;
     const address = deliveryData.address || addressReg || '';
@@ -101,7 +107,6 @@ const DeliveryTable: FC<DeliveryTableProps> = ({ delivery, lang, dict }) => {
             return (
               <DeliveryTableRow
                 key={i}
-                field={attr}
                 value={new Date(deliveryData.date).toLocaleDateString('en-US')}
                 icon={'/icons/calendar.svg'}
                 label={order_info_date_placeholder?.value}
@@ -113,7 +118,6 @@ const DeliveryTable: FC<DeliveryTableProps> = ({ delivery, lang, dict }) => {
             return (
               <DeliveryTableRow
                 key={i}
-                field={attr}
                 value={deliveryData.time}
                 icon={'/icons/time.svg'}
                 label={order_info_time_placeholder?.value}

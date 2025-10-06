@@ -7,7 +7,7 @@ import '@/app/styles/slick-theme.css';
 
 import Image from 'next/image';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC, Key, RefObject } from 'react';
+import type { JSX, Key, RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 
@@ -18,19 +18,20 @@ import {
 import FavoritesButton from '@/components/shared/FavoritesButton';
 import Placeholder from '@/components/shared/Placeholder';
 
-interface ProductImageProps {
-  product: IProductsEntity;
-  alt?: string;
-}
-
 /**
  * Product images gallery/placeholder
- * @param product product entity object.
- * @param alt alt text for image
- *
- * @returns Product images gallery/placeholder
+ * @param   {object}          props         - Product image props
+ * @param   {IProductsEntity} props.product - product entity object
+ * @param   {string}          props.alt     - alt text for image
+ * @returns {JSX.Element}                   Product images gallery/placeholder component
  */
-const ProductImageGallery: FC<ProductImageProps> = ({ product, alt }) => {
+const ProductImageGallery = ({
+  product,
+  alt,
+}: {
+  product: IProductsEntity;
+  alt: string;
+}): JSX.Element => {
   const [nav1, setNav1] = useState<Slider>();
   const [nav2, setNav2] = useState<Slider>();
   let sliderRef1 = useRef<RefObject<Slider | null>>(null);

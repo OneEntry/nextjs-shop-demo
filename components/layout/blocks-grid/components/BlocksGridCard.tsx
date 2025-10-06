@@ -2,7 +2,6 @@ import { Baloo_2 as Baloo } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import type React from 'react';
-import type { FC } from 'react';
 
 import { getBlockByMarker } from '@/app/api';
 import { LanguageEnum } from '@/app/types/enum';
@@ -16,7 +15,25 @@ const baloo = Baloo({
   weight: ['400', '800'],
 });
 
-interface BlocksGridCardProps {
+/**
+ * Blocks grid card.
+ * @param   {object}                      props                  - props.
+ * @param   {string}                      props.marker           - text marker of block.
+ * @param   {string}                      props.bgColor          - card background color.
+ * @param   {string}                      props.lang             - current language shortcode.
+ * @param   {object}                      props.className        - card className.
+ * @param   {string}                      props.className.width  - card width.
+ * @param   {string}                      props.className.height - card height.
+ * @param   {number}                      props.index            - index of element in array for stagger.
+ * @returns {Promise<React.ReactElement>}                        block card with animations.
+ */
+const BlocksGridCard = async ({
+  marker,
+  bgColor,
+  lang,
+  className,
+  index,
+}: {
   marker: string;
   bgColor: string;
   lang: string;
@@ -25,26 +42,7 @@ interface BlocksGridCardProps {
     height: string;
   };
   index: number;
-}
-
-/**
- * Blocks grid card
- *
- * @param marker text marker of block
- * @param bgColor card background color
- * @param lang current language shortcode
- * @param className card className
- * @param index index of element in array for stagger
- *
- * @returns block card with animations
- */
-const BlocksGridCard: FC<BlocksGridCardProps> = async ({
-  marker,
-  bgColor,
-  lang,
-  className,
-  index,
-}) => {
+}): Promise<React.ReactElement> => {
   const langCode = LanguageEnum[lang as keyof typeof LanguageEnum];
   // Get block by marker from the API.
   const { block, isError } = await getBlockByMarker(marker, lang);
@@ -54,7 +52,7 @@ const BlocksGridCard: FC<BlocksGridCardProps> = async ({
     block?.attributeValues[langCode] || block?.attributeValues;
 
   if (!attributeValues) {
-    return 'Block error';
+    return <>Block error</>;
   }
 
   // extract data from block attributeValues
@@ -64,7 +62,7 @@ const BlocksGridCard: FC<BlocksGridCardProps> = async ({
   // const quoteValue = quote?.value;
 
   if (!block || isError) {
-    return 'Block error';
+    return <>Block error</>;
   }
 
   return (

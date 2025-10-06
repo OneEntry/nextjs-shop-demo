@@ -3,17 +3,15 @@ import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces'
 
 /**
  * Safely extracts the product title from localized information
- *
- * @param product The product entity
- * @param langCode The language code
- * @param fallback The fallback string if title is not found
- *
- * @returns The product title or a fallback string
+ * @param   {IProductsEntity} product    - The product entity
+ * @param   {string}          [langCode] - The language code
+ * @param   {string}          fallback   - The fallback string if title is not found
+ * @returns {string}                     The product title or a fallback string
  */
 export const getProductTitle = (
   product: IProductsEntity,
   langCode?: string,
-  fallback = '',
+  fallback: string = '',
 ): string => {
   if (!product?.localizeInfos) {
     return fallback;
@@ -42,9 +40,10 @@ export const getProductTitle = (
 
 /**
  * Safely extracts the product image URL from attribute values
- *
- * @param attributes The product attributes
- * @returns The product image URL or undefined
+ * @param   {string}          name    - The attribute name.
+ * @param   {IProductsEntity} product - The product entity.
+ * @param   {string}          type    - The attribute type. 'image' | 'preview'
+ * @returns {string}                  The product image URL or undefined.
  */
 export const getProductImageUrl = (
   name: string,
@@ -87,11 +86,12 @@ export const getProductImageUrl = (
 
 /**
  * Safely extracts the price from attribute values
- *
- * @param attributes The product attributes
- * @returns The price value or undefined
+ * @param   {AttributeType}      attributes - The product attributes
+ * @returns {number | undefined}            The price value or undefined
  */
-export const getProductPrice = (attributes: AttributeType): number => {
+export const getProductPrice = (
+  attributes: AttributeType,
+): number | undefined => {
   if (
     attributes?.price &&
     typeof attributes.price === 'object' &&
@@ -100,14 +100,13 @@ export const getProductPrice = (attributes: AttributeType): number => {
   ) {
     return attributes.price.value;
   }
-  return 0;
+  return undefined;
 };
 
 /**
  * Safely extracts the sale price from attribute values
- *
- * @param attributes The product attributes
- * @returns The sale price value or undefined
+ * @param   {AttributeType}      attributes - The product attributes
+ * @returns {number | undefined}            The sale price value or undefined
  */
 export const getProductSalePrice = (
   attributes: AttributeType,
@@ -125,9 +124,8 @@ export const getProductSalePrice = (
 
 /**
  * Safely extracts the product category from attribute values
- *
- * @param product The product entity
- * @returns The product category or undefined
+ * @param   {IProductsEntity}                              product - The product entity.
+ * @returns {{ value: string; title: string } | undefined}         The product category or undefined.
  */
 export const getProductCategory = (
   product: IProductsEntity,

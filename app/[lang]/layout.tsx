@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
-import type { ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 
 import { AuthProvider } from '@/app/store/providers/AuthContext';
 import { OpenDrawerProvider } from '@/app/store/providers/OpenDrawerContext';
@@ -28,9 +28,8 @@ const lato = Lato({
 });
 
 /**
- * Homepage static metadata
+ * Homepage static metadata.
  * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata Next.js docs}
- * @param params page params
  */
 export const metadata: Metadata = {
   title: {
@@ -52,16 +51,20 @@ export const metadata: Metadata = {
 };
 
 /**
- * Root layout
- * @async server component
+ * Root layout.
+ * @param   {object}                   props          - Layout props.
+ * @param   {ReactNode}                props.children - Child components.
+ * @param   {Promise<{lang: string;}>} props.params   - Page params with language.
+ * @returns {Promise<JSX.Element>}                    JSX.Element - Root layout.
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/layout Next.js docs}
- * @param params page params
- * @returns Root layout JSX.Element
  */
 export default async function RootLayout({
   children,
   params,
-}: Readonly<{ children: ReactNode; params: Promise<{ lang: string }> }>) {
+}: Readonly<{
+  children: ReactNode;
+  params: Promise<{ lang: string }>;
+}>): Promise<JSX.Element> {
   const { lang } = await params;
   // set current lang to server provider
   ServerProvider('lang', lang);

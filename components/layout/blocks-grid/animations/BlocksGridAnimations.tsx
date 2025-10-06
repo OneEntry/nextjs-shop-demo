@@ -3,31 +3,31 @@
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { useTransitionState } from 'next-transition-router';
-import type { FC, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useRef, useState } from 'react';
 
-// Interface defining the props expected by the BlocksGridAnimations component
-interface BlocksGridAnimationsProps {
-  children: ReactNode; // The child elements to be rendered inside the component
-  className: string; // CSS class name for styling the grid
-}
-
 /**
- * Blocks grid animations
- *
- * @param children - Children ReactNode to be rendered inside the component
- * @param className - CSS className of ref element for styling
+ * Blocks grid animations.
+ * @param   {object}      props           - Props for the component.
+ * @param   {ReactNode}   props.children  - Children ReactNode to be rendered inside the component.
+ * @param   {string}      props.className - CSS className of ref element for styling.
+ * @returns {JSX.Element}                 A blocks grid component with animations applied.
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns A blocks grid component with animations applied
  */
-const BlocksGridAnimations: FC<BlocksGridAnimationsProps> = ({
+const BlocksGridAnimations = ({
   children,
   className,
-}) => {
-  const { stage } = useTransitionState(); // Get current transition stage
-  const [prevStage, setPrevStage] = useState(''); // State to track the previous transition stage
+}: {
+  children: ReactNode;
+  className: string;
+}): JSX.Element => {
+  // Get current transition stage
+  const { stage } = useTransitionState();
+  // State to track the previous transition stage
+  const [prevStage, setPrevStage] = useState('');
+  // Reference to the DOM element for animations
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ref = useRef<any>(null); // Reference to the DOM element for animations
+  const ref = useRef<any>(null);
 
   // Stage entering/leaving animations
   useGSAP(() => {

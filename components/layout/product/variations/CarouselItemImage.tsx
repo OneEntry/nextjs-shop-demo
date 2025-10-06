@@ -1,33 +1,32 @@
 import Link from 'next/link';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
-import { getImageUrl } from '@/app/api/hooks/useAttributesData';
 import OptimizedImage from '@/components/shared/OptimizedImage';
-
-interface CarouselItemImageProps {
-  lang: string;
-  item: IProductsEntity;
-}
 
 /**
  * CarouselItem image
- *
- * @param item product object
- * @param lang current language shortcode
- *
- * @returns
+ * @param   {object}          props      - component props.
+ * @param   {IProductsEntity} props.item - product object.
+ * @param   {string}          props.lang - current language shortcode.
+ * @returns {JSX.Element}                JSX.Element.
  */
-const CarouselItemImage: FC<CarouselItemImageProps> = ({ item, lang }) => {
+const CarouselItemImage = ({
+  item,
+  lang,
+}: {
+  lang: string;
+  item: IProductsEntity;
+}): JSX.Element => {
   const title = item.localizeInfos.title;
-  const imageSrc = getImageUrl('pic', item.attributeValues);
+  const pic = item.attributeValues.pic;
 
   return (
     <Link href={'/' + lang + '/shop/product/' + item.id} title={title}>
       <OptimizedImage
         width={80}
         height={80}
-        src={imageSrc}
+        src={pic}
         alt={title}
         quality={75}
         className="aspect-auto size-full h-auto min-w-full shrink-0 rounded-lg object-cover"

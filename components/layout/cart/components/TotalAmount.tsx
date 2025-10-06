@@ -1,5 +1,5 @@
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
 
 import { useAppSelector } from '@/app/store/hooks';
@@ -8,21 +8,23 @@ import { UsePrice } from '@/components/utils/utils';
 
 import TableRowAnimations from '../animations/TableRowAnimations';
 
-interface TotalAmountProps {
+/**
+ * Total amount price of all products in cart
+ * @param   {object}           props           - Total amount props
+ * @param   {string}           props.lang      - Current language shortcode
+ * @param   {IAttributeValues} props.dict      - dictionary from server api
+ * @param   {string}           props.className - CSS className of ref elements
+ * @returns {JSX.Element}                      Total amount component
+ */
+const TotalAmount = ({
+  lang,
+  dict,
+  className,
+}: {
   lang: string;
   dict: IAttributeValues;
   className: string;
-}
-
-/**
- * Total amount price of all products in cart
- * @param lang Current language shortcode
- * @param dict dictionary from server api
- * @param className CSS className of ref elements
- *
- * @returns
- */
-const TotalAmount: FC<TotalAmountProps> = ({ lang, dict, className }) => {
+}): JSX.Element => {
   const [cartTotal, setCartTotal] = useState(0);
   const total = useAppSelector(selectCartTotal);
   const delivery = useAppSelector((state) => state.cartReducer.delivery);

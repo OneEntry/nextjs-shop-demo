@@ -6,26 +6,25 @@ import { handleApiError } from '@/app/utils/errorHandler';
 /**
  * Subscribe events with Events API
  * @async
- * @param id product id
+ * @param   {number}        id - product id
+ * @returns {Promise<void>}    Promise that resolves when subscription is complete
  * @see {@link https://doc.oneentry.cloud/docs/events OneEntry CMS docs}
- * @returns void
  */
-export const onSubscribeEvents = async (id: number) => {
+export const onSubscribeEvents = async (id: number): Promise<void> => {
   try {
-    // await api.Events.subscribeByMarker('catalog_event', id);
     const status = await api.Events.subscribeByMarker(
       'status_out_of_stock',
       id,
     );
     const price = await api.Events.subscribeByMarker('product_price', id);
     if (status) {
-      toast('You unsubscribed from status updates for this product');
+      toast('You subscribed to status updates for this product');
     }
     if (price) {
-      toast('You unsubscribed from price updates for this product');
+      toast('You subscribed to price updates for this product');
     }
   } catch (error) {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('onSubscribeEvents', error);
     // eslint-disable-next-line no-console
     console.log('Error subscribing to events:', apiError.message);
   }
@@ -34,11 +33,11 @@ export const onSubscribeEvents = async (id: number) => {
 /**
  * Unsubscribe events with Events API
  * @async
- * @param id product id
+ * @param   {number}        id - product id
+ * @returns {Promise<void>}    Promise that resolves when unsubscription is complete
  * @see {@link https://doc.oneentry.cloud/docs/events OneEntry CMS docs}
- * @returns void
  */
-export const onUnsubscribeEvents = async (id: number) => {
+export const onUnsubscribeEvents = async (id: number): Promise<void> => {
   try {
     // await api.Events.unsubscribeByMarker('catalog_event', id);
     const status = await api.Events.unsubscribeByMarker(
@@ -53,7 +52,7 @@ export const onUnsubscribeEvents = async (id: number) => {
       toast('You unsubscribed from price updates for this product');
     }
   } catch (error) {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('onUnsubscribeEvents', error);
     // eslint-disable-next-line no-console
     console.log('Error unsubscribing from events:', apiError.message);
   }

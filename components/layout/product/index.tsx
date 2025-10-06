@@ -2,7 +2,7 @@
 
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { getProductTitle } from '@/app/api/hooks/useProductsData';
 import { LanguageEnum } from '@/app/types/enum';
@@ -16,7 +16,25 @@ import RelatedItems from './RelatedItems';
 import ReviewsSection from './ReviewsSection';
 import VariationsCarousel from './variations/VariationsCarousel';
 
-interface ProductSingleProps {
+/**
+ * Product single.
+ * @param   {object}            props                      - Product single props.
+ * @param   {IProductsEntity}   props.product              - product entity object.
+ * @param   {string}            props.lang                 - current language shortcode.
+ * @param   {IAttributeValues}  props.dict                 - dictionary from server api.
+ * @param   {IProductsEntity[]} props.relatedProducts      - array of related products.
+ * @param   {number}            props.relatedProductsTotal - total number of related products.
+ * @param   {object}            props.blocksData           - pre-fetched block data.
+ * @returns {JSX.Element}                                  Product single.
+ */
+const ProductSingle = ({
+  product,
+  lang,
+  dict,
+  relatedProducts,
+  relatedProductsTotal,
+  blocksData,
+}: {
   product: IProductsEntity & {
     blocks?: Array<string>;
   };
@@ -26,28 +44,7 @@ interface ProductSingleProps {
   relatedProductsTotal: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   blocksData?: Record<string, any>;
-}
-
-/**
- * Product single
- *
- * @param product product entity object
- * @param lang current language shortcode
- * @param dict dictionary from server api
- * @param relatedProducts array of related products
- * @param relatedProductsTotal total number of related products
- * @param blocksData pre-fetched block data
- *
- * @returns Product single
- */
-const ProductSingle: FC<ProductSingleProps> = ({
-  product,
-  lang,
-  dict,
-  relatedProducts,
-  relatedProductsTotal,
-  blocksData = {},
-}) => {
+}): JSX.Element => {
   // extract data from product
   const { attributeValues, blocks } = product;
   const productTitle = getProductTitle(product);
@@ -106,7 +103,11 @@ const ProductSingle: FC<ProductSingleProps> = ({
       {/* blocks */}
       {Array.isArray(blocks) &&
         blocks.map((block: string) => {
-          if (block === 'multiply_items_offer' && blocksData[block]) {
+          if (
+            block === 'multiply_items_offer' &&
+            blocksData &&
+            blocksData[block]
+          ) {
             return (
               <ProductsGroup
                 key={block}

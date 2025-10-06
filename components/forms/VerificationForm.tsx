@@ -2,7 +2,8 @@
 'use client';
 
 import { useTransitionRouter } from 'next-transition-router';
-import type { FC, FormEvent } from 'react';
+import type { IAttributeValues } from 'oneentry/dist/base/utils';
+import type { FormEvent, JSX } from 'react';
 import { useContext, useEffect, useState } from 'react';
 import OtpInput from 'react-otp-input';
 
@@ -18,12 +19,20 @@ import ErrorMessage from './inputs/ErrorMessage';
 import FormSubmitButton from './inputs/FormSubmitButton';
 
 /**
- * VerificationForm
- * @param dict dictionary from server api
- *
- * @returns VerificationForm
+ * VerificationForm props
+ * @property {IAttributeValues} dict - dictionary from server api
  */
-const VerificationForm: FC<FormProps> = ({ dict }) => {
+interface VerificationFormProps extends FormProps {
+  dict: IAttributeValues;
+}
+
+/**
+ * VerificationForm component for handling OTP verification.
+ * @param   {VerificationFormProps} props      - VerificationForm props.
+ * @param   {IAttributeValues}      props.dict - dictionary from server api containing localized text.
+ * @returns {JSX.Element}                      VerificationForm component.
+ */
+const VerificationForm = ({ dict }: VerificationFormProps): JSX.Element => {
   const router = useTransitionRouter();
   const dispatch = useAppDispatch();
   const { authenticate } = useContext(AuthContext);
@@ -60,11 +69,12 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
 
   /**
    * Submit form handle for checkCode/activateUser
-   * @async
-   * @param e FormEvent
-   * @returns
+   * @param   {FormEvent<HTMLFormElement>} e - FormEvent from form submission
+   * @returns {Promise<void>}                Promise that resolves when the form submission is complete
    */
-  const onSubmitHandle = async (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitHandle = async (
+    e: FormEvent<HTMLFormElement>,
+  ): Promise<void> => {
     e.preventDefault();
     if (otp.length < 6) {
       return;
@@ -122,9 +132,9 @@ const VerificationForm: FC<FormProps> = ({ dict }) => {
 
   /**
    * Generate and resend verification code
-   * @async
+   * @returns {Promise<void>} Promise that resolves when the resend operation is complete
    */
-  const onResendHandle = async () => {
+  const onResendHandle = async (): Promise<void> => {
     try {
       setLoading(true);
       setError('');

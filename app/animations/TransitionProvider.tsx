@@ -2,22 +2,22 @@
 
 import { gsap } from 'gsap';
 import { TransitionRouter } from 'next-transition-router';
-import type { ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useRef } from 'react';
 
 /**
  * Transition provider - main 'stage' transition provider
- *
- * @param children children ReactNode
+ * @param   {object}      props          - props
+ * @param   {ReactNode}   props.children - children ReactNode
+ * @returns {JSX.Element}                TransitionRouter
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
  * @see {@link https://github.com/ismamz/next-transition-router next-transition-router}
- * @returns TransitionRouter
  */
 export default function TransitionProvider({
   children,
 }: {
   children: ReactNode;
-}) {
+}): JSX.Element {
   const ref = useRef(null);
 
   return (

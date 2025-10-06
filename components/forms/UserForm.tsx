@@ -3,7 +3,7 @@
 import type { IAuthFormData } from 'oneentry/dist/auth-provider/authProvidersInterfaces';
 import type { IAttributes } from 'oneentry/dist/base/utils';
 import type { FormDataType } from 'oneentry/dist/forms-data/formsDataInterfaces';
-import type { FC, FormEvent, Key } from 'react';
+import type { FormEvent, JSX, Key } from 'react';
 import { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -19,6 +19,12 @@ import ErrorMessage from './inputs/ErrorMessage';
 import FormInput from './inputs/FormInput';
 import SubmitButton from './inputs/FormSubmitButton';
 
+/**
+ * Input value type.
+ * @property {string}  value - Input value.
+ * @property {boolean} valid - Input validation status.
+ * @property {unknown} [key] - Input key.
+ */
 export type InputValue = {
   value: string;
   valid: boolean;
@@ -26,13 +32,13 @@ export type InputValue = {
 };
 
 /**
- * User form
- * @param lang Current language shortcode
- * @param dict dictionary from server api
- *
- * @returns User form
+ * User form.
+ * @param   {FormProps}        props      - Component props.
+ * @param   {string}           props.lang - Current language shortcode.
+ * @param   {IAttributeValues} props.dict - dictionary from server api.
+ * @returns {JSX.Element}                 User form component.
  */
-const UserForm: FC<FormProps> = ({ lang, dict }) => {
+const UserForm = ({ lang, dict }: FormProps): JSX.Element => {
   const { isAuth, refreshUser, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [isError, setError] = useState('');
@@ -130,6 +136,7 @@ const UserForm: FC<FormProps> = ({ lang, dict }) => {
                   index={index as number}
                   {...field}
                   {...fieldData}
+                  value={field.value}
                 />
               );
             }
@@ -138,7 +145,7 @@ const UserForm: FC<FormProps> = ({ lang, dict }) => {
         </div>
 
         <SubmitButton
-          title={dict?.save_button_text.value}
+          title={dict?.save_button_text?.value}
           isLoading={loading}
           index={10}
         />

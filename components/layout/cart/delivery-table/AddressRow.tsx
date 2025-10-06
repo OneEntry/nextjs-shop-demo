@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import React, { useContext, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/app/store/hooks';
@@ -12,15 +12,16 @@ import { addData } from '@/app/store/reducers/OrderSlice';
 import TableRowAnimations from '../animations/TableRowAnimations';
 
 /**
- * Address row
- * @param placeholder
- *
- * @returns
+ * Address row.
+ * @param   {object}      props             - Props.
+ * @param   {string}      props.placeholder - Placeholder.
+ * @returns {JSX.Element}                   JSX.Element
  */
-const AddressRow: FC<{ placeholder: string }> = ({ placeholder }) => {
+const AddressRow = ({ placeholder }: { placeholder: string }): JSX.Element => {
   const dispatch = useAppDispatch();
   const { user } = useContext(AuthContext);
-  const deliveryData = useAppSelector(selectDeliveryData);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const deliveryData: any = useAppSelector(selectDeliveryData);
 
   // get address from user formData
   const addressReg =
@@ -28,7 +29,7 @@ const AddressRow: FC<{ placeholder: string }> = ({ placeholder }) => {
 
   // set address on change deliveryData
   useEffect(() => {
-    const address = deliveryData.address || addressReg || '';
+    const address = deliveryData?.address || addressReg || '';
     dispatch(
       addData({
         marker: 'order_address',

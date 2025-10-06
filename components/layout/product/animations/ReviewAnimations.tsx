@@ -3,31 +3,30 @@
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { useTransitionState } from 'next-transition-router';
-import type { FC, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useRef, useState } from 'react';
 
-interface ReviewAnimations {
-  children: ReactNode;
-  className: string;
-  index: number;
-  state: boolean;
-}
-
 /**
- * Review animations
- * @param children children ReactNode
- * @param className CSS className of ref element
- * @param index Index of element for animations stagger
- * @param state current state of review
+ * Review animations.
+ * @param   {object}      props           - Props for ReviewAnimations.
+ * @param   {ReactNode}   props.children  - children ReactNode.
+ * @param   {string}      props.className - CSS className of ref element.
+ * @param   {number}      props.index     - Index of element for animations stagger.
+ * @param   {boolean}     props.state     - current state of review.
+ * @returns {JSX.Element}                 Review animations.
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns data
  */
-const ReviewAnimations: FC<ReviewAnimations> = ({
+const ReviewAnimations = ({
   children,
   className,
   index,
   state,
-}) => {
+}: {
+  children: ReactNode;
+  className: string;
+  index: number;
+  state: boolean;
+}): JSX.Element => {
   const { stage } = useTransitionState();
   const [prevStage, setPrevStage] = useState('');
   const ref = useRef(null);

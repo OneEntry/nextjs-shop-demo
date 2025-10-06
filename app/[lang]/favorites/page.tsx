@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import WithSidebar from '@/app/[lang]/[page]/WithSidebar';
 import { ServerProvider } from '@/app/store/providers/ServerProvider';
@@ -11,12 +11,14 @@ import { getDictionary } from '../dictionaries';
 
 /**
  * Favorites page
- * @async server component
- * @param params page params
+ * @param   {object}               props        - Page props
+ * @param   {PageProps}            props.params - page params
+ * @returns {Promise<JSX.Element>}              Favorites page layout JSX.Element
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns Favorites page layout JSX.Element
  */
-const FavoritesPageLayout: FC<PageProps> = async ({ params }) => {
+const FavoritesPageLayout = async ({
+  params,
+}: PageProps): Promise<JSX.Element> => {
   const { lang } = await params;
   // Get dictionary and set to server provider
   const [dict] = ServerProvider('dict', await getDictionary(lang as Locale));
@@ -36,8 +38,9 @@ export default FavoritesPageLayout;
 
 /**
  * Pre-generation page params
+ * @returns {Promise<object[]>} Static params for pre-generation
  */
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<object[]> {
   const params: Array<{ lang: string }> = [];
   for (const lang of i18n.locales) {
     params.push({ lang });
@@ -47,11 +50,11 @@ export async function generateStaticParams() {
 
 /**
  * Generate page metadata
- * @async server component
- * @param params page params
+ * @param   {object}                    props        - Metadata params
+ * @param   {Promise<{ lang: string }>} props.params - page params
+ * @returns {Promise<Metadata>}                      metadata
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns metadata
  */
 export async function generateMetadata({
   params,

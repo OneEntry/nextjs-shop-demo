@@ -8,10 +8,11 @@ import { LanguageEnum } from '@/app/types/enum';
 
 /**
  * Search products with Products API
- * @param name product name
- * @param lang Current language shortcode
+ * @param   {object} props      - Search parameters
+ * @param   {string} props.name - Product name
+ * @param   {string} props.lang - Current language shortcode
+ * @returns {object}            Array with ProductEntity objects
  * @see {@link https://doc.oneentry.cloud/docs/catalog OneEntry CMS docs}
- * @returns Array with ProductEntity objects
  */
 export const useSearchProducts = ({
   name,
@@ -19,7 +20,11 @@ export const useSearchProducts = ({
 }: {
   name: string;
   lang: string;
-}) => {
+}): {
+  loading: boolean;
+  products: IProductsEntity[];
+  refetch: () => void;
+} => {
   const langCode = LanguageEnum[lang as keyof typeof LanguageEnum];
   const [loading, setLoading] = useState<boolean>(false);
   const [products, setProducts] = useState<IProductsEntity[]>([]);

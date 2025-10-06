@@ -1,5 +1,5 @@
 import type { IOrderByMarkerEntity } from 'oneentry/dist/orders/ordersInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useState } from 'react';
 
 import { UsePrice } from '@/components/utils/utils';
@@ -17,14 +17,19 @@ interface OrderRowProps {
 
 /**
  * Order row
- * @param order
- * @param settings
- * @param lang current language shortcode
- * @param index Index of element for animations stagger
- *
- * @returns JSX.Element
+ * @param   {OrderRowProps}                       order          - Order entity
+ * @param   {IOrderByMarkerEntity}                order.order    -Entity
+ * @param   {Record<string, unknown> | undefined} order.settings - Settings
+ * @param   {string}                              order.lang     - Language
+ * @param   {number}                              order.index    - Index
+ * @returns {JSX.Element}                                        - Order row
  */
-const OrderRow: FC<OrderRowProps> = ({ order, settings, lang, index }) => {
+const OrderRow = ({
+  order,
+  settings,
+  lang,
+  index,
+}: OrderRowProps): JSX.Element => {
   const { id, createdDate, statusIdentifier, totalSum } = order;
 
   const formattedPrice = UsePrice({

@@ -1,34 +1,33 @@
+/* eslint-disable jsdoc/reject-any-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
-import type { FC, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useRef } from 'react';
 
-interface ProfileMenuAnimationsProps {
-  children: ReactNode;
-  className: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  state: any;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setState: any;
-}
-
 /**
- * Profile menu animations on state change
- * @param children children ReactNode
- * @param className CSS className of ref element
- * @param state state of component
- * @param setState setState of component function
+ * Profile menu animations on state change.
+ * @param   {object}      props           - Profile menu animations props.
+ * @param   {ReactNode}   props.children  - children ReactNode.
+ * @param   {string}      props.className - CSS className of ref element.
+ * @param   {any}         props.state     - state of component.
+ * @param   {any}         props.setState  - setState of component function.
+ * @returns {JSX.Element}                 Profile menu wrapper with animations.
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns Profile menu wrapper with animations
  */
-const ProfileMenuAnimations: FC<ProfileMenuAnimationsProps> = ({
+const ProfileMenuAnimations = ({
   children,
   className,
   state,
   setState,
-}) => {
+}: {
+  children: ReactNode;
+  className: string;
+  state: any;
+  setState: any;
+}): JSX.Element => {
   const ref = useRef(null);
 
   // animations on state change

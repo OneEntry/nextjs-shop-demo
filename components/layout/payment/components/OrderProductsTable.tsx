@@ -1,5 +1,5 @@
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import { type FC } from 'react';
+import type { JSX } from 'react';
 
 import { useAppSelector } from '@/app/store/hooks';
 import {
@@ -8,26 +8,23 @@ import {
 } from '@/app/store/reducers/CartSlice';
 import { UsePrice } from '@/components/utils/utils';
 
-type OrderProductsTableProps = {
-  lang: string;
-  products: IProductsEntity[] | undefined;
-  delivery: IProductsEntity | undefined;
-};
-
 /**
- * Order products table
- *
- * @param lang current language shortcode
- * @param products Products data
- * @param delivery Delivery data
- *
- * @returns JSX.Element
+ * Order products table.
+ * @param   {object}                        props          - Component props.
+ * @param   {string}                        props.lang     - current language shortcode.
+ * @param   {IProductsEntity[] | undefined} props.products - Products data.
+ * @param   {IProductsEntity | undefined}   props.delivery - Delivery data.
+ * @returns {JSX.Element}                                  JSX.Element.
  */
-const OrderProductsTable: FC<OrderProductsTableProps> = ({
+const OrderProductsTable = ({
   lang,
   products,
   delivery,
-}) => {
+}: {
+  lang: string;
+  products: IProductsEntity[] | undefined;
+  delivery: IProductsEntity | undefined;
+}): JSX.Element => {
   const productsDataInCart = useAppSelector(selectCartData) as Array<{
     id: number;
     quantity: number;

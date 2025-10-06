@@ -4,6 +4,8 @@ import { toast } from 'react-toastify';
 
 /**
  * Custom error class for API errors
+ * @property {number}  statusCode    - The HTTP status code of the error
+ * @property {unknown} originalError - The original error object
  */
 export class ApiError extends Error {
   statusCode: number;
@@ -19,9 +21,8 @@ export class ApiError extends Error {
 
 /**
  * Type guard to check if an object is of type IError
- *
- * @param error The error object to check
- * @returns True if the object is an IError, false otherwise
+ * @param   {unknown} error - The error object to check
+ * @returns {boolean}       True if the object is an IError, false otherwise
  */
 export function isIError(error: unknown): error is IError {
   return (
@@ -34,14 +35,15 @@ export function isIError(error: unknown): error is IError {
 
 /**
  * Centralized error handling function
- *
- * @param error The error to handle
- * @returns An ApiError with standardized format
+ * @param   {string}   handle - The function to handle the error
+ * @param   {unknown}  error  - The error to handle
+ * @returns {ApiError}        An ApiError with standardized format
  */
-export function handleApiError(error: unknown): ApiError {
+export function handleApiError(handle: string, error: unknown): ApiError {
   if (isIError(error)) {
     // Log the error for debugging purposes
-    console.error('API Error:', {
+    console.log('API Error:', {
+      handle: handle,
       message: error.message,
       statusCode: error.statusCode,
       timestamp: new Date().toISOString(),
@@ -56,7 +58,7 @@ export function handleApiError(error: unknown): ApiError {
 
   if (error instanceof Error) {
     // Log the error for debugging purposes
-    console.error('Generic Error:', {
+    console.log('Generic Error:', {
       message: error.message,
       stack: error.stack,
       timestamp: new Date().toISOString(),
@@ -66,7 +68,7 @@ export function handleApiError(error: unknown): ApiError {
   }
 
   // Log unknown errors
-  console.error('Unknown Error:', {
+  console.log('Unknown Error:', {
     error,
     timestamp: new Date().toISOString(),
   });
@@ -76,13 +78,12 @@ export function handleApiError(error: unknown): ApiError {
 
 /**
  * Custom hook for handling API errors in React components
- *
- * @returns A function to handle API errors with toast notifications
+ * @returns {unknown} A function to handle API errors with toast notifications
  */
-export function useApiErrorHandler() {
+export function useApiErrorHandler(): unknown {
   // This would typically integrate with a notification system like toast
   return function handleApiErrorWithNotification(error: unknown): ApiError {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('useApiErrorHandler', error);
     toast.error(apiError.message);
 
     return apiError;
@@ -90,15 +91,14 @@ export function useApiErrorHandler() {
 }
 
 /**
- * Format error message for user display
- *
- * @param error The error to format
- * @param defaultMessage Default message to show if error is not recognized
- * @returns Formatted error message
+ * Format error message for user display.
+ * @param   {unknown} error          - The error to format
+ * @param   {string}  defaultMessage - Default message to show if error is not recognized
+ * @returns {string}                 Formatted error message
  */
 export function formatErrorMessage(
   error: unknown,
-  defaultMessage = 'An error occurred',
+  defaultMessage: string = 'An error occurred',
 ): string {
   if (isIError(error)) {
     switch (error.statusCode) {

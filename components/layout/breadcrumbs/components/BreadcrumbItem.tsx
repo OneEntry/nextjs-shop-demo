@@ -1,23 +1,25 @@
 import Link from 'next/link';
-import { type FC } from 'react';
+import type { JSX } from 'react';
 
 import BreadcrumbProductItem from './BreadcrumbProductItem';
 
-interface BreadcrumbItemProps {
+/**
+ * Breadcrumb item.
+ * @param   {object}      props        - Breadcrumb item props.
+ * @param   {string}      props.link   - current link.
+ * @param   {boolean}     props.isLast - current link is last.
+ * @param   {string}      props.lang   - Current language shortcode.
+ * @returns {JSX.Element}              JSX.Element.
+ */
+const BreadcrumbItem = ({
+  link,
+  isLast,
+  lang,
+}: {
   link: string;
   lang: string;
   isLast: boolean;
-}
-
-/**
- * Breadcrumb item
- * @param link current link
- * @param isLast current link is last
- * @param lang Current language shortcode
- *
- * @returns JSX.Element
- */
-const BreadcrumbItem: FC<BreadcrumbItemProps> = ({ link, isLast, lang }) => {
+}): JSX.Element => {
   const isProductId = Number(link) > 0 && isLast;
 
   return (
@@ -34,7 +36,7 @@ const BreadcrumbItem: FC<BreadcrumbItemProps> = ({ link, isLast, lang }) => {
           </Link>
         </>
       ) : isProductId ? (
-        <BreadcrumbProductItem link={link} lang={lang} />
+        <BreadcrumbProductItem link={link} />
       ) : (
         <div>
           /{' '}

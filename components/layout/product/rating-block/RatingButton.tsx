@@ -1,34 +1,33 @@
 'use client';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
-import type { Dispatch, FC } from 'react';
+import type { Dispatch, JSX, SetStateAction } from 'react';
 import { useEffect, useState } from 'react';
 
 import StarRating from './StarRating';
 
-interface ReviewSectionProps {
+/**
+ * RatingButton.
+ * @param   {object}                            props             - Props for RatingButton.
+ * @param   {number}                            props.rating      - Rating value.
+ * @param   {number}                            props.reviewCount - Review count.
+ * @param   {boolean}                           props.state       - State.
+ * @param   {Dispatch<SetStateAction<boolean>>} props.setState    - Set state.
+ * @param   {IAttributeValues}                  props.dict        - Dictionary
+ * @returns {JSX.Element}                                         RatingButton.
+ */
+const RatingButton = ({
+  dict,
+  rating,
+  reviewCount,
+  state,
+  setState,
+}: {
   dict: IAttributeValues;
   rating: number;
   reviewCount: number;
   state: boolean;
-  setState: Dispatch<React.SetStateAction<boolean>>;
-}
-
-/**
- * RatingButton
- * @param rating
- * @param reviewCount
- * @param state
- * @param setState
- *
- * @returns RatingButton
- */
-const RatingButton: FC<ReviewSectionProps> = ({
-  dict,
-  state,
-  setState,
-  rating,
-  reviewCount,
-}) => {
+  setState: Dispatch<SetStateAction<boolean>>;
+}): JSX.Element => {
   const [reviewsTitle, setReviewsTitle] = useState('');
   const { reviews_title } = dict;
 

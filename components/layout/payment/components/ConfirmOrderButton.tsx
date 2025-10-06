@@ -1,31 +1,29 @@
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IAccountsEntity } from 'oneentry/dist/payments/paymentsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import Loader from '@/components/shared/Loader';
 
-type ConfirmOrderButtonProps = {
-  dict: IAttributeValues;
-  account: IAccountsEntity;
-  isLoading: boolean;
-  onConfirmOrder: () => Promise<void>;
-};
-
 /**
- * Confirm order button
- * @param dict
- * @param account
- * @param isLoading loading state
- * @param onConfirmOrder Confirm order handle
- *
- * @returns JSX.Element
+ * Confirm order button.
+ * @param   {object}           props                - button props object.
+ * @param   {IAttributeValues} props.dict           - dictionary values.
+ * @param   {IAccountsEntity}  props.account        - account.
+ * @param   {boolean}          props.isLoading      - loading state.
+ * @param   {void}             props.onConfirmOrder - Confirm order handle.
+ * @returns {JSX.Element}                           Confirm order button.
  */
-const ConfirmOrderButton: FC<ConfirmOrderButtonProps> = ({
+const ConfirmOrderButton = ({
   dict,
   account,
   isLoading,
   onConfirmOrder,
-}) => {
+}: {
+  dict: IAttributeValues;
+  account: IAccountsEntity;
+  isLoading: boolean;
+  onConfirmOrder: () => Promise<void>;
+}): JSX.Element => {
   const { apply_button_placeholder, pay_with_stripe } = dict;
 
   return (

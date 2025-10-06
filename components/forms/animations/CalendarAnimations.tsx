@@ -2,39 +2,41 @@
 
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
-import type { FC, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useContext, useRef } from 'react';
 
 import { OpenDrawerContext } from '@/app/store/providers/OpenDrawerContext';
 
-interface CalendarAnimationsProps {
-  children: ReactNode;
-  className: string;
-}
-
 /**
- * Calendar animations
- *
- * @param children children ReactNode
- * @param className CSS className of ref element
+ * Calendar animations.
+ * @param   {object}      props           - Props for CalendarAnimations.
+ * @param   {ReactNode}   props.children  - children ReactNode.
+ * @param   {string}      props.className - CSS className of ref element.
+ * @returns {JSX.Element}                 Calendar animations.
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns Calendar animations
  */
-const CalendarAnimations: FC<CalendarAnimationsProps> = ({
+const CalendarAnimations = ({
   children,
   className,
-}) => {
-  const { open, transition } = useContext(OpenDrawerContext); // Get open and transition states from context
-  const ref = useRef(null); // Reference to the DOM element for animations
+}: {
+  children: ReactNode;
+  className: string;
+}): JSX.Element => {
+  // Get open and transition states from context
+  const { open, transition } = useContext(OpenDrawerContext);
+  // Reference to the DOM element for animations
+  const ref = useRef(null);
 
   // Form transition animations
   useGSAP(() => {
+    // If the reference is not set, exit early
     if (!ref.current) {
-      return; // If the reference is not set, exit early
+      return;
     }
 
+    // Create a new GSAP timeline and pause it initially
     const tl = gsap.timeline({
-      paused: true, // Create a new GSAP timeline and pause it initially
+      paused: true,
     });
 
     // Define animation for calendar weekdays and buttons

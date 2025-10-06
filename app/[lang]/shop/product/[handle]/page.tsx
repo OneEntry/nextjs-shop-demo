@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { getDictionary } from '@/app/[lang]/dictionaries';
 import { getProductById, getProducts } from '@/app/api';
@@ -16,16 +16,17 @@ import type { Locale } from '@/i18n-config';
 import { i18n } from '@/i18n-config';
 
 /**
- * Product page
- *
- * @async server component
- * @param params page params
+ * Product page.
+ * @param   {object}                                    props        - Page props.
+ * @param   {Promise<{ handle: string; lang: string }>} props.params - Page params with handle and lang.
+ * @returns {Promise<JSX.Element>}                                   Promise<JSX.Element> - Product page layout.
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns Product page layout JSX.Element
  */
-const ProductPageLayout: FC<{
+const ProductPageLayout = async ({
+  params,
+}: {
   params: Promise<{ handle: string; lang: string }>;
-}> = async ({ params }) => {
+}): Promise<JSX.Element> => {
   const { lang, handle } = await params;
   // Get the dictionary from the API and set the server provider.
   const dict = await getDictionary(lang as Locale);
@@ -33,16 +34,17 @@ const ProductPageLayout: FC<{
   // Get product by current Id
   const { product, isError } = await getProductById(Number(handle), lang);
 
+  // Return 404 page if product not found or an error occurred
   if (isError || !product) {
     return notFound();
   }
 
-  // extract data from product
+  // Extract data from product for structured data generation
   const { attributeValues, localizeInfos, additional, statusIdentifier } =
     product;
 
   /**
-   * product Json liked data
+   * Product JSON-LD structured data for SEO
    * https://json-ld.org/
    */
   const productJsonLd = {
@@ -84,11 +86,16 @@ const ProductPageLayout: FC<{
 export default ProductPageLayout;
 
 /**
- * Pre-generation of a portion of product cards for each locale
+ * Pre-generation of a portion of product cards for each locale.
+ * @returns {Promise<Array<{ lang: string; handle: string }>>} Array of parameters for static generation.
  */
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<
+  Array<{ lang: string; handle: string }>
+> {
   const params: Array<{ lang: string; handle: string }> = [];
+  // Iterate through each supported locale to generate params
   for (const lang of i18n.locales) {
+    // Fetch products for the current locale with a limit of 100
     const { products } = await getProducts({
       lang,
       params: {},
@@ -96,9 +103,11 @@ export async function generateStaticParams() {
       limit: 100,
     });
 
+    // Process products and add them to the params array
     if (products && Array.isArray(products)) {
       for (const product of products) {
         if (product) {
+          // Add product ID as handle parameter for static generation
           params.push({ lang, handle: String(product.id) });
         }
       }
@@ -108,11 +117,11 @@ export async function generateStaticParams() {
 }
 
 /**
- * Generate page metadata
- * @async server component
- * @param params page params
+ * Generate page metadata.
+ * @param   {object}                                    props        - Page params with handle and lang.
+ * @param   {Promise<{ handle: string; lang: string }>} props.params - Page params with handle and lang.
+ * @returns {Promise<Metadata>}                                      Metadata object.
  * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
- * @returns metadata
  */
 export async function generateMetadata({
   params,
@@ -120,15 +129,18 @@ export async function generateMetadata({
   params: Promise<{ handle: string; lang: string }>;
 }): Promise<Metadata> {
   const { handle, lang } = await params;
+  // Fetch product data by ID for the current locale
   const result = await getProductById(Number(handle), lang);
   const { product, isError } = result;
 
+  // Return 404 page if product not found or an error occurred
   if (isError || !product) {
     return notFound();
   }
+  // Extract required data from product for metadata generation
   const { attributeValues, localizeInfos, isVisible } = product;
 
-  // Return metadata object
+  // Generate and return metadata object using the extracted data
   return generatePageMetadata({
     handle: handle,
     title: localizeInfos.title,

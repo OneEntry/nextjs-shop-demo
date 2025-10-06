@@ -3,24 +3,24 @@
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
 import { useTransitionState } from 'next-transition-router';
-import type { FC, ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { useRef, useState } from 'react';
 
-interface CardsGridAnimationsProps {
-  children: ReactNode;
-  className: string;
-}
 /**
- * CardsGrid animations
- * @param children children ReactNode
- * @param className CSS className of ref element
+ * CardsGrid animations.
+ * @param   {object}      props           - Card animations props.
+ * @param   {ReactNode}   props.children  - children ReactNode.
+ * @param   {string}      props.className - CSS className of ref element.
+ * @returns {JSX.Element}                 CardsGrid animations.
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns CardsGrid animations
  */
-const CardsGridAnimations: FC<CardsGridAnimationsProps> = ({
+const CardsGridAnimations = ({
   children,
   className,
-}) => {
+}: {
+  children: ReactNode;
+  className: string;
+}): JSX.Element => {
   const { stage } = useTransitionState();
   const [prevStage, setPrevStage] = useState('');
   const ref = useRef(null);

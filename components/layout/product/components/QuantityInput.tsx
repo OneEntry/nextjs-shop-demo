@@ -1,25 +1,27 @@
 'use client';
 
-import type { ChangeEvent, FC } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 
 import { useAppDispatch } from '@/app/store/hooks';
 import { setProductQty } from '@/app/store/reducers/CartSlice';
 
-// Define the props interface for the QuantityInput component.
-interface QuantitySelectorProps {
-  id: number; // The unique identifier for the product.
-  qty: number; // The current quantity of the product in the cart.
-  units: number; // The total available units of the product in the shop.
-}
 /**
- * Product quantity input component
- * @param id - product id
- * @param qty - current cart count
- * @param units - count of product in shop
- *
- * @returns A JSX element representing the quantity input field.
+ * Product quantity input component.
+ * @param   {object}      props       - Component properties.
+ * @param   {number}      props.id    - product id.
+ * @param   {number}      props.qty   - current cart count.
+ * @param   {number}      props.units - count of product in shop.
+ * @returns {JSX.Element}             A JSX element representing the quantity input field.
  */
-const QuantityInput: FC<QuantitySelectorProps> = ({ id, qty, units }) => {
+const QuantityInput = ({
+  id,
+  qty,
+  units,
+}: {
+  id: number;
+  qty: number;
+  units: number;
+}): JSX.Element => {
   const dispatch = useAppDispatch();
 
   // Set ProductQty in cartSlice on change input value

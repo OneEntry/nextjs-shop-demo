@@ -7,15 +7,21 @@ type LogInProps = { login: string; password: string };
 
 /**
  * User authorization with API AuthProvider
- * @async
- * @param login
- * @param password
+ * @param   {LogInProps}      props          - User authorization data.
+ * @param   {string}          props.login    - User login.
+ * @param   {string}          props.password - User password.
+ * @returns {Promise<object>}                User authorization result.
  * @see {@link https://doc.oneentry.cloud/docs/users OneEntry CMS docs}
  * @see {@link https://oneentry.cloud/instructions/npm OneEntry SDK docs}
- *
- * @returns result
  */
-export const logInUser = async ({ login, password }: LogInProps) => {
+export const logInUser = async ({
+  login,
+  password,
+}: LogInProps): Promise<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any;
+  error?: string;
+}> => {
   try {
     const preparedData: IAuthPostBody = {
       authData: [
@@ -36,7 +42,7 @@ export const logInUser = async ({ login, password }: LogInProps) => {
     // Handle case where result exists but doesn't have required tokens
     return { error: 'Authentication failed' };
   } catch (error) {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('auth', error);
     return { error: apiError.message };
   }
 };

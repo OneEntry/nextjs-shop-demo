@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { ratingsData } from '@/components/data';
 
@@ -6,22 +6,25 @@ import ReviewAnimations from '../animations/ReviewAnimations';
 import RatingRow from './RatingRow';
 import StarRating from './StarRating';
 
-interface RatingBlockProps {
+/**
+ * Rating block.
+ * @param   {object}      props                           - Rating block props.
+ * @param   {object}      props.productRating             - product rating data.
+ * @param   {number}      props.productRating.rating      - rating value.
+ * @param   {number}      props.productRating.reviewCount - number of reviews
+ * @param   {boolean}     props.state                     - animation state
+ * @returns {JSX.Element}                                 RatingBlock component.
+ */
+const RatingBlock = ({
+  productRating,
+  state,
+}: {
   productRating: {
     rating: number;
     reviewCount: number;
   };
   state: boolean;
-}
-
-/**
- * RatingBlock
- * @param productRating
- * @param state
- *
- * @returns RatingBlock
- */
-const RatingBlock: FC<RatingBlockProps> = ({ productRating, state }) => {
+}): JSX.Element => {
   return (
     <ReviewAnimations
       className="flex max-w-[420px] flex-col px-5 max-md:max-w-full"

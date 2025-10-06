@@ -7,6 +7,11 @@ import { i18n } from './i18n-config';
 
 const PUBLIC_FILE = /\.(.*)$/;
 
+/**
+ * Get the preferred locale, similar to Negotiator but without bundled locales
+ * @param   {NextRequest}        request - The incoming HTTP request
+ * @returns {string | undefined}         The preferred locale
+ */
 function getLocale(request: NextRequest): string | undefined {
   const negotiatorHeaders: Record<string, string> = {};
   request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
@@ -23,10 +28,15 @@ function getLocale(request: NextRequest): string | undefined {
   return locale;
 }
 
-export async function middleware(request: NextRequest) {
+/**
+ * Middleware
+ * @param   {NextRequest}           request - The incoming HTTP request
+ * @returns {Promise<NextResponse>}         The response
+ */
+export async function middleware(request: NextRequest): Promise<NextResponse> {
   const pathname = request.nextUrl.pathname;
   if (PUBLIC_FILE.test(pathname)) {
-    return;
+    return NextResponse.next();
   }
 
   const pathnameIsMissingLocale = i18n.locales.every(

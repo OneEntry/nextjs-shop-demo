@@ -1,12 +1,12 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 /**
- * Error message
- * @param error error text
- *
- * @returns Error message
+ * Error message.
+ * @param   {object}      props       - Component props.
+ * @param   {string}      props.error - Error message.
+ * @returns {JSX.Element}             Error message component.
  */
-const ErrorMessage: FC<{ error: string }> = ({ error }) => {
+const ErrorMessage = ({ error }: { error: string }): JSX.Element => {
   return <div className="text-center text-sm text-red-500">{error}</div>;
 };
 

@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { getMenuByMarker } from '@/app/api';
 import { ServerProvider } from '@/app/store/providers/ServerProvider';
@@ -9,19 +9,18 @@ import MainMenuLoader from './components/MenuLoader';
 import NavigationMenu from './components/NavigationMenu';
 
 /**
- * Main menu
- * @async server component
- * @returns JSX.Element
+ * Main menu.
+ * @returns {Promise<JSX.Element>} JSX.Element.
  */
-const MainMenu: FC = async () => {
+const MainMenu = async (): Promise<JSX.Element> => {
   // Get props from server provider
   const [lang] = ServerProvider('lang');
 
   // Get menu by marker from api
-  const { isError, menu } = await getMenuByMarker('main_web', lang);
+  const { isError, menu } = await getMenuByMarker('main_web', lang as string);
 
   if (isError) {
-    return;
+    return <></>;
   }
 
   if (!menu || !menu.pages) {
@@ -36,8 +35,8 @@ const MainMenu: FC = async () => {
 
   return (
     <>
-      <NavigationMenu menu={mainMenu} lang={lang} />
-      <OffscreenModal menu={mainMenu} lang={lang} />
+      <NavigationMenu menu={mainMenu} lang={lang as string} />
+      <OffscreenModal menu={mainMenu} lang={lang as string} />
     </>
   );
 };

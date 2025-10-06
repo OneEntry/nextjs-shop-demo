@@ -1,7 +1,7 @@
 'use client';
 
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useContext, useMemo } from 'react';
 import { toast } from 'react-toastify';
 
@@ -17,24 +17,19 @@ import { selectFavoritesItems } from '@/app/store/reducers/FavoritesSlice';
 
 import QuantitySelector from './QuantitySelector';
 
-interface AddToCartProps {
-  id: number;
-  units: number;
-  productTitle: string;
-  statusIdentifier: string;
-  className: string;
-  height: number;
-  dict: IAttributeValues;
-}
-
 /**
  * AddToCart button with qty selector
- * @param id product id
- * @param units product units qty
- *
- * @returns Button | Qty selector
+ * @param   {object}           props                  - Add to cart props
+ * @param   {number}           props.id               - product id
+ * @param   {number}           props.units            - product units qty
+ * @param   {string}           props.productTitle     - product title
+ * @param   {string}           props.statusIdentifier - product status identifier
+ * @param   {string}           props.className        - CSS class name
+ * @param   {number}           props.height           - component height
+ * @param   {IAttributeValues} props.dict             - dictionary from server api
+ * @returns {JSX.Element}                             Button | Qty selector
  */
-const AddToCartButton: FC<AddToCartProps> = ({
+const AddToCartButton = ({
   id,
   units,
   productTitle,
@@ -42,7 +37,15 @@ const AddToCartButton: FC<AddToCartProps> = ({
   className,
   height,
   dict,
-}) => {
+}: {
+  id: number;
+  units: number;
+  productTitle: string;
+  statusIdentifier: string;
+  className: string;
+  height: number;
+  dict: IAttributeValues;
+}): JSX.Element => {
   const dispatch = useAppDispatch();
   const inCart = useAppSelector((state) => selectIsInCart(state, id));
   const items = useAppSelector((state) => state.cartReducer.productsData);
@@ -68,6 +71,9 @@ const AddToCartButton: FC<AddToCartProps> = ({
 
   // Update user state and subscribe to events
   const updateUserCartState = async () => {
+    if (!user) {
+      return;
+    }
     const updatedItems = items.some((product) => product.id === id)
       ? items.map((product) => ({
           id: product.id,

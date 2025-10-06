@@ -1,6 +1,6 @@
+/* eslint-disable jsdoc/reject-any-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { IAttributes } from 'oneentry/dist/base/utils';
-import type { FC, Key } from 'react';
+import type { JSX, Key } from 'react';
 import React, { useEffect, useState } from 'react';
 
 import { useAppDispatch } from '@/app/store/hooks';
@@ -11,15 +11,26 @@ import EyeIcon from '@/components/icons/eye';
 import EyeOpenIcon from '@/components/icons/eye-o';
 
 /**
- * FormInput
- * @param value field value
- * @param index Index of element for animations stagger
- *
- * @returns FormInput
+ * FormInput.
+ * @param   {object}              field               - Field properties.
+ * @param   {string}              field.value         - Field value.
+ * @param   {string}              field.marker        - Field marker.
+ * @param   {string}              field.type          - Field type.
+ * @param   {Record<string, any>} field.validators    - Field validators.
+ * @param   {number}              field.index         - Field index.
+ * @param   {Record<string, any>} field.listTitles    - List titles.
+ * @param   {Record<string, any>} field.localizeInfos - Localize info.
+ * @returns {JSX.Element}                             Form input.
  */
-const FormInput: FC<IAttributes & { value?: string; index: number }> = (
-  field,
-) => {
+const FormInput = (field: {
+  marker: string;
+  type: string;
+  value: string;
+  validators?: Record<string, any>;
+  index?: number;
+  listTitles?: Record<string, any>;
+  localizeInfos?: Record<string, any>;
+}): JSX.Element => {
   const { localizeInfos } = field;
   const [value, setValue] = useState<string>(field.value || '');
   const [type, setType] = useState<string>('');
@@ -27,14 +38,14 @@ const FormInput: FC<IAttributes & { value?: string; index: number }> = (
   const valid = true;
 
   const fieldType = (FormFieldsEnum as unknown as FormFieldsEnum)[
-    field.marker.indexOf('password') !== -1
+    field?.marker?.indexOf('password') !== -1
       ? 'password'
       : field.marker.indexOf('email') !== -1
         ? 'email'
         : (field.type as any)
   ];
 
-  const required = field.validators['requiredValidator']?.strict || false;
+  const required = field?.validators?.['requiredValidator']?.strict || false;
 
   useEffect(() => {
     dispatch(
@@ -53,11 +64,11 @@ const FormInput: FC<IAttributes & { value?: string; index: number }> = (
   }, [fieldType]);
 
   if (!field || !type) {
-    return;
+    return <></>;
   }
 
   return (
-    <FormFieldAnimations index={field.index} className="input-group">
+    <FormFieldAnimations index={field.index as number} className="input-group">
       <label htmlFor={field.marker} className="text-gray-400">
         {localizeInfos?.title}{' '}
         {required && <span className="text-red-500">*</span>}
@@ -71,13 +82,30 @@ const FormInput: FC<IAttributes & { value?: string; index: number }> = (
           value={value}
           onChange={(val) => setValue(val.currentTarget.value)}
         >
-          {field.listTitles.map((option, i: Key) => {
-            return (
-              <option key={i} value={option.value as string}>
-                {option.title}
-              </option>
-            );
-          })}
+          {field.listTitles?.map(
+            (
+              option: {
+                value: string;
+                title:
+                  | string
+                  | number
+                  | bigint
+                  | boolean
+                  | Iterable<React.ReactNode>
+                  | React.ReactPortal
+                  | Promise<unknown>
+                  | null
+                  | undefined;
+              },
+              i: Key,
+            ) => {
+              return (
+                <option key={i} value={option.value as string}>
+                  {option.title as string}
+                </option>
+              );
+            },
+          )}
         </select>
       )}
       {/* inputType textarea */}
@@ -101,8 +129,8 @@ const FormInput: FC<IAttributes & { value?: string; index: number }> = (
           required={required}
           onChange={(val) => setValue(val.currentTarget.value)}
           autoComplete={fieldType === 'password' ? 'password' : ''}
-          minLength={field.validators['stringInspectionValidator']?.stringMin}
-          maxLength={field.validators['stringInspectionValidator']?.stringMax}
+          minLength={field.validators?.['stringInspectionValidator']?.stringMin}
+          maxLength={field.validators?.['stringInspectionValidator']?.stringMax}
           value={value}
         />
       )}

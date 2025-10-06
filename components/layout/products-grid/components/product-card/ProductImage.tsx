@@ -1,25 +1,23 @@
 import type { AttributeType } from 'oneentry/dist/base/utils';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import OptimizedImage from '@/components/shared/OptimizedImage';
 
-interface ProductImageProps {
+/**
+ * Product image.
+ * @param   {object}        props                 - Component props.
+ * @param   {AttributeType} props.attributeValues - product attributes.
+ * @param   {string}        props.alt             - alt text for image.
+ * @returns {JSX.Element}                         - Product image/placeholder.
+ */
+const ProductImage = ({
+  attributeValues,
+  alt,
+}: {
   attributeValues: AttributeType;
   alt: string;
-}
-
-/**
- * Product image
- *
- * @param attributes - product attributes
- * @param alt - alt text for image
- * @returns Product image/placeholder
- */
-const ProductImage: FC<ProductImageProps> = ({
-  attributeValues: { pic },
-  alt,
-}) => {
-  const imageSrc = pic?.value?.downloadLink;
+}): JSX.Element => {
+  const imageSrc = attributeValues?.pic;
 
   return (
     <div className="relative mb-3 size-40">
@@ -27,7 +25,7 @@ const ProductImage: FC<ProductImageProps> = ({
         <OptimizedImage
           fill
           sizes="(min-width: 300px) 66vw, 100vw"
-          src={pic}
+          src={imageSrc}
           alt={alt}
           loading="lazy"
           className="size-40 shrink-0 relative transition-transform duration-500 group-hover:scale-125"

@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IOrderByMarkerEntity } from 'oneentry/dist/orders/ordersInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useContext, useEffect, useState } from 'react';
 
 import FadeTransition from '@/app/animations/FadeTransition';
@@ -18,7 +18,27 @@ import EmptyOrders from './components/EmptyOrders';
 import Order from './components/OrderRow';
 import OrdersTableLoader from './components/OrdersTableLoader';
 
-interface OrdersPageProps {
+/**
+ * Orders page component.
+ * @param   {object}           props                             - Props for the component.
+ * @param   {string}           props.lang                        - current language shortcode.
+ * @param   {IAttributeValues} props.dict                        - dictionary from server api.
+ * @param   {object}           props.settings                    - settings from server api.
+ * @param   {object}           props.settings.orders_limit       - orders limit.
+ * @param   {number}           props.settings.orders_limit.value - orders limit value.
+ * @param   {object}           props.settings.date_title         - date title.
+ * @param   {string}           props.settings.date_title.value   - date title value.
+ * @param   {object}           props.settings.total_title        - total title.
+ * @param   {string}           props.settings.total_title.value  - total title value.
+ * @param   {object}           props.settings.status_title       - status title.
+ * @param   {string}           props.settings.status_title.value - status title value.
+ * @returns {JSX.Element}                                        JSX.Element
+ */
+const OrdersPage = ({
+  lang,
+  dict,
+  settings,
+}: {
   lang: string;
   dict: IAttributeValues;
   settings: {
@@ -35,24 +55,7 @@ interface OrdersPageProps {
       value: string;
     };
   };
-}
-
-interface OrderState {
-  orders?: IOrderByMarkerEntity[] | undefined;
-  total: number;
-  loading: boolean;
-  error?: string | undefined;
-}
-
-/**
- * Orders page
- * @param lang current language shortcode
- * * @param dict dictionary from server api
- * @param settings
- *
- * @returns JSX.Element
- */
-const OrdersPage: FC<OrdersPageProps> = ({ lang, dict, settings }) => {
+}): JSX.Element => {
   // Handle useSearchParams in a try/catch to prevent build errors
   let currentPage = 1;
   try {
@@ -66,7 +69,12 @@ const OrdersPage: FC<OrdersPageProps> = ({ lang, dict, settings }) => {
 
   const { isAuth } = useContext(AuthContext);
 
-  const [orderState, setOrderState] = useState<OrderState>({
+  const [orderState, setOrderState] = useState<{
+    orders?: IOrderByMarkerEntity[] | undefined;
+    total: number;
+    loading: boolean;
+    error?: string | undefined;
+  }>({
     orders: undefined,
     total: 0,
     loading: true,
@@ -106,7 +114,7 @@ const OrdersPage: FC<OrdersPageProps> = ({ lang, dict, settings }) => {
 
         if (isError) {
           // eslint-disable-next-line no-console
-          console.error('Failed to fetch orders:', error);
+          console.log('Failed to fetch orders:', error);
           setOrderState((prev) => ({
             ...prev,
             loading: false,
@@ -115,7 +123,7 @@ const OrdersPage: FC<OrdersPageProps> = ({ lang, dict, settings }) => {
         }
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error('Unexpected error fetching orders:', error);
+        console.log('Unexpected error fetching orders:', error);
         setOrderState((prev) => ({
           ...prev,
           loading: false,

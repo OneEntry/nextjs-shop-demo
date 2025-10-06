@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import type { IUserEntity } from 'oneentry/dist/users/usersInterfaces';
-import type { ReactNode } from 'react';
+import type { JSX, ReactNode } from 'react';
 import { createContext, useEffect, useState } from 'react';
 
-import { useLazyGetMeQuery } from '@/app/api';
+import {
+  // reDefine,
+  useLazyGetMeQuery,
+} from '@/app/api';
 import { updateUserState } from '@/app/api/server/users/updateUserState';
 import type { IProducts } from '@/app/types/global';
 
@@ -24,21 +26,23 @@ import {
   setFavoritesVersion,
 } from '../reducers/FavoritesSlice';
 
-type ContextProps = {
+/**
+ * Authentication context
+ * @property {boolean}     isAuth       - Authentication status
+ * @property {boolean}     isLoading    - Loading status
+ * @property {string}      userToken    - User token
+ * @property {IUserEntity} user         - User entity
+ * @property {void}        authenticate - Authentication function
+ * @property {void}        refreshUser  - User refresh function
+ */
+export const AuthContext = createContext<{
   isAuth: boolean;
   isLoading: boolean;
   userToken?: string;
   user?: IUserEntity;
   authenticate: () => void;
   refreshUser: () => void;
-};
-
-type AuthProviderProps = {
-  children: ReactNode;
-  langCode: string;
-};
-
-export const AuthContext = createContext<ContextProps>({
+}>({
   isAuth: false,
   isLoading: false,
   authenticate: () => {},
@@ -47,18 +51,25 @@ export const AuthContext = createContext<ContextProps>({
 
 /**
  * Auth provider
- * @param children children ReactNode
- * @param langCode current language code
- *
- * @returns AuthContext Provider
+ * @param   {object}      props          - Auth provider properties
+ * @param   {ReactNode}   props.children - Children ReactNode
+ * @param   {string}      props.langCode - Current language code
+ * @returns {JSX.Element}                AuthContext Provider
  */
-export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
+export const AuthProvider = ({
+  children,
+  langCode,
+}: {
+  children: ReactNode;
+  langCode: string;
+}): JSX.Element => {
   const dispatch = useAppDispatch();
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [user, setUser] = useState<IUserEntity | undefined>();
   const [refetch, setRefetch] = useState<boolean>(false);
   const [refetchUser, setRefetchUser] = useState<boolean>(false);
+
   /**
    * Get user data from redux AppSelector
    */
@@ -73,15 +84,12 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
   /**
    * Check user data loop
    */
-  const [trigger, { isError }] = useLazyGetMeQuery({
-    pollingInterval: isAuth ? 3000 : 0,
-  });
+  const [trigger, { isError }] = useLazyGetMeQuery();
 
   /**
    * Initialize authorization
-   * @async
    */
-  const onInit = async () => {
+  const onInit = async (): Promise<void> => {
     const refresh = localStorage.getItem('refresh-token');
 
     if (!refresh) {
@@ -94,9 +102,9 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
 
   /**
    * Check refresh token
-   * @async
    */
-  const checkToken = async () => {
+  const checkToken = async (): Promise<void> => {
+    setIsLoading(true);
     trigger({
       langCode,
     })
@@ -108,18 +116,22 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
           setUser(res.data);
           setIsAuth(true);
         }
+        setIsLoading(false);
       })
       .catch(async () => {
         localStorage.setItem('refresh-token', '');
         setIsAuth(false);
+        setIsLoading(false);
       });
   };
 
   /**
    * Update user state on server
-   * @async
    */
-  const updateUserData = async () => {
+  const updateUserData = async (): Promise<void> => {
+    if (!user) {
+      return;
+    }
     await updateUserState({
       cart: productsInCart,
       favorites: favoritesIds,
@@ -133,6 +145,7 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
       return;
     }
     updateUserData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth, user, productsInCart, favoritesIds]);
 
   // Load cart from user state
@@ -146,6 +159,7 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
       );
     });
     dispatch(setCartVersion(1));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth, user]);
 
   // Load favorites from user state
@@ -157,6 +171,7 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
       dispatch(addFavorites(element));
     });
     dispatch(setFavoritesVersion(1));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuth, user]);
 
   // Refetch
@@ -165,6 +180,7 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
     onInit().then(() => {
       setIsLoading(false);
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refetch, langCode]);
 
   // Refetch if error and has refresh-token
@@ -172,8 +188,8 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
     const refresh = localStorage.getItem('refresh-token');
     if (isError && refresh) {
       setRefetch(true);
-      localStorage.setItem('refresh-token', '');
-      setIsAuth(false);
+      // localStorage.setItem('refresh-token', '');
+      // setIsAuth(false);
     }
   }, [isError]);
 
@@ -182,7 +198,8 @@ export const AuthProvider = ({ children, langCode }: AuthProviderProps) => {
     if (isAuth) {
       checkToken();
     }
-  }, [refetch, refetchUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refetch, refetchUser, isAuth]);
 
   const value = {
     isAuth,

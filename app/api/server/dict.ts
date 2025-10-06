@@ -4,10 +4,9 @@ import { getBlockByMarker } from '@/app/api';
 import { handleApiError } from '@/app/utils/errorHandler';
 
 /**
- * Dictionary - get block by Marker with API Blocks
- *
- * @param langCode Current language code
- * @returns Current language dictionary
+ * Dictionary - get block by Marker with API Blocks.
+ * @param   {string}                    langCode - Current language code.
+ * @returns {Promise<IAttributeValues>}          Current language dictionary.
  */
 const dict = async (langCode: string): Promise<IAttributeValues> => {
   try {
@@ -22,9 +21,9 @@ const dict = async (langCode: string): Promise<IAttributeValues> => {
       return { ...block?.attributeValues };
     }
   } catch (error) {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('dict', error);
     // eslint-disable-next-line no-console
-    console.error('Dictionary fetch error:', apiError.message);
+    console.log('Dictionary fetch error:', apiError.message);
     return {};
   }
 };

@@ -1,13 +1,25 @@
 'use client';
 
+import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
 
-export default function ApiTestPage() {
+/**
+ * The API test page component for testing API performance
+ * @returns {JSX.Element} The API test page component
+ */
+export default function ApiTestPage(): JSX.Element {
   const [loadingTimes, setLoadingTimes] = useState<number[]>([]);
   const [averageTime, setAverageTime] = useState<number>(0);
 
-  const testApiPerformance = async () => {
+  /**
+   * Test API performance
+   * Tests API response time by sending 20 requests to the /api/test-connection endpoint
+   * Records the time taken for each request and calculates the average response time
+   * @returns {Promise<void>}
+   */
+  const testApiPerformance = async (): Promise<void> => {
     const times = [];
+    // Loop 20 times to get sufficient data points for performance analysis
     for (let i = 0; i < 20; i++) {
       const startTime = performance.now();
       try {
@@ -17,12 +29,14 @@ export default function ApiTestPage() {
         times.push(endTime - startTime);
       } catch (error) {
         // eslint-disable-next-line no-console
-        console.error('API test failed:', error);
+        console.log('API test failed:', error);
         times.push(-1);
       }
     }
     setLoadingTimes(times);
+    // Filter out successful request times (values greater than 0)
     const validTimes = times.filter((t) => t > 0);
+    // Calculate and set the average response time
     if (validTimes.length > 0) {
       const avg = validTimes.reduce((a, b) => a + b, 0) / validTimes.length;
       setAverageTime(avg);

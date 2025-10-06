@@ -1,7 +1,7 @@
 'use client';
 
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useContext, useEffect, useMemo } from 'react';
 
 import { useGetAccountsQuery, useGetProductsByIdsQuery } from '@/app/api';
@@ -22,13 +22,13 @@ import Loader from '@/components/shared/Loader';
 import EmptyCart from '../cart/components/EmptyCart';
 
 /**
- * Payment page
- * @param lang current language shortcode
- * @param dict dictionary from server api
- *
- * @returns JSX.Element
+ * Payment page.
+ * @param   {SimplePageProps}  props      - SimplePageProps.
+ * @param   {string}           props.lang - current language shortcode.
+ * @param   {IAttributeValues} props.dict - dictionary from server api.
+ * @returns {JSX.Element}                 JSX.Element.
  */
-const PaymentPage: FC<SimplePageProps> = ({ lang, dict }) => {
+const PaymentPage = ({ lang, dict }: SimplePageProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const { isAuth } = useContext(AuthContext);
 
@@ -151,6 +151,10 @@ const PaymentPage: FC<SimplePageProps> = ({ lang, dict }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productsInOrder]);
+
+  if (!dict) {
+    return <></>;
+  }
 
   // Auth Error
   if (!isAuth || error) {

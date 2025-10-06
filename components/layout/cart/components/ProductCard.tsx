@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { memo } from 'react';
 
 import { useAppDispatch } from '@/app/store/hooks';
@@ -12,28 +12,26 @@ import ProductAnimations from '../animations/ProductAnimations';
 import DeleteButton from './DeleteButton';
 import PriceDisplay from './PriceDisplay';
 
-interface ProductCardProps {
-  product: IProductsEntity;
-  selected: boolean;
-  lang: string;
-  index: number;
-}
-
 /**
- * Product card in cart
- * @param product product entity object.
- * @param selected product selected?
- * @param lang Current language shortcode
- * @param index index of element in array for stagger
- *
- * @returns ProductCard with animations
+ * Product card in cart.
+ * @param   {object}          props          - Product card props.
+ * @param   {IProductsEntity} props.product  - product entity object.
+ * @param   {boolean}         props.selected - product selected.
+ * @param   {string}          props.lang     - Current language shortcode.
+ * @param   {number}          props.index    - index of element in array for stagger.
+ * @returns {JSX.Element}                    ProductCard with animations.
  */
-const ProductCard: FC<ProductCardProps> = ({
+const ProductCard = ({
   product,
   selected,
   lang,
   index,
-}) => {
+}: {
+  product: IProductsEntity;
+  selected: boolean;
+  lang: string;
+  index: number;
+}): JSX.Element => {
   const dispatch = useAppDispatch();
   // extract data from product
   const {
@@ -42,7 +40,6 @@ const ProductCard: FC<ProductCardProps> = ({
     localizeInfos,
   } = product;
 
-  const imgSrc = pic?.value.downloadLink;
   const title = localizeInfos?.title;
   // Handle checkbox toggle: when checked, it means the user wants to select the product
   const handleCheckboxChange = () => {
@@ -74,7 +71,7 @@ const ProductCard: FC<ProductCardProps> = ({
             width={130}
             height={150}
             loading="lazy"
-            src={imgSrc}
+            src={pic}
             alt={title}
             quality={75}
             className="size-full shrink-0 self-start object-cover"
@@ -109,14 +106,4 @@ const ProductCard: FC<ProductCardProps> = ({
   );
 };
 
-// Memoize component to prevent unnecessary re-renders
-const MemoizedProductCard = memo(ProductCard, (prevProps, nextProps) => {
-  return (
-    prevProps.selected === nextProps.selected &&
-    prevProps.lang === nextProps.lang &&
-    prevProps.index === nextProps.index &&
-    prevProps.product.id === nextProps.product.id
-  );
-});
-
-export default MemoizedProductCard;
+export default memo(ProductCard);

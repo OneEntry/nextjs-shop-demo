@@ -1,11 +1,10 @@
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Review form
- *
- * @returns ReviewForm
+ * @returns {JSX.Element} ReviewForm
  */
-const ReviewForm: FC = () => {
+const ReviewForm = (): JSX.Element => {
   return (
     <form className="relative box-border flex shrink-0 flex-col">
       <label htmlFor="reviewInput" className="sr-only">

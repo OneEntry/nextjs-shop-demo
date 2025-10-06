@@ -1,5 +1,5 @@
 import type { IProductsEntity } from 'oneentry/dist/products/productsInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import WithSidebar from '@/app/[lang]/[page]/WithSidebar';
 import { getProductById } from '@/app/api';
@@ -21,13 +21,16 @@ type ProductResponse = {
 };
 
 /**
- * Cart page
- * @async server component
- * @param params
+ * Cart page layout component that renders the shopping cart page
+ *
+ * This async server component fetches dictionary data for internationalization
+ * and delivery product data, then renders the cart page with sidebar layout.
+ * @param   {object}               props        - Page props
+ * @param   {PageProps}            props.params - page params containing route parameters
+ * @returns {Promise<JSX.Element>}              Cart page layout JSX.Element
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns Cart page layout JSX.Element
  */
-const CartPageLayout: FC<PageProps> = async ({ params }) => {
+const CartPageLayout = async ({ params }: PageProps): Promise<JSX.Element> => {
   const { lang } = await params;
   // Get dictionary and set to server provider
   const [dict] = ServerProvider('dict', await getDictionary(lang as Locale));
@@ -57,8 +60,9 @@ export default CartPageLayout;
 
 /**
  * Pre-generation page params
+ * @returns {Promise<{ lang: string }[]>} Static params for pre-generation
  */
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ lang: string }[]> {
   const params: Array<{ lang: string }> = [];
   for (const lang of i18n.locales) {
     params.push({ lang });

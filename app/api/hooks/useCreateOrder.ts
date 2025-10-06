@@ -13,10 +13,20 @@ import { handleApiError } from '@/app/utils/errorHandler';
 
 /**
  * Create order function
- * @param langCode current language code
- * @returns useCreateOrder object
+ * @param   {object} props          - useCreateOrder props
+ * @param   {string} props.langCode - Language code
+ * @returns {object}                useCreateOrder object with onConfirmOrder function, loading state and error state
  */
-export const useCreateOrder = ({ langCode }: { langCode: string }) => {
+export const useCreateOrder = ({
+  langCode,
+}: {
+  langCode: string;
+}): {
+  onConfirmOrder: any;
+  isLoading: any;
+  error: any;
+  setError: any;
+} => {
   const router = useTransitionRouter();
   const dispatch = useAppDispatch();
   const order = useAppSelector((state) => state.orderReducer.order);
@@ -26,13 +36,13 @@ export const useCreateOrder = ({ langCode }: { langCode: string }) => {
 
   /**
    * Create payment session with Payments API
-   * @async
+   * @param   {number}          id - Order id
+   * @returns {Promise<string>}    Payment status
    * @see {@link https://doc.oneentry.cloud/docs/payments OneEntry CMS docs}
-   * @returns payment state marker
    */
-  const createSession = async (id: number) => {
+  const createSession = async (id: number): Promise<string> => {
     if (!id) {
-      return;
+      return 'error';
     }
     setIsLoading(true);
 
@@ -47,21 +57,20 @@ export const useCreateOrder = ({ langCode }: { langCode: string }) => {
         return 'payment_method';
       }
       setIsLoading(false);
-      return; // Add explicit return to fix TS7030
+      return '';
     } catch (error) {
-      const apiError = handleApiError(error);
+      const apiError = handleApiError('createSession', error);
       setError(apiError.message);
       setIsLoading(false);
-      return; // Add explicit return to fix TS7030
+      return '';
     }
   };
 
   /**
    * On confirm order Create order with Orders API
-   * @async
-   * @returns void
+   * @returns {Promise<void>} Promise that resolves when order is confirmed
    */
-  const onConfirmOrder = async () => {
+  const onConfirmOrder = async (): Promise<void> => {
     setIsLoading(true);
     if (order?.formIdentifier && order?.paymentAccountIdentifier) {
       // prepare order data
@@ -104,7 +113,7 @@ export const useCreateOrder = ({ langCode }: { langCode: string }) => {
           router.push('/orders');
         }
       } catch (error) {
-        const apiError = handleApiError(error);
+        const apiError = handleApiError('onConfirmOrder', error);
         setError(apiError.message);
         setIsLoading(false);
       }

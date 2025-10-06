@@ -2,16 +2,16 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useTransitionRouter } from 'next-transition-router';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useCallback } from 'react';
 
 /**
  * Pagination
- * @param totalPages
- *
- * @returns Pagination
+ * @param   {object}      props            - Pagination props.
+ * @param   {number}      props.totalPages - Total pages.
+ * @returns {JSX.Element}                  Pagination
  */
-const Pagination: FC<{ totalPages: number }> = ({ totalPages }) => {
+const Pagination = ({ totalPages }: { totalPages: number }): JSX.Element => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useTransitionRouter();

@@ -2,7 +2,7 @@ import { Baloo_2 as Baloo } from 'next/font/google';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { IMenusEntity } from 'oneentry/dist/menus/menusInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { getMenuByMarker } from '@/app/api';
 import { ServerProvider } from '@/app/store/providers/ServerProvider';
@@ -18,11 +18,10 @@ const baloo = Baloo({
 });
 
 /**
- * Footer menu section
- * @async
- * @returns Footer menu section
+ * Footer menu section.
+ * @returns {Promise<JSX.Element>} Footer menu section.
  */
-const FooterMenuSection: FC = async () => {
+const FooterMenuSection = async (): Promise<JSX.Element> => {
   const [lang] = ServerProvider('lang');
   const quickLinks = await getMenuByMarker('quick_links', lang);
   const infoLinks = await getMenuByMarker('information', lang);

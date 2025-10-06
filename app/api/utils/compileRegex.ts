@@ -1,4 +1,9 @@
-function maskToRegex(mask: string) {
+/**
+ * Convert mask string to regex pattern
+ * @param   {string} mask - The mask string to convert
+ * @returns {string}      The regex pattern string
+ */
+function maskToRegex(mask: string): string {
   const maskRules: { [key: string]: string } = {
     '\\[\\[space\\]\\]': '\\s',
     '\\$': '[\\(\\)\\-\\+]',
@@ -21,7 +26,12 @@ function maskToRegex(mask: string) {
   return regexPattern;
 }
 
-export function compileRegex(mask: string) {
+/**
+ * Compile mask string to RegExp object
+ * @param   {string} mask - The mask string to compile
+ * @returns {RegExp}      The compiled RegExp object
+ */
+export function compileRegex(mask: string): RegExp {
   const regexPattern = maskToRegex(mask);
   return new RegExp(`^${regexPattern}$`);
 }

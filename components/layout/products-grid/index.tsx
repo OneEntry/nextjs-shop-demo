@@ -1,6 +1,6 @@
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IFilterParams } from 'oneentry/dist/products/productsInterfaces';
-import { type FC } from 'react';
+import type { JSX } from 'react';
 
 import { getProducts, getProductsByPageUrl } from '@/app/api';
 import FilterModal from '@/components/layout/filter/FilterModal';
@@ -12,7 +12,26 @@ import ProductsNotFound from './components/ProductsNotFound';
 
 export const dynamic = 'force-dynamic';
 
-interface GridLayoutProps {
+/**
+ * Products grid layout.
+ * @param   {object}               props                      - Products GridLayout props.
+ * @param   {object}               props.params               - params from query string.
+ * @param   {object}               props.searchParams         - search params from query string.
+ * @param   {string}               props.searchParams.search  - search query.
+ * @param   {string}               props.searchParams.page    - current page number.
+ * @param   {string}               props.searchParams.filters - filters query.
+ * @param   {IAttributeValues}     props.dict                 - dictionary from server api.
+ * @param   {number}               props.pagesLimit           - used for animations.
+ * @param   {boolean}              props.isCategory           - is category page.
+ * @returns {Promise<JSX.Element>}                            ProductsGrid component.
+ */
+const ProductsGridLayout = async ({
+  params,
+  searchParams,
+  dict,
+  pagesLimit,
+  isCategory,
+}: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   params: any;
   searchParams: {
@@ -23,25 +42,7 @@ interface GridLayoutProps {
   dict: IAttributeValues;
   pagesLimit: number;
   isCategory?: boolean;
-}
-
-/**
- * Products grid layout
- * @param params page params
- * @param searchParams search params from query string
- * @param dict dictionary from server api
- * @param pagesLimit used for animations
- * @param isCategory
- *
- * @returns ProductsGrid
- */
-const ProductsGridLayout: FC<GridLayoutProps> = async ({
-  params,
-  searchParams,
-  dict,
-  pagesLimit,
-  isCategory,
-}) => {
+}): Promise<JSX.Element> => {
   const currentPage = Number(searchParams?.page) || 1;
   const { lang } = params;
   const limit =
@@ -49,7 +50,7 @@ const ProductsGridLayout: FC<GridLayoutProps> = async ({
   const combinedParams = { ...params, searchParams };
 
   // Get all products from api or get products byPageUrl
-  const { isError, products, total } = !isCategory
+  const { error, isError, products, total } = !isCategory
     ? await getProducts({
         lang: lang,
         offset: 0,
@@ -64,7 +65,9 @@ const ProductsGridLayout: FC<GridLayoutProps> = async ({
       });
 
   if (!products || total < 1 || isError) {
-    return <ProductsNotFound lang={lang} dict={dict} />;
+    return (
+      <ProductsNotFound lang={lang} dict={dict} {...(error && { error })} />
+    );
   }
 
   const totalPages = Math.ceil(total / pagesLimit);

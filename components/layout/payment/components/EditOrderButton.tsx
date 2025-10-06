@@ -1,27 +1,28 @@
 import { useTransitionRouter } from 'next-transition-router';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import Loader from '@/components/shared/Loader';
 
-type EditOrderButtonProps = {
+/**
+ * Edit order button.
+ * @param   {object}           props           - Edit order button props.
+ * @param   {IAttributeValues} props.dict      - dictionary values.
+ * @param   {boolean}          props.isLoading - loading state.
+ * @returns {JSX.Element}                      JSX.Element.
+ */
+const EditOrderButton = ({
+  dict,
+  isLoading,
+}: {
   dict: IAttributeValues;
   isLoading: boolean;
-};
-
-/**
- * Edit order button
- * @param isLoading loading state
- *
- * @returns JSX.Element
- */
-const EditOrderButton: FC<EditOrderButtonProps> = ({ dict, isLoading }) => {
+}): JSX.Element => {
   const router = useTransitionRouter();
   const { edit_order_text } = dict;
 
   /**
-   * Edit order button click
-   * @async
+   * Edit order button click handler.
    */
   const onEditOrder = async () => {
     router.push('/cart');

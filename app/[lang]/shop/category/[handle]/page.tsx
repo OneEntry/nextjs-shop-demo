@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { type FC, memo, Suspense } from 'react';
+import { type JSX, memo, Suspense } from 'react';
 
 import { getDictionary } from '@/app/[lang]/dictionaries';
 import { getChildPagesByParentUrl, getPageByUrl } from '@/app/api';
@@ -15,37 +15,43 @@ import { i18n } from '@/i18n-config';
 
 /**
  * Shop category page layout
- * @async server component
- * @param params page params
- * @param searchParams dynamic search params
+ * @param   {object}               props              - Page props
+ * @param   {object}               props.params       - page params
+ * @param   {object}               props.searchParams - dynamic search params
+ * @returns {Promise<JSX.Element>}                    Shop page layout JSX.Element
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
- * @returns Shop page layout JSX.Element
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ShopCategoryLayout: FC<any> = async (props: any) => {
+
+const ShopCategoryLayout = async (props: {
+  params: Promise<{ lang: string; handle: string }>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  searchParams: any;
+}): Promise<JSX.Element> => {
+  const params = await props.params;
+  const { lang, handle } = params;
   // Access searchParams without await to keep page static
   const searchParams = await props.searchParams;
 
-  const params = await props.params;
-  const { lang, handle } = await params;
   // Get the dictionary from the API and set the server provider.
   const [dict] = ServerProvider('dict', await getDictionary(lang as Locale));
 
-  // get page by url from api
+  // Fetch category page data from the CMS
   const { page } = await getPageByUrl(handle, lang);
 
-  // !!!extract products per page limit from global settings
+  // Set products per page limit
+  // TODO: Extract products per page limit from global settings
   const pagesLimit = 10;
 
-  // Memoize the loader component
+  // Memoize the loader component to prevent unnecessary re-renders
   const MemoizedProductsGridLoader = memo(ProductsGridLoader);
 
+  // Show 404 page if category page not found
   if (!page) {
     return notFound();
   }
 
-  // Breadcrumb structured data
+  // Generate structured data for breadcrumbs to improve SEO
   const breadcrumbStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -100,8 +106,14 @@ export default ShopCategoryLayout;
 
 /**
  * Pre-generation pages for each locale
+ * @returns {Promise<{lang: string; handle: string;}[]>} Static params for pre-generation
  */
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<
+  {
+    lang: string;
+    handle: string;
+  }[]
+> {
   const params: Array<{ lang: string; handle: string }> = [];
   for (const lang of i18n.locales) {
     const { pages } = await getChildPagesByParentUrl('shop', lang);
@@ -117,11 +129,11 @@ export async function generateStaticParams() {
 
 /**
  * Generate page metadata
- * @async server component
- * @param params page params
+ * @param   {object}            metadataParams        - Metadata params
+ * @param   {MetadataParams}    metadataParams.params - page params
+ * @returns {Promise<Metadata>}                       metadata
  * @see {@link https://doc.oneentry.cloud/docs/pages OneEntry CMS docs}
  * @see {@link https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata Next.js docs}
- * @returns metadata
  */
 export async function generateMetadata({
   params,
@@ -129,6 +141,7 @@ export async function generateMetadata({
   const { handle, lang } = await params;
   const { isError, page } = await getPageByUrl(handle, lang);
 
+  // Return 404 page if page not found or an error occurred
   if (isError || !page) {
     return notFound();
   }

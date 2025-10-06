@@ -4,7 +4,11 @@ import { api } from '@/app/api';
 import { LanguageEnum } from '@/app/types/enum';
 import { handleApiError } from '@/app/utils/errorHandler';
 
-export async function GET() {
+/**
+ * Test route for API calls
+ * @returns {Promise<NextResponse>} - Promise object that represents the result of the GET request.
+ */
+export async function GET(): Promise<NextResponse> {
   try {
     const startTime = Date.now();
 
@@ -21,7 +25,7 @@ export async function GET() {
       data: data ? 'Data received' : 'No data',
     });
   } catch (error) {
-    const apiError = handleApiError(error);
+    const apiError = handleApiError('function GET', error);
     return NextResponse.json({
       success: false,
       error: apiError.message,

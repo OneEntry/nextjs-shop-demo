@@ -2,21 +2,24 @@
 
 import Link from 'next/link';
 import type { IMenusPages } from 'oneentry/dist/menus/menusInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import CatalogIcon from '@/components/icons/catalog';
 
 /**
- * Catalog navigation menu item
- * @param item menu element object
- * @param lang current language shortcode
- *
- * @returns menu item
+ * Catalog navigation menu item.
+ * @param   {object}      props      - menu item props.
+ * @param   {IMenusPages} props.item - menu element object.
+ * @param   {string}      props.lang - current language shortcode.
+ * @returns {JSX.Element}            menu item.
  */
-const NavItemCatalog: FC<{ item: IMenusPages; lang: string }> = ({
+const NavItemCatalog = ({
   item: { pageUrl, localizeInfos },
   lang,
-}) => {
+}: {
+  item: IMenusPages;
+  lang: string;
+}): JSX.Element => {
   return (
     <Link
       href={'/' + lang + '/' + pageUrl}

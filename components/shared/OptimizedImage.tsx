@@ -1,14 +1,42 @@
+/* eslint-disable jsdoc/reject-any-type */
 'use client';
 
 import NextImage from 'next/image';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useRef, useState } from 'react';
 
-// import { useOptimizedImage } from '@/components/hooks/useOptimizedImage';
 import Image from './Image';
+import Placeholder from './Placeholder';
 // import Placeholder from './Placeholder';
 
-interface OptimizedImageProps {
+/**
+ * Optimized image component with LQIP placeholder and lazy loading.
+ * @param   {object}      props           - OptimizedImage component props.
+ * @param   {any}         props.src       - Image source data.
+ * @param   {string}      props.alt       - Image alt text.
+ * @param   {number}      props.width     - Image width.
+ * @param   {number}      props.height    - Image height.
+ * @param   {string}      props.sizes     - Image sizes.
+ * @param   {boolean}     props.fill      - Fill parent container.
+ * @param   {string}      props.priority  - Priority loading flag.
+ * @param   {string}      props.className - Additional CSS classes.
+ * @param   {number}      props.quality   - Image quality (1-100).
+ * @param   {string}      props.type      - Image type ("next" | "custom").
+ * @param   {string}      props.loading   - Image loading behavior ("eager" | "lazy").
+ * @returns {JSX.Element}                 JSX.Element - Optimized image.
+ */
+const OptimizedImage = ({
+  src,
+  alt,
+  width,
+  height,
+  sizes,
+  priority = '',
+  className = '',
+  quality,
+  type = 'next',
+  loading,
+}: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   src: any;
   alt: string;
@@ -21,50 +49,22 @@ interface OptimizedImageProps {
   quality?: number;
   type?: string;
   loading?: string;
-}
-
-/**
- * Optimized image component with LQIP placeholder and lazy loading
- *
- * @param src Image source data
- * @param alt Image alt text
- * @param width Image width
- * @param height Image height
- * @param sizes Image sizes
- * @param priority Priority loading flag
- * @param className Additional CSS classes
- * @param quality Image quality (1-100)
- * @param loading Image loading behavior ("eager" | "lazy")
- * @returns Optimized image JSX element
- */
-const OptimizedImage: FC<OptimizedImageProps> = ({
-  src,
-  alt,
-  width,
-  height,
-  sizes,
-  priority = '',
-  className = '',
-  quality,
-  type = 'next',
-  loading,
-}) => {
+}): JSX.Element => {
+  // Track image loading state for animations
   const [isImageLoading, setImageLoading] = useState(true);
   const ref = useRef<HTMLImageElement>(null);
-  const optimizedSrc = src?.value?.downloadLink || src?.value[0]?.downloadLink;
+
+  // Extract image URL from source data structure
+  const optimizedSrc =
+    src?.value?.downloadLink || src?.value?.[0]?.downloadLink;
+
+  // Extract low-quality placeholder image for blur effect
   const blurDataURL = src?.value?.previewLink?.default?.[0] || '';
 
-  // Handle the exactOptionalPropertyTypes issue by explicitly building the props object
-  // const { optimizedSrc, blurDataURL, isLoading, isError } = useOptimizedImage({
-  //   src,
-  //   quality,
-  //   ...(width !== undefined && { width }),
-  //   ...(height !== undefined && { height }),
-  // });
-
-  // if (isError || !src) {
-  //   return <Placeholder />;
-  // }
+  // Show placeholder if no image source is available
+  if (!optimizedSrc) {
+    return <Placeholder />;
+  }
 
   // Prepare props for Next.js Image component
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,7 +83,7 @@ const OptimizedImage: FC<OptimizedImageProps> = ({
       ${isImageLoading ? 'opacity-0' : 'opacity-100'}
     `,
     ref,
-    onLoadingComplete: () => setImageLoading(false),
+    onLoad: () => setImageLoading(false),
     onError: () => {
       setImageLoading(false);
     },

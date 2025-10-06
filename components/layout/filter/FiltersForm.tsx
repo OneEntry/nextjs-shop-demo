@@ -1,8 +1,9 @@
+/* eslint-disable jsdoc/reject-any-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { IAttributesSetsEntity } from 'oneentry/dist/attribute-sets/attributeSetsInterfaces';
 import type { IAttributeValues } from 'oneentry/dist/base/utils';
 import type { IPagesEntity } from 'oneentry/dist/pages/pagesInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 
 import { getSingleAttributeByMarkerSet } from '@/app/api';
 import { getPageByUrl } from '@/app/api/server/pages/getPageByUrl';
@@ -16,22 +17,23 @@ import ResetButton from './components/buttons/ResetButton';
 import ColorFilter from './components/color/ColorFilter';
 import PricePickerFilter from './components/price/PricePickerFilter';
 
-interface FiltersFormProps {
-  prices: any;
+/**
+ * Products filters form.
+ * @param   {object}               props        - Props.
+ * @param   {any}                  props.prices - prices fromTo extracted from one product.
+ * @param   {string}               props.lang   - Current language shortcode.
+ * @param   {IAttributeValues}     props.dict   - dictionary from server api.
+ * @returns {Promise<JSX.Element>}              Filters form.
+ */
+const FiltersForm = async ({
+  prices,
+  lang,
+  dict,
+}: {
+  prices: any | undefined;
   lang: string;
   dict: IAttributeValues;
-}
-
-/**
- * Products filters form
- *
- * @param prices prices fromTo extracted from one product
- * @param lang Current language shortcode
- * @param dict dictionary from server api
- *
- * @returns Filters form
- */
-const FiltersForm: FC<FiltersFormProps> = async ({ prices, lang, dict }) => {
+}): Promise<JSX.Element> => {
   const pageInfo = await getPageByUrl('catalog_filters', lang);
   const data = await getSingleAttributeByMarkerSet({
     setMarker: 'product',
@@ -40,12 +42,21 @@ const FiltersForm: FC<FiltersFormProps> = async ({ prices, lang, dict }) => {
   });
   const { isError, error, attribute } = data;
 
-  const sortedAttributes: Record<any, any> = sortObjectFieldsByPosition(
-    (pageInfo.page as IPagesEntity).attributeValues,
+  // Fixing the type error by properly casting and checking the attributeValues structure
+  const attributeValues = (pageInfo.page as IPagesEntity).attributeValues;
+  const sortedAttributes: Record<string, any> = sortObjectFieldsByPosition(
+    attributeValues && typeof attributeValues === 'object'
+      ? (Object.fromEntries(
+          Object.entries(attributeValues).filter(
+            ([, value]) =>
+              value && typeof value === 'object' && 'position' in value,
+          ),
+        ) as Record<string, { position: number }>)
+      : {},
   );
 
   if (isError) {
-    return error?.message;
+    return <>{error?.message}</>;
   }
 
   if (!sortedAttributes) {
@@ -105,4 +116,5 @@ const FiltersForm: FC<FiltersFormProps> = async ({ prices, lang, dict }) => {
     </div>
   );
 };
+
 export default FiltersForm;

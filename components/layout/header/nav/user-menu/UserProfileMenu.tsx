@@ -4,7 +4,7 @@ import type {
   IMenusEntity,
   IMenusPages,
 } from 'oneentry/dist/menus/menusInterfaces';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useState } from 'react';
 
 import ProfileIcon from '@/components/icons/profile';
@@ -13,31 +13,29 @@ import ProfileMenuAnimations from '../../animations/ProfileMenuAnimations';
 import LogoutMenuItem from './LogoutMenuItem';
 import UserMenuItem from './UserMenuItem';
 
-interface UserProfileMenuProps {
-  lang: string;
-  title: string;
-  userMenu: IMenusEntity;
-}
-
 /**
- * User Profile menu
- * @param lang Current language shortcode
- * @param page
- * @param userMenu Represents a menu object.
- *
- * @returns User Profile menu
+ * User Profile menu.
+ * @param   {object}       props          - UserProfileMenu props.
+ * @param   {string}       props.lang     - Current language shortcode.
+ * @param   {IMenusEntity} props.userMenu - Represents a menu object.
+ * @param   {string}       props.title    - Menu title.
+ * @returns {JSX.Element}                 User Profile menu.
  */
-const UserProfileMenu: FC<UserProfileMenuProps> = ({
+const UserProfileMenu = ({
   lang,
   userMenu,
   title,
-}) => {
+}: {
+  lang: string;
+  title: string;
+  userMenu: IMenusEntity;
+}): JSX.Element => {
   const [state, setState] = useState(false);
   // extract pages from user menu
   const pages = userMenu?.pages as Array<IMenusPages & { isActive: boolean }>;
 
   if (!pages) {
-    return;
+    return <></>;
   }
 
   return (

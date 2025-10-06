@@ -1,26 +1,27 @@
+/* eslint-disable jsdoc/no-undefined-types */
 'use client';
 
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
-import type { FC } from 'react';
+import type { JSX } from 'react';
 import { useRef } from 'react';
 
 import type { AnimationsProps } from '../types/global';
 
 /**
  * Fade transition animations
- *
- * @param children children ReactNode
- * @param className CSS className of ref element
- * @param index Index of element for animations stagger
+ * @param   {object}      props           - Animation properties
+ * @param   {ReactNode}   props.children  - children ReactNode
+ * @param   {string}      props.className - CSS className of ref element
+ * @param   {number}      props.index     - Index of element for animations stagger
+ * @returns {JSX.Element}                 JSX.Element with animated ref
  * @see {@link https://gsap.com/cheatsheet/ gsap cheatsheet}
- * @returns JSX.Element with animated ref
  */
-const FadeTransition: FC<AnimationsProps> = ({
+const FadeTransition = ({
   children,
   className,
   index,
-}) => {
+}: AnimationsProps): JSX.Element => {
   const ref = useRef(null);
   // on stage enter animations
   useGSAP(() => {
