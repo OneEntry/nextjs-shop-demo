@@ -1,4 +1,6 @@
+/* eslint-disable jsdoc/reject-any-type */
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
+import type { IAttributesSetsEntity } from 'oneentry/dist/attribute-sets/attributeSetsInterfaces';
 import type { IAuthProvidersEntity } from 'oneentry/dist/auth-provider/authProvidersInterfaces';
 import type { IError } from 'oneentry/dist/base/utils';
 import type { IBlockEntity } from 'oneentry/dist/blocks/blocksInterfaces';
@@ -20,6 +22,12 @@ import type { ApiResponse } from '@/app/types/hooks';
 
 import { api } from './api';
 
+interface AttributeByMarkerProps {
+  setMarker: string;
+  attributeMarker: string;
+  activeLang: string;
+}
+
 interface BlockByMarkerProps {
   marker: string;
   activeLang: string;
@@ -36,7 +44,11 @@ interface SingleOrderProps {
   activeLang: string;
 }
 
-// Generic function to handle API responses
+/**
+ * Generic function to handle API responses
+ * @param   {any} apiCall - Promise to be handled.
+ * @returns {any}         Promise with API response
+ */
 const handleApiResponse = async <T>(
   apiCall: Promise<T | IError>,
 ): Promise<ApiResponse<T>> => {
@@ -70,6 +82,45 @@ export const RTKApi = createApi({
           return { error: result as IError };
         }
         return { data: result as IPositionBlock[] };
+      },
+    }),
+    /**
+     * Get block by Marker.
+     * @param marker     - Marker of Block.
+     * @param activeLang - Language code. Default "en_US".
+     * @returns          Query result with block
+     */
+    getBlockByMarker: build.query<IBlockEntity, BlockByMarkerProps>({
+      queryFn: async ({ marker, activeLang }) => {
+        const result = await handleApiResponse(
+          api.Blocks.getBlockByMarker(marker, activeLang),
+        );
+        if (!result || (result as IError)?.statusCode) {
+          return { error: result as IError };
+        }
+        return { data: result as IBlockEntity };
+      },
+    }),
+    /**
+     * Get single attribute by marker set.
+     * @param setMarker       - Marker of attribute set.
+     * @param attributeMarker - Marker of attribute.
+     * @returns               Query result with attribute
+     */
+    // eslint-disable-next-line prettier/prettier
+    getSingleAttributeByMarkerSet: build.query<IAttributesSetsEntity, AttributeByMarkerProps>({
+      queryFn: async ({ setMarker, attributeMarker, activeLang }) => {
+        const result = await handleApiResponse(
+          api.AttributesSets.getSingleAttributeByMarkerSet(
+            setMarker,
+            attributeMarker,
+            activeLang,
+          ),
+        );
+        if (!result || (result as IError)?.statusCode) {
+          return { error: result as IError };
+        }
+        return { data: result as IAttributesSetsEntity };
       },
     }),
     /**
@@ -115,23 +166,6 @@ export const RTKApi = createApi({
       },
     }),
     /**
-     * Get block by Marker.
-     * @param marker     - Marker of Block.
-     * @param activeLang - Language code. Default "en_US".
-     * @returns          Query result with block
-     */
-    getBlockByMarker: build.query<IBlockEntity, BlockByMarkerProps>({
-      queryFn: async ({ marker, activeLang }) => {
-        const result = await handleApiResponse(
-          api.Blocks.getBlockByMarker(marker, activeLang),
-        );
-        if (!result || (result as IError)?.statusCode) {
-          return { error: result as IError };
-        }
-        return { data: result as IBlockEntity };
-      },
-    }),
-    /**
      * Get all auth providers objects.
      * @param langCode - Language code. Default "en_US".
      * @returns        Query result with auth providers
@@ -160,6 +194,7 @@ export const RTKApi = createApi({
         const result = await handleApiResponse(
           api.Forms.getFormByMarker(marker, langCode),
         );
+
         if (!result || (result as IError)?.statusCode) {
           return { error: result as IError };
         }
@@ -174,7 +209,8 @@ export const RTKApi = createApi({
     getMe: build.query<IUserEntity, { langCode: string }>({
       queryFn: async ({ langCode }) => {
         try {
-          const result = await handleApiResponse(api.Users.getUser(langCode));
+          const result = await api.Users.getUser(langCode);
+
           if (!result || (result as IError)?.statusCode) {
             return { error: result as IError };
           }
@@ -251,6 +287,7 @@ export const RTKApi = createApi({
 export const {
   useGetBlockByMarkerQuery,
   useGetBlocksByPageUrlQuery,
+  useGetSingleAttributeByMarkerSetQuery,
   useGetFormByMarkerQuery,
   useGetAuthProvidersQuery,
   useLazyGetMeQuery,

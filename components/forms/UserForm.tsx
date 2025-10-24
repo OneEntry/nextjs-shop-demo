@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/no-undefined-types */
 'use client';
 
 import type { IAuthFormData } from 'oneentry/dist/auth-provider/authProvidersInterfaces';
@@ -32,33 +33,49 @@ export type InputValue = {
 };
 
 /**
- * User form.
+ * User form component for managing user profile information.
+ * Allows authenticated users to update their personal data.
  * @param   {FormProps}        props      - Component props.
  * @param   {string}           props.lang - Current language shortcode.
  * @param   {IAttributeValues} props.dict - dictionary from server api.
  * @returns {JSX.Element}                 User form component.
  */
 const UserForm = ({ lang, dict }: FormProps): JSX.Element => {
+  /** Authentication context providing user authentication status and methods */
   const { isAuth, refreshUser, user } = useContext(AuthContext);
+
+  /** Loading state for form submission */
   const [loading, setLoading] = useState(false);
+
+  /** Error state for form submission errors */
   const [isError, setError] = useState('');
 
-  // Get form by marker with RTK
+  /**
+   * Fetch user registration form data by marker using RTK Query
+   * This retrieves form configuration and fields from the OneEntry CMS
+   */
   const { data, isLoading, error } = useGetFormByMarkerQuery({
     marker: 'reg',
     lang,
   });
 
-  // get fields from formFieldsReducer
+  /**
+   * Get form field values from Redux store
+   * These values are updated as the user interacts with form inputs
+   */
   const fields = useAppSelector((state) => state.formFieldsReducer.fields);
 
-  // Update user data
+  /**
+   * Handle user data update submission
+   * Prepares form data and sends it to the OneEntry API to update user information
+   * @param {FormEvent<HTMLFormElement>} e - Form submission event
+   */
   const onUpdateUserData = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       setLoading(true);
 
-      // prepare form data
+      /** Prepare form data for submission. Maps through form attributes and creates data objects for each field */
       const formData: IAuthFormData[] = data?.attributes
         .map((field: IAttributes) => {
           if (field.marker !== 'email_notifications') {
@@ -77,7 +94,7 @@ const UserForm = ({ lang, dict }: FormProps): JSX.Element => {
           return el !== null;
         });
 
-      // updateUser with Users API
+      /** Update user with Users API. Sends the prepared form data to update the user's profile information */
       if (user?.formIdentifier) {
         await api.Users.updateUser({
           formIdentifier: user.formIdentifier,
@@ -108,10 +125,12 @@ const UserForm = ({ lang, dict }: FormProps): JSX.Element => {
     }
   };
 
+  /** Show loader while form data is being fetched */
   if (isLoading) {
     return <Loader />;
   }
 
+  /** Show authentication error if user is not authenticated or data is unavailable */
   if (!isAuth || error || !user?.formData) {
     return <AuthError dict={dict} />;
   }
@@ -123,12 +142,14 @@ const UserForm = ({ lang, dict }: FormProps): JSX.Element => {
         onSubmit={(e) => onUpdateUserData(e)}
       >
         <div className="relative mb-4 box-border flex shrink-0 flex-col gap-4">
+          {/** Map through form attributes and render FormInput components Each input is populated with user's current data */}
           {data?.attributes.map((field: IAttributes, index: Key | number) => {
-            const fieldData =
-              Array.isArray(user.formData) &&
-              (user.formData.find(
-                (item) => item.marker === field.marker,
-              ) as FormDataType[]);
+            const fieldData = Array.isArray(user.formData)
+              ? (user.formData.find(
+                  (item) => item.marker === field.marker,
+                ) as FormDataType)
+              : {};
+
             if (field.marker !== 'email_notifications') {
               return (
                 <FormInput
@@ -136,7 +157,7 @@ const UserForm = ({ lang, dict }: FormProps): JSX.Element => {
                   index={index as number}
                   {...field}
                   {...fieldData}
-                  value={field.value}
+                  value={fieldData.value}
                 />
               );
             }

@@ -13,7 +13,7 @@ import DeliveryPage from '@/components/pages/DeliveryPage';
 import PaymentCanceled from '@/components/pages/PaymentCanceled';
 import PaymentSuccess from '@/components/pages/PaymentSuccess';
 import ServicesPage from '@/components/pages/ServicesPage';
-import type { Locale } from '@/i18n-config';
+import { type Locale } from '@/i18n-config';
 
 import { getDictionary } from '../dictionaries';
 import WithSidebar from './WithSidebar';
@@ -32,24 +32,24 @@ const PageLayout = async ({
 }: {
   params: Promise<{ page: string; lang: string }>;
 }): Promise<JSX.Element> => {
-  // Extract page name and language from params
+  /** Extract page name and language from params */
   const { page: p, lang } = await params;
 
-  // Get dictionary and set to server provider for internationalization
+  /** Get dictionary and set to server provider for internationalization */
   const [dict] = ServerProvider('dict', await getDictionary(lang as Locale));
 
-  // Get page data by current url
+  /** Get page data by current url */
   const { page, isError } = await getPageByUrl(p, lang);
 
-  // if error return notFound
+  /** if error return notFound */
   if (isError || !page) {
     return notFound();
   }
 
-  // extract data from page
+  /** extract data from page */
   const { pageUrl, templateIdentifier } = page;
 
-  // array of pages components with additional settings for next router
+  /** array of pages components with additional settings for next router */
   const pages = [
     {
       templateType: templateIdentifier,
@@ -98,7 +98,7 @@ const PageLayout = async ({
     },
   ];
 
-  // Render the page component based on the page URL and template type
+  /** Render the page component based on the page URL and template type */
   return (
     <div className="mx-auto flex min-h-80 w-full max-w-(--breakpoint-xl) flex-col overflow-hidden">
       {Array.isArray(pages) ? (
@@ -123,32 +123,6 @@ const PageLayout = async ({
 
 export default PageLayout;
 
-// /**
-//  * Pre-generation of pages for static export
-//  */
-// export async function generateStaticParams() {
-//   // array of pages components with additional settings for next router
-//   const pages = [
-//     'profile',
-//     'payment',
-//     'about_us',
-//     'services',
-//     'contact_us',
-//     'payment_success',
-//     'payment_canceled',
-//     'book_online',
-//     'delivery',
-//   ];
-
-//   const params: Array<{ lang: string; page: string }> = [];
-//   for (const page of pages) {
-//     for (const lang of i18n.locales) {
-//       params.push({ lang, page });
-//     }
-//   }
-//   return params;
-// }
-
 /**
  * Generate page metadata
  * @async
@@ -164,14 +138,14 @@ export async function generateMetadata({
   params: Promise<{ page: string; lang: string }>;
 }): Promise<Metadata> {
   const { page: pageData, lang } = await params;
-  // get page by Url
+  /** get page by Url */
   const { page, isError } = await getPageByUrl(pageData, lang);
 
   if (isError || !page) {
     return notFound();
   }
 
-  // extract data from page
+  /** extract data from page */
   const { localizeInfos } = page;
 
   return {

@@ -23,29 +23,32 @@ export const dynamic = 'force-dynamic';
  * @see {@link https://nextjs.org/docs/app/api-reference/file-conventions/page Next.js docs}
  */
 const ShopPageLayout = async (props: PageProps): Promise<JSX.Element> => {
+  /** Extract search parameters from props */
   const searchParams = await props.searchParams;
+  /** Extract route parameters from props */
   const params = await props.params;
+  /** Destructure language from parameters */
   const { lang } = params;
 
-  // Get the dictionary from the API and set the server provider.
+  /** Get the dictionary from the API and set the server provider. */
   const [dict] = ServerProvider('dict', await getDictionary(lang as Locale));
 
-  // Get current Page ByUrl from api
+  /** Get current Page ByUrl from api */
   const { page } = await getPageByUrl('shop', lang);
 
-  // Set the number of products to display per page
+  /** Set the number of products to display per page */
   // TODO: Extract products per page limit from global settings
   const pagesLimit = 10;
 
-  // Memoize the loader component to prevent unnecessary re-renders
+  /** Memoize the loader component to prevent unnecessary re-renders */
   const MemoizedProductsGridLoader = memo(ProductsGridLoader);
 
-  // Return 404 page if shop page not found
+  /** Return 404 page if shop page not found */
   if (!page) {
     return notFound();
   }
 
-  // Generate structured data for breadcrumbs to improve SEO
+  /** Generate structured data for breadcrumbs to improve SEO */
   const breadcrumbStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -65,6 +68,7 @@ const ShopPageLayout = async (props: PageProps): Promise<JSX.Element> => {
     ],
   };
 
+  /** Render the shop page with structured data and product grid */
   return (
     <>
       <script
@@ -96,7 +100,9 @@ export default ShopPageLayout;
  * @returns {Promise<Array<{ lang: string }>>} Array of parameters for static generation
  */
 export async function generateStaticParams(): Promise<Array<{ lang: string }>> {
+  /** Initialize empty array to store static parameters */
   const params: Array<{ lang: string }> = [];
+  /** Loop through all available locales and create parameter objects */
   for (const lang of i18n.locales) {
     params.push({ lang });
   }
@@ -114,17 +120,20 @@ export async function generateStaticParams(): Promise<Array<{ lang: string }>> {
 export async function generateMetadata({
   params,
 }: MetadataParams): Promise<Metadata> {
+  /** Extract handle and language from route parameters */
   const { handle, lang } = await params;
+  /** Fetch the shop page by URL and language */
   const { isError, page } = await getPageByUrl('shop', lang);
 
-  // Return 404 page if page not found or an error occurred
+  /** Return 404 page if page not found or an error occurred */
   if (isError || !page) {
     return notFound();
   }
 
+  /** Extract page information from the page object */
   const { localizeInfos, isVisible, attributeValues } = page;
 
-  // Return metadata object
+  /** Return metadata object */
   return generatePageMetadata({
     handle: handle,
     title: localizeInfos.title,

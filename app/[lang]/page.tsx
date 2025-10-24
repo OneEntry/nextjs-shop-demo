@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import type { JSX } from 'react';
 import { Suspense } from 'react';
 
-// Import custom API function and components
 import { getPageByUrl } from '@/app/api';
 import BlocksGrid from '@/components/layout/blocks-grid';
 import BlocksGridLoader from '@/components/layout/blocks-grid/components/BlocksGridLoader';
@@ -13,10 +12,10 @@ import { i18n } from '@/i18n-config';
 import { getImageUrl } from '../api/hooks/useAttributesData';
 import { generatePageMetadata } from '../utils/generatePageMetadata';
 
-// Increase revalidation time to reduce server load (60 seconds instead of 10)
-// export const revalidate = 60;
+/** Increase revalidation time to reduce server load (60 seconds instead of 10) */
+export const revalidate = 60;
 
-// Enable dynamic route parameters
+/** Enable dynamic route parameters */
 export const dynamicParams = true;
 
 interface IndexPageLayoutProps {
@@ -34,33 +33,33 @@ interface IndexPageLayoutProps {
 const IndexPageLayout = async ({
   params,
 }: IndexPageLayoutProps): Promise<JSX.Element> => {
-  // Destructure language parameter from params
+  /** Destructure language parameter from params */
   const { lang } = await params;
 
-  // Validate language parameter
+  /** Validate language parameter */
   if (!lang || !i18n.locales.includes(lang as any)) {
     return notFound();
   }
 
-  // Fetch home page data by URL from the API
+  /** Fetch home page data by URL from the API */
   const { page, isError } = await getPageByUrl('home_web', lang);
 
-  // If there's an error, render a "not found" page
+  /** If there's an error, render a "not found" page */
   if (isError || !page) {
     // eslint-disable-next-line no-console
     console.log('Failed to load home page:', isError);
     return notFound();
   }
 
-  // If no page or blocks are found, render a loading state
+  /** If no page or blocks are found, render a loading state */
   if (!page.blocks) {
     return <BlocksGridLoader />;
   }
 
-  // Extract blocks from the fetched page data
+  /** Extract blocks from the fetched page data */
   const { blocks } = page;
 
-  // Organization structured data
+  /** Organization structured data */
   const organizationStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -69,7 +68,7 @@ const IndexPageLayout = async ({
     logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/logo.png`,
   };
 
-  // WebSite structured data
+  /** WebSite structured data */
   const websiteStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -77,7 +76,7 @@ const IndexPageLayout = async ({
     url: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/${lang}`,
   };
 
-  // Render the main layout of the page
+  /** Render the main layout of the page */
   return (
     <>
       <script
@@ -105,7 +104,7 @@ const IndexPageLayout = async ({
   );
 };
 
-// Export the default component
+/** Export the default component */
 export default IndexPageLayout;
 
 /**
@@ -113,10 +112,13 @@ export default IndexPageLayout;
  * @returns {Promise<{ lang: string }[]>} Promise resolving to an array of language objects
  */
 export async function generateStaticParams(): Promise<{ lang: string }[]> {
+  /** Initialize an empty array to hold the static parameters */
   const params: Array<{ lang: string }> = [];
+  /** Loop through all available locales and create parameter objects */
   for (const lang of i18n.locales) {
     params.push({ lang });
   }
+  /** Return the array of static parameters for pre-rendering */
   return params;
 }
 
@@ -129,15 +131,19 @@ export async function generateStaticParams(): Promise<{ lang: string }[]> {
 export async function generateMetadata({
   params,
 }: IndexPageLayoutProps): Promise<Metadata> {
+  /** Extract language parameter from route params */
   const { lang } = await params;
+  /** Fetch home page data by URL and language */
   const { isError, page } = await getPageByUrl('home_web', lang);
 
+  /** Return 404 page if there's an error or page not found */
   if (isError || !page) {
     return notFound();
   }
+  /** Extract page information from the page object */
   const { localizeInfos, isVisible, attributeValues } = page;
 
-  // Return metadata object
+  /** Return metadata object */
   return generatePageMetadata({
     title: localizeInfos.title,
     description: localizeInfos.plainContent,

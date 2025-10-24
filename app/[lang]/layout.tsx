@@ -21,7 +21,7 @@ import type { Locale } from '@/i18n-config';
 import { LanguageEnum } from '../types/enum';
 import { getDictionary } from './dictionaries';
 
-// Fonts settings
+/** Fonts settings */
 const lato = Lato({
   subsets: ['latin'],
   weight: ['300', '400', '700', '900'],
@@ -66,16 +66,16 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>;
 }>): Promise<JSX.Element> {
   const { lang } = await params;
-  // set current lang to server provider
+  /** set current lang to server provider */
   ServerProvider('lang', lang);
 
-  // set current langCode to server provider
+  /** set current langCode to server provider */
   const [langCode] = ServerProvider(
     'langCode',
     LanguageEnum[lang as keyof typeof LanguageEnum],
   );
 
-  // Get dictionary and set to server provider
+  /** Get dictionary and set to server provider */
   const [dict] = ServerProvider('dict', await getDictionary(lang as Locale));
 
   return (

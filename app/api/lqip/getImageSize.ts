@@ -20,8 +20,10 @@ import url from 'url';
 const getImageSize = async (
   imgUrl: string,
 ): Promise<{ width: number; height: number }> => {
+  /** Parse the image URL into options for the HTTPS request */
   const options = url.parse(imgUrl);
 
+  /** Return a promise that resolves with image dimensions */
   return new Promise((resolve, reject) => {
     https
       .get(options, (response) => {
@@ -37,6 +39,7 @@ const getImageSize = async (
         const chunks: Uint8Array[] = [];
         let dimensions: { width?: number; height?: number } | null = null;
 
+        /** Handle incoming data chunks and try to determine image dimensions */
         response
           .on('data', (chunk) => {
             if (!dimensions) {
@@ -50,11 +53,11 @@ const getImageSize = async (
                     height: dimensions.height,
                   });
                   response.destroy();
-                  // Stop further data reception
+                  /** Stop further data reception */
                 }
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
               } catch (error) {
-                // If image-size throws an error due to insufficient data, continue receiving
+                /** If image-size throws an error due to insufficient data, continue receiving */
               }
             }
           })
