@@ -158,18 +158,30 @@ const ContactUsForm = memo(
           try {
             setLoading(true);
             await api.FormData.postFormsData({
-              /** Form identifier from CMS data */
+              /**
+               * Form identifier from CMS data
+               */
               formIdentifier: data?.identifier || '',
-              /** Transformed form data */
+              /**
+               * Transformed form data
+               */
               formData: transformedFormData,
-              /** Form module configuration ID */
+              /**
+               * Form module configuration ID
+               */
               formModuleConfigId: moduleFormConfig?.id || 0,
-              /** Module entity identifier */
+              /**
+               * Module entity identifier
+               */
               moduleEntityIdentifier:
                 moduleFormConfig?.entityIdentifiers?.[0]?.id || '',
-              /** Reply-to email (not used in this form) */
+              /**
+               * Reply-to email (not used in this form)
+               */
               replayTo: null,
-              /** Initial status of the form submission */
+              /**
+               * Initial status of the form submission
+               */
               status: 'sent',
             });
             setLoading(false);
