@@ -1,6 +1,7 @@
+import Image from 'next/image';
 import type { JSX } from 'react';
 
-import OptimizedImage from '@/components/shared/OptimizedImage';
+import Placeholder from '@/components/shared/Placeholder';
 
 /**
  * Group product image component.
@@ -16,14 +17,18 @@ const ProductImage = ({ imageSrc }: { imageSrc: string }): JSX.Element => {
       role="img"
       aria-label="Product image"
     >
-      <OptimizedImage
-        fill
-        sizes="(min-width: 600px) 66vw, 100vw"
-        src={imageSrc}
-        alt={'Product'}
-        quality={75}
-        className="mb-10 size-full shrink-0 rounded-xl object-cover max-md:mb-8 max-sm:mb-8"
-      />
+      {imageSrc ? (
+        <Image
+          fill
+          sizes="(min-width: 600px) 66vw, 100vw"
+          src={imageSrc}
+          alt={'Product'}
+          quality={75}
+          className="mb-10 size-full shrink-0 rounded-xl object-cover max-md:mb-8 max-sm:mb-8"
+        />
+      ) : (
+        <Placeholder />
+      )}
     </div>
   );
 };
